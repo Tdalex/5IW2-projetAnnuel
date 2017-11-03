@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Roadtrips list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Slug</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Createdat</th>
+                <th>Isremoved</th>
+                <th>Lat</th>
+                <th>Long</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for roadtrip in roadtrips %}
+            <tr>
+                <td><a href="{{ path('roadtrip_show', { 'id': roadtrip.id }) }}">{{ roadtrip.id }}</a></td>
+                <td>{{ roadtrip.slug }}</td>
+                <td>{{ roadtrip.title }}</td>
+                <td>{{ roadtrip.description }}</td>
+                <td>{% if roadtrip.createdAt %}{{ roadtrip.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if roadtrip.isRemoved %}Yes{% else %}No{% endif %}</td>
+                <td>{% if roadtrip.lat %}{{ roadtrip.lat|join(', ') }}{% endif %}</td>
+                <td>{% if roadtrip.long %}{{ roadtrip.long|join(', ') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('roadtrip_show', { 'id': roadtrip.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('roadtrip_edit', { 'id': roadtrip.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('roadtrip_new') }}">Create a new roadtrip</a>
+        </li>
+    </ul>
+{% endblock %}

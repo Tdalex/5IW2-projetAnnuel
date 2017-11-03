@@ -18,4 +18,42 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Roadtrip")
+     */
+    protected $favorite;
+
+    /**
+     * Add favorite
+     *
+     * @param \AppBundle\Entity\Roadtrip $favorite
+     *
+     * @return User
+     */
+    public function addFavorite(\AppBundle\Entity\Roadtrip $favorite)
+    {
+        $this->favorite[] = $favorite;
+
+        return $this;
+    }
+
+    /**
+     * Remove favorite
+     *
+     * @param \AppBundle\Entity\Roadtrip $favorite
+     */
+    public function removeFavorite(\AppBundle\Entity\Roadtrip $favorite)
+    {
+        $this->favorite->removeElement($favorite);
+    }
+
+    /**
+     * Get favorite
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFavorite()
+    {
+        return $this->favorite;
+    }
 }

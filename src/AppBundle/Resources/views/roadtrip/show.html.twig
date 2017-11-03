@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Roadtrip</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ roadtrip.id }}</td>
+            </tr>
+            <tr>
+                <th>Slug</th>
+                <td>{{ roadtrip.slug }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ roadtrip.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ roadtrip.description }}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{% if roadtrip.createdAt %}{{ roadtrip.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Isremoved</th>
+                <td>{% if roadtrip.isRemoved %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Lat</th>
+                <td>{% if roadtrip.lat %}{{ roadtrip.lat|join(', ') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Long</th>
+                <td>{% if roadtrip.long %}{{ roadtrip.long|join(', ') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('roadtrip_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('roadtrip_edit', { 'id': roadtrip.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

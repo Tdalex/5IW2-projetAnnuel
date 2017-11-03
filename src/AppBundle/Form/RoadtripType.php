@@ -6,14 +6,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TagType extends AbstractType
+class RoadtripType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title');
+        $builder->add('slug')->add('title')->add('description')->add('createdAt')->add('isRemoved')->add('lat')->add('long')->add('owner');
     }
     
     /**
@@ -22,7 +22,7 @@ class TagType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Tag'
+            'data_class' => 'AppBundle\Entity\Roadtrip'
         ));
     }
 
@@ -31,7 +31,7 @@ class TagType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_tag';
+        return 'appbundle_roadtrip';
     }
 
 
