@@ -82,7 +82,7 @@ class Roadtrip
 	
 	/**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="owner", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $owner;
 	
