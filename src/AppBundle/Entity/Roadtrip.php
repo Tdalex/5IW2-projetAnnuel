@@ -70,7 +70,7 @@ class Roadtrip
 	*
 	* @ORM\Column(type="array")
 	*/
-	private $long;
+	private $lon;
 
 	/**
      * @ORM\ManyToOne(targetEntity="User")
@@ -238,27 +238,27 @@ class Roadtrip
     }
 
     /**
-     * Set long
+     * Set lon
      *
-     * @param array $long
+     * @param array $lon
      *
      * @return Roadtrip
      */
-    public function setLong($long)
+    public function setlon($lon)
     {
-        $this->long = $long;
+        $this->lon = $lon;
 
         return $this;
     }
 
     /**
-     * Get long
+     * Get lon
      *
      * @return array
      */
-    public function getLong()
+    public function getlon()
     {
-        return $this->long;
+        return $this->lon;
     }
 
     /**

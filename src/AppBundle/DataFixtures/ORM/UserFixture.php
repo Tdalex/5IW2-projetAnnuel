@@ -21,6 +21,19 @@ class UserFixture extends Fixture
         $user->setRoles(array('ROLE_SUPER_ADMIN'));
 
         $userManager->updateUser($user, true);
+
+        $faker = \Faker\Factory::create();
+        
+        for ($i = 0; $i < 20; $i++) {
+            $user = $userManager->createUser();
+            $user->setUsername($faker->firstname);
+            $user->setEmail($faker->email);
+            $user->setPlainPassword('test');
+            $user->setEnabled(true);
+            $user->setRoles(array('ROLE_USER'));
+    
+            $userManager->updateUser($user, true);
+        }
     }
 
 }
