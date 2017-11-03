@@ -34,8 +34,12 @@
                 <td>{% if roadtrip.lat %}{{ roadtrip.lat|join(', ') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Long</th>
-                <td>{% if roadtrip.long %}{{ roadtrip.long|join(', ') }}{% endif %}</td>
+                <th>Lon</th>
+                <td>{% if roadtrip.lon %}{{ roadtrip.lon|join(', ') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{% if roadtrip.address %}{{ roadtrip.address|join(', ') }}{% endif %}</td>
             </tr>
         </tbody>
     </table>

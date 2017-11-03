@@ -82,13 +82,14 @@ class Roadtrip
 	
 	/**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $owner;
 	
 	public function __construct(){
 		$this->createdAt = new \DateTime();
 	}
+
+	
 
     /**
      * Get id
@@ -290,29 +291,5 @@ class Roadtrip
     public function getOwner()
     {
         return $this->owner;
-    }
-
-    /**
-     * Set address
-     *
-     * @param array $address
-     *
-     * @return Roadtrip
-     */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return array
-     */
-    public function getAddress()
-    {
-        return $this->address;
     }
 }

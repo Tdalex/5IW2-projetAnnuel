@@ -17,11 +17,12 @@ class RoadtripFixture extends Fixture
         for ($i = 0; $i < 20; $i++) {
             $roadtrip = new Roadtrip();
             $roadtrip->setIsRemoved(false);
-            $roadtrip->setOwner($user[rand(0, count($user))]);
+            $roadtrip->setOwner($user[rand(0, count($user)-1)]);
             $roadtrip->setTitle($faker->name);
             $roadtrip->setDescription($faker->text);
             $roadtrip->setLat([$faker->latitude]);
             $roadtrip->setLon([$faker->longitude]);
+            $roadtrip->setAddress([$faker->address]);
             $roadtrip->setCreatedAt($faker->dateTime);
             $manager->persist($roadtrip);
         }
