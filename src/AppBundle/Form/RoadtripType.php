@@ -13,7 +13,7 @@ class RoadtripType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('slug')->add('title')->add('description')->add('createdAt')->add('isRemoved')->add('lat')->add('lon')->add('address')->add('owner');
+        $builder->add('slug')->add('title')->add('description')->add('createdAt')->add('isRemoved')->add('owner');
     }
     
     /**

@@ -2,27 +2,25 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\Roadtrip;
+use AppBundle\Entity\Stop;
 use AppBundle\DataFixtures\ORM\TagFixture;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class RoadtripFixture extends Fixture
+class StopFixture extends Fixture
 {
     public function load(ObjectManager $manager)
     {
         $faker = \Faker\Factory::create();
         
-        $user = $manager->getRepository('AppBundle:User')->findAll();
-        $Stop = $manager->getRepository('AppBundle:Stop')->findAll();
         for ($i = 0; $i < 20; $i++) {
-            $roadtrip = new Roadtrip();
-            $roadtrip->setIsRemoved(false);
-            $roadtrip->setOwner($user[rand(0, count($user)-1)]);
-            $roadtrip->setStop($stop[rand(0, count($stop)-1)]);
+            $roadtrip = new Stop();
             $roadtrip->setTitle($faker->name);
             $roadtrip->setDescription($faker->text);
-            $roadtrip->setCreatedAt($faker->dateTime);
+            $roadtrip->addStopNumber($i);
+            $roadtrip->setLat($faker->latitude);
+            $roadtrip->setLon($faker->longitude);
+            $roadtrip->setAddress($faker->address);
             $manager->persist($roadtrip);
         }
 
@@ -33,7 +31,6 @@ class RoadtripFixture extends Fixture
     {
         return array(
             UserFixture::class,
-            StopFixture::class,
         );
     }
 }

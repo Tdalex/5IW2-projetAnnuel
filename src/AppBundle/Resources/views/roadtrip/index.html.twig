@@ -12,9 +12,6 @@
                 <th>Description</th>
                 <th>Createdat</th>
                 <th>Isremoved</th>
-                <th>Lat</th>
-                <th>Lon</th>
-                <th>Address</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -27,9 +24,6 @@
                 <td>{{ roadtrip.description }}</td>
                 <td>{% if roadtrip.createdAt %}{{ roadtrip.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if roadtrip.isRemoved %}Yes{% else %}No{% endif %}</td>
-                <td>{% if roadtrip.lat %}{{ roadtrip.lat|join(', ') }}{% endif %}</td>
-                <td>{% if roadtrip.lon %}{{ roadtrip.lon|join(', ') }}{% endif %}</td>
-                <td>{% if roadtrip.address %}{{ roadtrip.address|join(', ') }}{% endif %}</td>
                 <td>
                     <ul>
                         <li>

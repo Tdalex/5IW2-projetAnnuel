@@ -56,29 +56,12 @@ class Roadtrip
 	* @ORM\Column(type="boolean", options={"default" : false})
 	*/
 	private $isRemoved;
-
 	
 	/**
-	* @var string
-	*
-	* @ORM\Column(type="array")
-	*/
-	private $lat;
-
-	/**
-	* @var string
-	*
-	* @ORM\Column(type="array")
-	*/
-	private $lon;
-
-
-	/**
-	* @var string
-	*
-	* @ORM\Column(type="array")
-	*/
-	private $address;
+     * @ORM\OneToMany(targetEntity="Stop", mappedBy="stop_id")
+     * @ORM\JoinColumn(name="stops", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $stops;
 	
 	/**
      * @ORM\ManyToOne(targetEntity="User")
@@ -314,5 +297,39 @@ class Roadtrip
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * Add stop
+     *
+     * @param \AppBundle\Entity\Stop $stop
+     *
+     * @return Roadtrip
+     */
+    public function addStop(\AppBundle\Entity\Stop $stop)
+    {
+        $this->stops[] = $stop;
+
+        return $this;
+    }
+
+    /**
+     * Remove stop
+     *
+     * @param \AppBundle\Entity\Stop $stop
+     */
+    public function removeStop(\AppBundle\Entity\Stop $stop)
+    {
+        $this->stops->removeElement($stop);
+    }
+
+    /**
+     * Get stops
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getStops()
+    {
+        return $this->stops;
     }
 }

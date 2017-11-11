@@ -10,7 +10,7 @@ use AppBundle\Entity\Article;
 /**
 * @ORM\Entity
 */
-class Roadtrip
+class Stop
 {
 	/**
 	* @var integer
@@ -19,8 +19,15 @@ class Roadtrip
 	* @ORM\Id
 	* @ORM\GeneratedValue(strategy="AUTO")
 	*/
-	private $id;
-
+    private $id;
+    
+    /**
+	* @var integer
+	*
+	* @ORM\Column( type="integer")
+	*/
+    private $stopNumber;
+    
 	/**
 	* @var string
 	*
@@ -42,33 +49,18 @@ class Roadtrip
 	* @ORM\Column(type="string")
 	*/
 	private $description;
-
-	/**
-	* @var DateTime
-	*
-	* @ORM\Column(type="datetime")
-	*/
-	private $createdAt;
-
-	/**
-	* @var string
-	*
-	* @ORM\Column(type="boolean", options={"default" : false})
-	*/
-	private $isRemoved;
-
 	
 	/**
 	* @var string
 	*
-	* @ORM\Column(type="array")
+	* @ORM\Column(type="string")
 	*/
 	private $lat;
 
 	/**
 	* @var string
 	*
-	* @ORM\Column(type="array")
+	* @ORM\Column(type="string")
 	*/
 	private $lon;
 
@@ -76,21 +68,10 @@ class Roadtrip
 	/**
 	* @var string
 	*
-	* @ORM\Column(type="array")
+	* @ORM\Column(type="string")
 	*/
 	private $address;
 	
-	/**
-     * @ORM\ManyToOne(targetEntity="User")
-     */
-    protected $owner;
-	
-	public function __construct(){
-		$this->createdAt = new \DateTime();
-	}
-
-	
-
     /**
      * Get id
      *
@@ -291,5 +272,53 @@ class Roadtrip
     public function getOwner()
     {
         return $this->owner;
+    }
+
+    /**
+     * Set address
+     *
+     * @param array $address
+     *
+     * @return Roadtrip
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return array
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set stopNumber
+     *
+     * @param integer $stopNumber
+     *
+     * @return Stop
+     */
+    public function setStopNumber($stopNumber)
+    {
+        $this->stopNumber = $stopNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get stopNumber
+     *
+     * @return integer
+     */
+    public function getStopNumber()
+    {
+        return $this->stopNumber;
     }
 }
