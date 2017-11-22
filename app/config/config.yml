@@ -73,9 +73,6 @@ stof_doctrine_extensions:
     orm:
         default:
             sluggable: true
-
-bazinga_faker:
-    orm: doctrine
  
 framework:
     translator: ~

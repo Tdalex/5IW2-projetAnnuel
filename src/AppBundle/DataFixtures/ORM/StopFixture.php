@@ -17,7 +17,7 @@ class StopFixture extends Fixture
             $roadtrip = new Stop();
             $roadtrip->setTitle($faker->name);
             $roadtrip->setDescription($faker->text);
-            $roadtrip->addStopNumber($i);
+            $roadtrip->setStopNumber($i);
             $roadtrip->setLat($faker->latitude);
             $roadtrip->setLon($faker->longitude);
             $roadtrip->setAddress($faker->address);

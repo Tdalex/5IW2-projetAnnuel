@@ -14,12 +14,12 @@ class RoadtripFixture extends Fixture
         $faker = \Faker\Factory::create();
         
         $user = $manager->getRepository('AppBundle:User')->findAll();
-        $Stop = $manager->getRepository('AppBundle:Stop')->findAll();
+        $stop = $manager->getRepository('AppBundle:Stop')->findAll();
         for ($i = 0; $i < 20; $i++) {
             $roadtrip = new Roadtrip();
             $roadtrip->setIsRemoved(false);
             $roadtrip->setOwner($user[rand(0, count($user)-1)]);
-            $roadtrip->setStop($stop[rand(0, count($stop)-1)]);
+            $roadtrip->addStop($stop[rand(0, count($stop)-1)]);
             $roadtrip->setTitle($faker->name);
             $roadtrip->setDescription($faker->text);
             $roadtrip->setCreatedAt($faker->dateTime);
