@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use AppBundle\Entity\Article;
-
+use AppBundle\Entity\Waypoint;
 
 /**
 * @ORM\Entity
@@ -64,7 +64,6 @@ class Stop
 	*/
 	private $lon;
 
-
 	/**
 	* @var string
 	*
@@ -72,6 +71,17 @@ class Stop
 	*/
 	private $address;
 	
+    /**
+     * @ORM\ManyToMany(targetEntity="Waypoint", cascade={"persist", "remove"})
+     */
+    protected $waypoint;
+    
+	/**
+     * @ORM\ManyToOne(targetEntity="Roadtrip")
+     * @ORM\JoinColumn(name="roadTripStop", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $roadTripStop;
+    
     /**
      * Get id
      *
@@ -320,5 +330,70 @@ class Stop
     public function getStopNumber()
     {
         return $this->stopNumber;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->waypoint = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add waypoint
+     *
+     * @param \AppBundle\Entity\Waypoint $waypoint
+     *
+     * @return Stop
+     */
+    public function addWaypoint(\AppBundle\Entity\Waypoint $waypoint)
+    {
+        $this->waypoint[] = $waypoint;
+
+        return $this;
+    }
+
+    /**
+     * Remove waypoint
+     *
+     * @param \AppBundle\Entity\Waypoint $waypoint
+     */
+    public function removeWaypoint(\AppBundle\Entity\Waypoint $waypoint)
+    {
+        $this->waypoint->removeElement($waypoint);
+    }
+
+    /**
+     * Get waypoint
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getWaypoint()
+    {
+        return $this->waypoint;
+    }
+
+    /**
+     * Set roadTripStop
+     *
+     * @param \AppBundle\Entity\Roadtrip $roadTripStop
+     *
+     * @return Stop
+     */
+    public function setRoadTripStop(\AppBundle\Entity\Roadtrip $roadTripStop = null)
+    {
+        $this->roadTripStop = $roadTripStop;
+
+        return $this;
+    }
+
+    /**
+     * Get roadTripStop
+     *
+     * @return \AppBundle\Entity\Roadtrip
+     */
+    public function getRoadTripStop()
+    {
+        return $this->roadTripStop;
     }
 }
