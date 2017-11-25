@@ -18,7 +18,7 @@
         <tbody>
         {% for roadtrip in roadtrips %}
             <tr>
-                <td><a href="{{ path('roadtrip_show', { 'id': roadtrip.id }) }}">{{ roadtrip.id }}</a></td>
+                <td><a href="{{ path('roadtrip_show', { 'slug': roadtrip.slug }) }}">{{ roadtrip.slug }}</a></td>
                 <td>{{ roadtrip.slug }}</td>
                 <td>{{ roadtrip.title }}</td>
                 <td>{{ roadtrip.description }}</td>
@@ -27,10 +27,10 @@
                 <td>
                     <ul>
                         <li>
-                            <a href="{{ path('roadtrip_show', { 'id': roadtrip.id }) }}">show</a>
+                            <a href="{{ path('roadtrip_show', { 'slug': roadtrip.slug }) }}">show</a>
                         </li>
                         <li>
-                            <a href="{{ path('roadtrip_edit', { 'id': roadtrip.id }) }}">edit</a>
+                            <a href="{{ path('roadtrip_edit', { 'slug': roadtrip.slug }) }}">edit</a>
                         </li>
                     </ul>
                 </td>

@@ -37,7 +37,7 @@
             <a href="{{ path('roadtrip_index') }}">Back to the list</a>
         </li>
         <li>
-            <a href="{{ path('roadtrip_edit', { 'id': roadtrip.id }) }}">Edit</a>
+            <a href="{{ path('roadtrip_edit', { 'slug': roadtrip.slug }) }}">Edit</a>
         </li>
         <li>
             {{ form_start(delete_form) }}

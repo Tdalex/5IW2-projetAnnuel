@@ -48,7 +48,7 @@ class RoadtripController extends Controller
             $em->persist($roadtrip);
             $em->flush();
 
-            return $this->redirectToRoute('roadtrip_show', array('id' => $roadtrip->getId()));
+            return $this->redirectToRoute('roadtrip_show', array('slug' => $roadtrip->getSlug()));
         }
 
         return $this->render('AppBundle:roadtrip:new.html.twig', array(
@@ -60,7 +60,7 @@ class RoadtripController extends Controller
     /**
      * Finds and displays a roadtrip entity.
      *
-     * @Route("/{id}", name="roadtrip_show")
+     * @Route("/{slug}", name="roadtrip_show")
      * @Method("GET")
      */
     public function showAction(Roadtrip $roadtrip)
@@ -76,7 +76,7 @@ class RoadtripController extends Controller
     /**
      * Displays a form to edit an existing roadtrip entity.
      *
-     * @Route("/{id}/edit", name="roadtrip_edit")
+     * @Route("/{slug}/edit", name="roadtrip_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Roadtrip $roadtrip)
@@ -88,7 +88,7 @@ class RoadtripController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('roadtrip_edit', array('id' => $roadtrip->getId()));
+            return $this->redirectToRoute('roadtrip_edit', array('slug' => $roadtrip->getSlug()));
         }
 
         return $this->render('AppBundle:roadtrip:edit.html.twig', array(
@@ -101,7 +101,7 @@ class RoadtripController extends Controller
     /**
      * Deletes a roadtrip entity.
      *
-     * @Route("/{id}", name="roadtrip_delete")
+     * @Route("/{slug}", name="roadtrip_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, Roadtrip $roadtrip)
@@ -128,7 +128,7 @@ class RoadtripController extends Controller
     private function createDeleteForm(Roadtrip $roadtrip)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('roadtrip_delete', array('id' => $roadtrip->getId())))
+            ->setAction($this->generateUrl('roadtrip_delete', array('slug' => $roadtrip->getSlug())))
             ->setMethod('DELETE')
             ->getForm()
         ;
