@@ -44,4 +44,13 @@
             <a href="{{ path('roadtrip_new') }}">Create a new roadtrip</a>
         </li>
     </ul>
+
 {% endblock %}
+
+
+{% block javascripts %}
+    {% javascripts '@AppBundle/Resources/public/js/googleMap.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{%  endblock %}
+
