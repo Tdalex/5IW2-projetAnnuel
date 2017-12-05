@@ -60,9 +60,28 @@ function myMap() {
             map: map,
             draggable: true
         });
-        //Remplir le tableau parcours
-        parcours.push(marqueur.getPosition().lat(),marqueur.getPosition().lng());
+        //Remplir le tableau parcours avec les coordonnées des marquers
+        parcours.push(''+marqueur.getPosition().lat()+', '+marqueur.getPosition().lng()+'');
         console.log(parcours);
+
+        //Le chemin du tracé
+        var traceParcours = new Array();
+        for(i=0;i<parcours.length;i++) {
+            var point =new google.maps.LatLng(parcours[i].split(',')[0],parcours[i].split(',')[1]);
+            traceParcours.push(point);
+        }
+
+        //créer le polyline
+        var roadTrip = new google.maps.Polyline({
+            path: traceParcours,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+
+        //Liée le tracé à lamap
+        roadTrip.setMap(map);
 
         //Lier un evenement au clic du marquer
         google.maps.event.addListener(marqueur, 'click', function() {
