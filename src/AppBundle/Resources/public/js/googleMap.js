@@ -1,13 +1,14 @@
-/**
- * Created by mohamedchakiri on 25/11/2017.
- */
+var geocoder;
+var map;
+function initialize() {
+    geocoder = new google.maps.Geocoder();
 
-function myMap() {
-    var mapProp= {
-        center:new google.maps.LatLng(46.719208,1.474055),
-        zoom:7,
-        mapTypeId: google.maps.MapTypeId.ROADMA
-    };
+    var latlng = new google.maps.LatLng(46.719208,1.474055);
+    var mapOptions = {
+        zoom: 7,
+        center: latlng
+    }
+    map = new google.maps.Map(document.getElementById('googleMap'), mapOptions);
 
     // Créer un nouveau style de map
     var styledMapType = new google.maps.StyledMapType(
@@ -163,58 +164,17 @@ function myMap() {
                 ]
             }
         ],
-        {name: 'Styled Map'});
-
-    var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
-
+        {name: 'Styled Map'}
+    );
     //Associer le style a la map et l'afficher.
     map.mapTypes.set('styled_map', styledMapType);
     map.setMapTypeId('styled_map');
-
-    // //création du marqueur
-    // var marqueur = new google.maps.Marker({
-    //     position: new google.maps.LatLng(48.856393, 2.343472),
-    //     map: map,
-    //     draggable: true
-    // });
-    //
-    // //chemin du tracé du polyline
-    // var parcours = [
-    //     new google.maps.LatLng(48.856393, 2.343472),
-    //     new google.maps.LatLng(47.950028, 1.907178),
-    //     new google.maps.LatLng(45.835296, 4.768425),
-    //     new google.maps.LatLng(43.299219, 5.365324)
-    // ];
-    //
-    // var raodtrip = new google.maps.Polyline({
-    //     path: parcours,//chemin du tracé
-    //     strokeColor: "#FF0000",//couleur du tracé
-    //     strokeOpacity: 1.0,//opacité du tracé
-    //     strokeWeight: 2//grosseur du tracé
-    // });
-    //
-    // //lier le tracé à la carte
-    // //ceci permet au tracé d'être affiché sur la carte
-    // raodtrip.setMap(map);
-    //
-    // //Lier un evenement au clic du marquer
-    // google.maps.event.addListener(marqueur, 'click', function() {
-    //     //Fenetre d'information
-    //     var infowindow =  new google.maps.InfoWindow({
-    //         title: "Titre",
-    //         content: 'Hello World!',
-    //         map: map,
-    //         position: new google.maps.LatLng(48.856393, 2.343472)
-    //     });
-    //     infowindow.open(map, this);
-    // });
-
 
     //Tableau des marqueurs
     var tabMarqueurs = [];
     var parcours = [];
     var tmp = [];
-    //Ajouter un marquer au clique
+    //Les evenments  au clique
     google.maps.event.addListener(map, 'click', function(event) {
         //Créer le marqueur
         var marqueur = new google.maps.Marker({
@@ -268,15 +228,19 @@ function myMap() {
 
         //Lier un evenement au clic du marquer
         google.maps.event.addListener(marqueur, 'click', function() {
+            //Afficher l'adresse du marqueur lors du clique
+            geocoder.geocode({'latLng': event.latLng});
+
             //Fenetre d'information
-            var infowindow =  new google.maps.InfoWindow({
-                title: "Titre",
-                content: 'Hello World!',
-                map: map,
-                position: new google.maps.LatLng(48.856393, 2.343472)
-            });
-            infowindow.open(map, this);
+             /*var infowindow =  new google.maps.InfoWindow({
+             title: "Titre",
+             content: 'Hello World!',
+             map: map,
+             position: new google.maps.LatLng(48.856393, 2.343472)
+             });
+             infowindow.open(map, this);*/
         });
+
         //Aficher le coordonnées au deplacement d'un marqueur
         google.maps.event.addListener(marqueur, 'dragend', function(event) {
             //message d'alerte affichant la nouvelle position du marqueur
@@ -285,5 +249,20 @@ function myMap() {
         tabMarqueurs.push(marqueur);
 
     });
+}
 
+//geocoder l'adresse saisie sur la map
+function codeAddress() {
+    var address = document.getElementById('address').value;
+    geocoder.geocode( { 'address': address}, function(results, status) {
+        if (status == 'OK') {
+            map.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location
+            });
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
 }
