@@ -8,10 +8,11 @@
 
 {% block body %}
 
+
     <body onload="initialize()">
     <div id="googleMap"></div>
     <div id="search">
-        <input id="address" type="textbox" value="Paris, France">
+        <input id="address" type="textbox" name="city" value="Paris, France">
         <input type="button" value="Aller" onclick="codeAddress()">
     </div>
     </body>
