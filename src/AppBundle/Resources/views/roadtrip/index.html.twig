@@ -16,9 +16,12 @@
             <input id="addressDep" type="text" name="city" value="Paris, France">
             <label>Destination</label>
             <input id="addressDes" type="text" name="city" value="Marseille, France">
-            <label>Etape</label>
-            <input id="addressInt" type="text" name="city" value="Nantes, France">
+            <!-- Ajout des input -->
+            <div id="container"></div>
+            <button id="filldetails" onclick="addFields()">Ajouter une étape</button>
             <button onclick="codeAddress()">Chercher</button>
+
+            <div id="directions-panel"></div>
         </div>
     </body>
 
@@ -70,7 +73,9 @@
 
 
 {% block javascripts %}
-    {% javascripts '@AppBundle/Resources/public/js/googleMap.js' %}
+    {% javascripts '@AppBundle/Resources/public/js/googleMap.js'
+                   '@AppBundle/Resources/public/js/form.js'
+    %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <!-- Api key : AIzaSyD-I7_9giJEZ6ilQ-21tnFvo5KCcgShXIM -->
