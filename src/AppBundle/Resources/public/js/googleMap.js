@@ -7,14 +7,20 @@ function initialize() {
     var mapOptions = {
         zoom: 6,
         center: latlng,
+        zoomControlOptions: {
+            position: google.maps.ControlPosition.RIGHT_CENTER
+        },
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullscreenControl: false,
+        mapTypeControl: true,
+        mapTypeControlOptions : {
+            position: google.maps.ControlPosition.RIGHT_CENTER
+        }
         // scrollwheel: false
     }
     map = new google.maps.Map(document.getElementById('googleMap'), mapOptions);
-
-    //adresse de recherche
-    google.maps.event.addDomListener(window, 'load', function() {
-        initializeAutocomplete('address');
-    });
 
     // Créer un nouveau style de map
     var styledMapType = new google.maps.StyledMapType(styles, {name: 'Styled Map'});
@@ -127,8 +133,10 @@ function infoWindowMarker(map){
 
 //geocoder l'adresse saisie
 function codeAddress() {
-    var address = document.getElementById('address').value;
-    geocoder.geocode( { 'address': address}, function(results, status) {
+    var addressDep = document.getElementById('addressDep').value;
+    var addressDes = document.getElementById('addressDes').value;
+    var addresses = [addressDep, addressDes];
+    geocoder.geocode( { 'address': addressDep}, function(results, status) {
         if (status == 'OK') {
             map.setCenter(results[0].geometry.location);
             var marker = new google.maps.Marker({
@@ -139,6 +147,18 @@ function codeAddress() {
             alert('Geocode was not successful for the following reason: ' + status);
         }
     });
+    geocoder.geocode( { 'address': addressDes}, function(results, status) {
+        if (status == 'OK') {
+            map.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location
+            });
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+    getItinerary(addresses, map);
 }
 
 var styles = [
