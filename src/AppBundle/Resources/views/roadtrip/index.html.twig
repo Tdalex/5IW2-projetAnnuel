@@ -10,11 +10,16 @@
 
 
     <body onload="initialize()">
-    <div id="googleMap"></div>
-    <div id="search">
-        <input id="address" type="textbox" name="city" value="Paris, France">
-        <input type="button" value="Aller" onclick="codeAddress()">
-    </div>
+        <div id="googleMap"></div>
+        <div id="search">
+            <label>Départ de</label>
+            <input id="addressDep" type="text" name="city" value="Paris, France">
+            <label>Destination</label>
+            <input id="addressDes" type="text" name="city" value="Marseille, France">
+            <label>Etape</label>
+            <input id="addressInt" type="text" name="city" value="Nantes, France">
+            <button onclick="codeAddress()">Chercher</button>
+        </div>
     </body>
 
     <h1>Roadtrips list</h1>

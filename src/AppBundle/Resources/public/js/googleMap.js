@@ -65,6 +65,7 @@ function createMarker(event, map){
     return marqueur;
 }
 
+//Tous les points map de tous les marqueurs
 function pointMarkersMap(marqueur, marqueurs){
     //Remplir le tableau marqueurs avec les coordonnées de chaque marqueur
     marqueurs.push(''+marqueur.getPosition().lat()+', '+marqueur.getPosition().lng()+'');
@@ -98,7 +99,9 @@ function getItinerary(pointsMarqueurs, map){
         var request = {
             origin : pointsMarqueurs[i],
             destination: pointsMarqueurs[i+1],
+            waypoints: [{location: pointsMarqueurs[i+2], stopover: false}, /*{location: "lyon, france", stopover: false}*/],
             travelMode : google.maps.DirectionsTravelMode.DRIVING,
+            optimizeWaypoints: true,
             unitSystem: google.maps.DirectionsUnitSystem.METRIC
         };
 
@@ -111,6 +114,7 @@ function getItinerary(pointsMarqueurs, map){
         });
     }
 }
+
 
 function getInfoMarkerDragend(marqueur){
     //Aficher le coordonnées au deplacement d'un marqueur
@@ -136,29 +140,26 @@ function codeAddress() {
     var addressDep = document.getElementById('addressDep').value;
     var addressDes = document.getElementById('addressDes').value;
     var addresses = [addressDep, addressDes];
-    geocoder.geocode( { 'address': addressDep}, function(results, status) {
-        if (status == 'OK') {
-            map.setCenter(results[0].geometry.location);
-            var marker = new google.maps.Marker({
-                map: map,
-                position: results[0].geometry.location
-            });
-        } else {
-            alert('Geocode was not successful for the following reason: ' + status);
-        }
-    });
-    geocoder.geocode( { 'address': addressDes}, function(results, status) {
-        if (status == 'OK') {
-            map.setCenter(results[0].geometry.location);
-            var marker = new google.maps.Marker({
-                map: map,
-                position: results[0].geometry.location
-            });
-        } else {
-            alert('Geocode was not successful for the following reason: ' + status);
-        }
-    });
+    var addressInt = document.getElementById('addressInt').value;
+    addresses.push(addressInt);
+    for(i=0;i<addresses.length;i++){
+        geocodeAddress(addresses[i]);
+    }
     getItinerary(addresses, map);
+}
+
+function geocodeAddress(address){
+    geocoder.geocode( { 'address': address}, function(results, status) {
+        if (status == 'OK') {
+            map.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location
+            });
+        } else {
+            alert('Geocode n\'a pas abouti car : ' + status);
+        }
+    });
 }
 
 var styles = [
