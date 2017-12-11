@@ -92,35 +92,32 @@ function createPolyline(pointsMarqueurs){
 
 function getItinerary(pointsMarqueurs, map){
     //Tracer l'itinéraire entre les marqueurs
-    //for(i=0;i<pointsMarqueurs.length;i++) {
-        // trajet 1
-        var directionsService = new google.maps.DirectionsService();
-        var directionsDisplay = new google.maps.DirectionsRenderer({ 'map': map });
-        var waypoints = [];
-        for(i=2;i<pointsMarqueurs.length;i++) {
-            waypoints.push({
-                location: pointsMarqueurs[i],
-                stopover: true
-            });
-        }
-        var request = {
-            origin : pointsMarqueurs[0],
-            destination: pointsMarqueurs[1],
-            waypoints: waypoints/*[{location: pointsMarqueurs[2], stopover: false}, {location: "lyon, france", stopover: false}]*/,
-            optimizeWaypoints: true,
-            travelMode : google.maps.DirectionsTravelMode.DRIVING,
-            //unitSystem: google.maps.DirectionsUnitSystem.METRIC
-        };
-
-        directionsService.route(request, function(response, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                directionsDisplay.setDirections(response);
-                directionsDisplay.suppressMarkers = true;
-                //directionsDisplay.setOptions({polylineOptions:{strokeColor: '#008000'}, preserveViewport: true});
-                getInfosRoutes(response);
-            }
+    var directionsService = new google.maps.DirectionsService();
+    var directionsDisplay = new google.maps.DirectionsRenderer({ 'map': map });
+    var waypoints = [];
+    for(i=2;i<pointsMarqueurs.length;i++) {
+        waypoints.push({
+            location: pointsMarqueurs[i],
+            stopover: true
         });
-    //}
+    }
+    var request = {
+        origin : pointsMarqueurs[0],
+        destination: pointsMarqueurs[1],
+        waypoints: waypoints/*[{location: pointsMarqueurs[2], stopover: false}, {location: "lyon, france", stopover: false}]*/,
+        optimizeWaypoints: true,
+        travelMode : google.maps.DirectionsTravelMode.DRIVING,
+        //unitSystem: google.maps.DirectionsUnitSystem.METRIC
+    };
+
+    directionsService.route(request, function(response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+            directionsDisplay.suppressMarkers = true;
+            //directionsDisplay.setOptions({polylineOptions:{strokeColor: '#008000'}, preserveViewport: true});
+            getInfosRoutes(response);
+        }
+    });
 }
 
 function getInfosRoutes(response){
@@ -159,8 +156,11 @@ function infoWindowMarker(map){
 
 //geocoder les adresses saisie
 function codeAddress() {
+    var onChangeHandler = reinitialize();
     var addressDep = document.getElementById('addressDep').value;
+    document.getElementById('addressDep').addEventListener('change', onChangeHandler);
     var addressDes = document.getElementById('addressDes').value;
+    document.getElementById('addressDes').addEventListener('change', onChangeHandler);
     var addressesFix = [addressDep, addressDes];
     //Recuperer tous les input créer dynamiquement
     var container = document.getElementById('container').getElementsByTagName("input");
@@ -168,14 +168,18 @@ function codeAddress() {
     var addressesInt = [];
     for(i=0;i<container.length;i++){
         addressesInt[i] = document.getElementById(container[i].id).value;
+        document.getElementById(container[i].id).addEventListener('change', onChangeHandler);
     }
     //Tous mettre dans le tableau adresses
     var addresses = addressesFix.concat(addressesInt);
-    //addresses.push(addressInt);
     for(i=0;i<addresses.length;i++){
         geocodeAddress(addresses[i]);
     }
     getItinerary(addresses, map);
+}
+
+function reinitialize(){
+    initialize();
 }
 
 function geocodeAddress(address){

@@ -1905,7 +1905,7 @@
                 "translatable",
                 "tree"
             ],
-            "time": "2017-01-13T18:32:32+00:00"
+            "time": "2017-01-13 18:32:32"
         },
         {
             "name": "swiftmailer/swiftmailer",
