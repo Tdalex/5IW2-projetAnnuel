@@ -37,6 +37,10 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    globals:
+        facebook_app_id: '%facebook_app_id%'
+        facebook_app_secret: '%facebook_app_secret%'
+        google_app_token: '%google_app_token%'
 
 # Doctrine Configuration
 doctrine:

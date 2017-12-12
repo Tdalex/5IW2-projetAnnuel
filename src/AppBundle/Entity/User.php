@@ -280,48 +280,6 @@ class User extends BaseUser
     }
 
     /**
-     * Set phone
-     *
-     * @param mixed $phone
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
-    }
-
-    /**
-     * Get phone
-     *
-     * @return mixed
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
-
-
-    /**
-     * Set zipCode
-     *
-     * @param mixed $zipCode
-     */
-    public function setZipCode($zipCode)
-    {
-        $this->zipCode = $zipCode;
-    }
-
-    /**
-     * Get zipCode
-     *
-     * @return mixed
-     */
-    public function getZipCode()
-    {
-        return $this->zipCode;
-    }
-
-
-    /**
      * Set birthdate
      *
      * @param mixed $birthdate

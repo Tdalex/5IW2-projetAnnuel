@@ -9,3 +9,6 @@ parameters:
     mailer_user: tdalexsmtp@gmail.com
     mailer_password: null
     secret: ThisTokenIsNotSoSecretChangeIt
+    facebook_app_id: null
+    facebook_app_secret: null
+    google_app_token: null

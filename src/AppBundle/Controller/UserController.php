@@ -136,4 +136,145 @@ class UserController extends Controller
             ->getForm()
         ;
     }
+    
+     /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @Route("/loginFb", name="user_login_fb")
+     * @Method("GET")
+     */
+    public function loginFacebookAction(Request $request)
+    {
+        $config = [
+            'callback' => $this->container->getParameter('sitemapDomain') . '' . $this->generateUrl('front_user_login_fb'),
+            'keys'     => [
+                'id'     => $this->container->getParameter('facebook_app_id'),
+                'secret' => $this->container->getParameter('facebook_app_secret')
+            ]
+        ];
+
+        try {
+            $adapter = new \Hybridauth\Provider\Facebook($config);
+            $adapter->authenticate();
+            $isConnected = $adapter->isConnected();
+            $userProfile = $adapter->getUserProfile();
+
+            $birthdate = "";
+            if($userProfile->birthYear){
+                $month = $userProfile->birthMonth < 10 ? '0'.$userProfile->birthMonth : $userProfile->birthMonth;
+                $day   = $userProfile->birthDay < 10 ? '0'.$userProfile->birthDay : $userProfile->birthDay;
+                $birthdate = $userProfile->birthYear . '-' . $month . '-' . $day;
+            }
+
+            if($userProfile->gender == 'male' || $userProfile->gender == 'female'){
+                $gender = strtoupper($userProfile->gender);
+            }else{
+                $gender = 'MALE';
+            }
+
+            $dataPush  = array(
+                'facebookId' => $userProfile->identifier,
+                'user'       => array(
+                    'firstName' => $userProfile->firstName,
+                    'lastName'  => $userProfile->lastName,
+                    'gender'    => $gender,
+                    'email'     => $userProfile->email,
+                    'birthdate' => $birthdate,
+                    'plainPassword' => array(
+                        'first'  => $userProfile->identifier,
+                        'second' => $userProfile->identifier,
+                    )
+                )
+            );
+            $adapter->disconnect();
+        }catch(\Exception $e){
+            return $this->redirect('/');
+        }
+
+        $facebookId = trim($dataPush['facebookId']);
+        $em         = $this->get('doctrine')->getManager();
+        $query      = $em->createQuery("SELECT u FROM Bigyouth\UserBundle\Entity\User u WHERE u.facebookId =:facebookId")
+                       ->setParameter('facebookId', $facebookId);
+
+        $user = $query->getOneOrNullResult();
+
+        //register
+        if(!$user){
+            $user = new user();
+            if($dataPush['user']['plainPassword']['first']){
+                $encoder_service = $this->get('security.encoder_factory');
+                $encoder = $encoder_service->getEncoder($user);
+                $encoded = $encoder->encodePassword($user, $dataPush['user']['plainPassword']['first']);
+                $user->setPassword($encoded);
+            }
+
+            // Bind value with form
+            $form = $this->createForm(UserType::class, $user);
+            $form->handleRequest($dataPush);
+            if ($form->isValid()) {
+                if($dataPush['user']['plainPassword']['first']){
+                    $encoder_service = $this->get('security.encoder_factory');
+                    $encoder = $encoder_service->getEncoder($user);
+                    $encoded = $encoder->encodePassword($user, $dataPush['user']['plainPassword']['first']);
+                    $user->setPassword($encoded);
+                }
+                $user->setEnabled(false);
+                $user->setFacebookId($facebookId);
+
+                $token = bin2hex(random_bytes(20));
+                $user->setToken($token);
+
+                $this->get('by.user')->save($user);
+                $register = true;
+            }
+        }else{
+            //account activated
+            if($user->isEnabled()){
+                $birthdate = null;
+                if($user->getBirthDate() !== null)
+                    $birthdate = $user->getBirthDate()->format('d-m-Y');
+
+                $currentUser = array(
+                    'id'        => $user->getId(),
+                    'firstname' => $user->getFirstName(),
+                    'lastname'  => $user->getLastName(),
+                    'email'     => $user->getEmail(),
+                    'gender'    => $user->getGender(),
+                    'birthdate' => $birthdate
+                );
+
+               
+                $session = $this->get('session');
+                $session->set('currentUser', $currentUser);
+
+                return $this->redirect('/');
+
+            //account not activated
+            }else{
+                $register = true;
+            }
+        }
+
+        if($register){
+                //send email
+                // $view = $this->container->get('templating')->render('FrontBundle:Mails:mail_activate_account.html.twig', [
+                //     'token'    => $data['token'],
+                //     'user'     => $dataPush['user'],
+                //     'id'       => $data['id'],
+                //     'allPages' => $allPages
+                // ]);
+
+                // $message = \Swift_Message::newInstance()
+                //     ->setSubject($this->get('translator')->trans('front.mail.user.activate.object', array(), 'front'))
+                //     ->setFrom('noreply@cardayz.fr')
+                //     ->setBody($view, 'text/html');
+
+                // // Adds mail send
+                // $message->setTo($dataPush['user']['email']);
+                // $response = $this->container->get('mailer')->send($message);
+        }
+        return $this->redirect('/');
+    }
+
 }
