@@ -11,4 +11,4 @@ parameters:
     secret: ThisTokenIsNotSoSecretChangeIt
     facebook_app_id: null
     facebook_app_secret: null
-    google_app_token: null
+    google_api_key: AIzaSyD-I7_9giJEZ6ilQ-21tnFvo5KCcgShXIM

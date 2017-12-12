@@ -40,7 +40,7 @@ twig:
     globals:
         facebook_app_id: '%facebook_app_id%'
         facebook_app_secret: '%facebook_app_secret%'
-        google_app_token: '%google_app_token%'
+        google_api_key: '%google_api_key%'
 
 # Doctrine Configuration
 doctrine:

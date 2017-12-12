@@ -78,7 +78,6 @@
     %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    <!-- Api key : AIzaSyD-I7_9giJEZ6ilQ-21tnFvo5KCcgShXIM -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-I7_9giJEZ6ilQ-21tnFvo5KCcgShXIM&callback=myMap&libraries=places&callback=initAutocomplete"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places&callback=initAutocomplete"></script>
 {%  endblock %}
 
