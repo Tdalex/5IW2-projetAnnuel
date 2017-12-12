@@ -9,6 +9,6 @@ parameters:
     mailer_user: tdalexsmtp@gmail.com
     mailer_password: null
     secret: ThisTokenIsNotSoSecretChangeIt
-    facebook_app_id: null
-    facebook_app_secret: null
+    facebook_app_id: 153461931962515
+    facebook_app_secret: 62c350339d7642ab58194a02cd8deba4
     google_api_key: AIzaSyD-I7_9giJEZ6ilQ-21tnFvo5KCcgShXIM
