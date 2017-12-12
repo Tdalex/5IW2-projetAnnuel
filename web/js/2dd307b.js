@@ -195,14 +195,16 @@ function geocodeAddress(address){
 }
 
 function initAutocomplete() {
+    var options = {
+        componentRestrictions: {country: "fr"},
+        types: ['geocode']
+    };
     //Récupérer tous les input by name
     var acInputs = document.getElementsByClassName("autocomplete");
     for (var i = 0; i < acInputs.length; i++) {
-        var autocomplete = new google.maps.places.Autocomplete(acInputs[i], {types: ['geocode']});
+        var autocomplete = new google.maps.places.Autocomplete(acInputs[i], options);
         autocomplete.inputId = acInputs[i].id;
     }
-    autocomplete.setComponentRestrictions(
-        {'country': ['fr']});
 }
 
 var styles = [
