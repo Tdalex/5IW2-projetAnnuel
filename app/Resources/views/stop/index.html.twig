@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Stops list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Stopnumber</th>
+                <th>Slug</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Lat</th>
+                <th>Lon</th>
+                <th>Address</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for stop in stops %}
+            <tr>
+                <td><a href="{{ path('stop_show', { 'id': stop.id }) }}">{{ stop.id }}</a></td>
+                <td>{{ stop.stopNumber }}</td>
+                <td>{{ stop.slug }}</td>
+                <td>{{ stop.title }}</td>
+                <td>{{ stop.description }}</td>
+                <td>{{ stop.lat }}</td>
+                <td>{{ stop.lon }}</td>
+                <td>{{ stop.address }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('stop_show', { 'id': stop.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('stop_edit', { 'id': stop.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('stop_new') }}">Create a new stop</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -5,9 +5,8 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use AppBundle\Form\StopType;
 
-class RoadtripType extends AbstractType
+class StopType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -15,14 +14,11 @@ class RoadtripType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('stopNumber')
             ->add('slug')
             ->add('title')
             ->add('description')
-            ->add('createdAt')
-            ->add('isRemoved')
-            ->add('owner')
-            ->add('stops', StopType::class)
-        ;
+            ->add('address');
     }
     
     /**
@@ -31,7 +27,7 @@ class RoadtripType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Roadtrip'
+            'data_class' => 'AppBundle\Entity\Stop'
         ));
     }
 
@@ -40,7 +36,7 @@ class RoadtripType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_roadtrip';
+        return 'appbundle_stop';
     }
 
 
