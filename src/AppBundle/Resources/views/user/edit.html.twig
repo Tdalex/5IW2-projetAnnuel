@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Inscription</h1>
+    {{ form_start(edit_form, {'attr': {'class': 'form-horizontal'}}) }}
+        {{ form_errors(edit_form) }}
+        <div>
+            {{ form_label(edit_form.lastName) }}
+            {{ form_widget(edit_form.lastName) }}
+        </div>
+        <div>
+            {{ form_label(edit_form.firstName) }}
+            {{ form_widget(edit_form.firstName) }}
+        </div>
+        <div>
+            {{ form_label(edit_form.email) }}
+            {{ form_widget(edit_form.email) }}
+        </div>
+        <div>
+            {{ form_label(edit_form.birthdate) }}
+            {{ form_widget(edit_form.birthdate) }}
+        </div>
+        <div>
+            {{ form_label(edit_form.gender) }}
+            {{ form_widget(edit_form.gender) }}
+        </div>
+        <div>
+            {{ form_widget(edit_form.plainPassword) }}
+        </div>
+        
+        <div>
+            <input type="submit" value="Continuer" />
+        </div>
+
+        <script>
+            $(document).ready(function() {
+                // configure the bootstrap datepicker
+                $('.js-datepicker').datepicker({
+                    format: 'yyyy-mm-dd'
+                });
+            });
+
+            $(document).on('click', '#_export', function(e) {
+                window.location.replace("export?" + $('#form-user').serialize());
+            })
+        </script>
+    {{ form_end(edit_form) }}
+    <ul>
+        <li>
+            <a href="{{ path('roadtrip_index') }}">Retour à l'accueil</a>
+        </li>
+    </ul>
+
+{% endblock %}

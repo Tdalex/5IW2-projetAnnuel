@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Inscription</h1>
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+        {{ form_errors(form) }}
+        {% for field in form %}
+            {% if field.vars.errors|length > 0 %}
+                <ul class="form-errors name">
+                    {% for error in field.vars.errors %}
+                        <p> {{ error.message }} </p>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+        <div>
+            {{ form_label(form.lastName) }}
+            {{ form_widget(form.lastName) }}
+        </div>
+        <div>
+            {{ form_label(form.firstName) }}
+            {{ form_widget(form.firstName) }}
+        </div>
+        <div>
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email) }}
+        </div>
+        <div>
+            {{ form_label(form.birthdate) }}
+            {{ form_widget(form.birthdate) }}
+        </div>
+        <div>
+            {{ form_label(form.gender) }}
+            {{ form_widget(form.gender) }}
+        </div>
+        <div>
+            {{ form_widget(form.plainPassword) }}
+        </div>
+        
+        <div>
+            <input type="submit" value="Continuer" />
+        </div>
+
+        <script>
+            $(document).ready(function() {
+                // configure the bootstrap datepicker
+                $('.js-datepicker').datepicker({
+                    format: 'yyyy-mm-dd'
+                });
+            });
+
+            $(document).on('click', '#_export', function(e) {
+                window.location.replace("export?" + $('#form-user').serialize());
+            })
+        </script>
+    {{ form_end(form) }}
+    <ul>
+        <li>
+            <a href="{{ path('roadtrip_index') }}">Retour à l'accueil</a>
+        </li>
+    </ul>
+
+{% endblock %}
