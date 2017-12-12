@@ -1,6 +1,5 @@
 var geocoder;
 var map;
-var placeSearch, autocomplete;
 function initialize() {
     geocoder = new google.maps.Geocoder();
 
@@ -192,17 +191,6 @@ function geocodeAddress(address){
             alert('Geocode n\'a pas abouti car : ' + status);
         }
     });
-}
-
-function initAutocomplete() {
-    //Récupérer tous les input by name
-    var acInputs = document.getElementsByClassName("autocomplete");
-    for (var i = 0; i < acInputs.length; i++) {
-        var autocomplete = new google.maps.places.Autocomplete(acInputs[i], {types: ['geocode']});
-        autocomplete.inputId = acInputs[i].id;
-    }
-    autocomplete.setComponentRestrictions(
-        {'country': ['fr']});
 }
 
 var styles = [
