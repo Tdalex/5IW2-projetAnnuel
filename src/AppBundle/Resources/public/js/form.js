@@ -13,6 +13,9 @@ function addFields(){
     input.type = "text";
     input.name = "etape" + (num+1);
     input.id = "etape" + (num+1);
+    input.className = "autocomplete";
     container.appendChild(input);
     container.appendChild(document.createElement("br"));
+    //Autocomplete des input
+    initAutocomplete();
 }

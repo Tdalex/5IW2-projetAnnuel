@@ -13,9 +13,9 @@
         <div id="googleMap"></div>
         <div id="search">
             <label>Départ de</label>
-            <input id="addressDep" type="text" name="city" value="Paris, France">
+            <input class="autocomplete" id="addressDep" type="text" name="addressDep">
             <label>Destination</label>
-            <input id="addressDes" type="text" name="city" value="Marseille, France">
+            <input class="autocomplete" id="addressDes" type="text" name="addressDes">
             <!-- Ajout des input -->
             <div id="container"></div>
             <button id="filldetails" onclick="addFields()">Ajouter une étape</button>
@@ -79,6 +79,6 @@
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <!-- Api key : AIzaSyD-I7_9giJEZ6ilQ-21tnFvo5KCcgShXIM -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-I7_9giJEZ6ilQ-21tnFvo5KCcgShXIM&callback=myMap"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-I7_9giJEZ6ilQ-21tnFvo5KCcgShXIM&callback=myMap&libraries=places&callback=initAutocomplete"></script>
 {%  endblock %}
 

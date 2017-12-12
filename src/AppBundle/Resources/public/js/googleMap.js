@@ -1,5 +1,6 @@
 var geocoder;
 var map;
+var placeSearch, autocomplete;
 function initialize() {
     geocoder = new google.maps.Geocoder();
 
@@ -128,7 +129,7 @@ function getInfosRoutes(response){
     for (var i = 0; i < route.legs.length; i++) {
         var routeSegment = i + 1;
         summaryPanel.innerHTML += '<b>Infos route: ' + routeSegment + '</b><br>';
-        summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+        summaryPanel.innerHTML += route.legs[i].start_address + ' à ';
         summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
         summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
     }
@@ -156,7 +157,8 @@ function infoWindowMarker(map){
 
 //geocoder les adresses saisie
 function codeAddress() {
-    var onChangeHandler = reinitialize();
+    //Si onChangeHandler est appelé reinitialise la map
+    var onChangeHandler = initialize();
     var addressDep = document.getElementById('addressDep').value;
     document.getElementById('addressDep').addEventListener('change', onChangeHandler);
     var addressDes = document.getElementById('addressDes').value;
@@ -178,10 +180,6 @@ function codeAddress() {
     getItinerary(addresses, map);
 }
 
-function reinitialize(){
-    initialize();
-}
-
 function geocodeAddress(address){
     geocoder.geocode( { 'address': address}, function(results, status) {
         if (status == 'OK') {
@@ -194,6 +192,15 @@ function geocodeAddress(address){
             alert('Geocode n\'a pas abouti car : ' + status);
         }
     });
+}
+
+function initAutocomplete() {
+    //Récupérer tous les input by name
+    var acInputs = document.getElementsByClassName("autocomplete");
+    for (var i = 0; i < acInputs.length; i++) {
+        var autocomplete = new google.maps.places.Autocomplete(acInputs[i], {types: ['geocode']});
+        autocomplete.inputId = acInputs[i].id;
+    }
 }
 
 var styles = [
