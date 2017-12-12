@@ -194,7 +194,7 @@ class UserController extends Controller
 
         $facebookId = trim($dataPush['facebookId']);
         $em         = $this->get('doctrine')->getManager();
-        $query      = $em->createQuery("SELECT u FROM Bigyouth\UserBundle\Entity\User u WHERE u.facebookId =:facebookId")
+        $query      = $em->createQuery("SELECT u FROM AppBundle\Entity\User u WHERE u.facebookId =:facebookId")
                        ->setParameter('facebookId', $facebookId);
 
         $user = $query->getOneOrNullResult();
@@ -252,27 +252,27 @@ class UserController extends Controller
 
             //account not activated
             }else{
+                $token = $user->getToken();
                 $register = true;
             }
         }
 
         if($register){
-                //send email
-                // $view = $this->container->get('templating')->render('FrontBundle:Mails:mail_activate_account.html.twig', [
-                //     'token'    => $data['token'],
-                //     'user'     => $dataPush['user'],
-                //     'id'       => $data['id'],
-                //     'allPages' => $allPages
-                // ]);
+            //send email
+            // $view = $this->container->get('templating')->render('AppBundle:Mails:mail_activate_account.html.twig', [
+            //     'token'    => $token,
+            //     'user'     => $user,
+            //     'id'       => $user->getId()
+            // ]);
 
-                // $message = \Swift_Message::newInstance()
-                //     ->setSubject($this->get('translator')->trans('front.mail.user.activate.object', array(), 'front'))
-                //     ->setFrom('noreply@cardayz.fr')
-                //     ->setBody($view, 'text/html');
+            // $message = \Swift_Message::newInstance()
+            //     ->setSubject($this->get('translator')->trans('front.mail.user.activate.object', array(), 'front'))
+            //     ->setFrom('noreply@roadtrip.loc')
+            //     ->setBody($view, 'text/html');
 
-                // // Adds mail send
-                // $message->setTo($dataPush['user']['email']);
-                // $response = $this->container->get('mailer')->send($message);
+            // // Adds mail send
+            // $message->setTo($dataPush['user']['email']);
+            // $response = $this->container->get('mailer')->send($message);
         }
         return $this->redirect('/');
     }

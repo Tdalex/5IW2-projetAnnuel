@@ -29,7 +29,7 @@ class UserType extends AbstractType
         ]);
 
         $builder->add('email', EmailType::class, [
-            'label' => 'email'
+            'label' => 'Email'
         ]);
 
         $builder->add('birthdate', DateTimeType::class, array(
@@ -41,13 +41,13 @@ class UserType extends AbstractType
         ));
 
         $builder->add($builder->create('gender', ChoiceType::class, [
-            'label'    => 'genre',
+            'label'    => 'Genre',
             'choices'  => [
                 'Homme'   => 'MALE',
                 'Femme' => 'FEMALE',
             ],
             'multiple' => false,
-            'expanded' => false
+            'expanded' => true
         ]));
 
         $builder->add('plainPassword', RepeatedType::class, [
@@ -59,7 +59,7 @@ class UserType extends AbstractType
                 'label' => 'Vérification de mot de passe'
             ],
             'options'         => [
-                'required' => false
+                'required' => true
             ],
             'invalid_message' => 'mot de passe invalide'
         ]);
@@ -81,7 +81,7 @@ class UserType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_user';
+        return 'user';
     }
 
 
