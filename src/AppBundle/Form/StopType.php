@@ -3,6 +3,9 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,11 +17,20 @@ class StopType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('stopNumber')
-            ->add('slug')
-            ->add('title')
-            ->add('description')
-            ->add('address');
+            ->add('title', TextType::class, array(
+                'required' => false,
+                'label' => 'Titre'
+            ))
+            ->add('description', TextareaType::class, array(
+                'required' => false,
+                'label' => 'Description'
+            ))
+            ->add('address', TextType::class, array(
+                'required' => true,
+                'label' => 'Adresse'
+            ))
+            ->add('lat', HiddenType::class)
+            ->add('long', HiddenType::class);
     }
     
     /**

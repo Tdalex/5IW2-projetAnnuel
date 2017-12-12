@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Roadtrip creation</h1>
+    {#<h1>Roadtrip creation</h1>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
@@ -12,5 +12,31 @@
         <li>
             <a href="{{ path('roadtrip_index') }}">Back to the list</a>
         </li>
-    </ul>
+    </ul>#}
+    <div id="googleMap"></div>
+    <div id="search">
+        {{ form_start(form) }}
+            <div>
+                {{ form_label(form.stopStart) }}
+                {{ form_widget(form.stopStart.address, {'id': 'addressDep', 'attr' : {'class': 'autocomplete'}}) }}
+                {{ form_label(form.stopEnd) }}
+                {{ form_widget(form.stopEnd.address, {'id': 'addressDes', 'attr' : {'class': 'autocomplete'}}) }}
+            </div>
+            <div>
+                {{ form_label(form.title) }}
+                {{ form_widget(form.title) }}
+            </div>
+            <div>
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description) }}
+            </div>
+            <div id="container"></div>
+        {{ form_end(form, {'render_rest': false}) }}
+
+        <!-- Ajout des input -->
+        <button id="filldetails" onclick="addFields()">Ajouter une étape</button>
+        <button onclick="codeAddress()">Chercher sur la carte</button>
+
+        <div id="directions-panel"></div>
+    </div>
 {% endblock %}

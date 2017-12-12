@@ -63,6 +63,18 @@ class Roadtrip
      * @ORM\JoinColumn(name="stops", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $stops;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Stop")
+     * @ORM\JoinColumn(name="stopStart", referencedColumnName="id")
+     */
+    protected $stopStart;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Stop")
+     * @ORM\JoinColumn(name="stopEnd", referencedColumnName="id")
+     */
+    protected $stopEnd;
 	
 	/**
      * @ORM\ManyToOne(targetEntity="User")
@@ -371,5 +383,37 @@ class Roadtrip
     public function getTags()
     {
         return $this->tags;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStopStart()
+    {
+        return $this->stopStart;
+    }
+
+    /**
+     * @param mixed $stopStart
+     */
+    public function setStopStart($stopStart)
+    {
+        $this->stopStart = $stopStart;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStopEnd()
+    {
+        return $this->stopEnd;
+    }
+
+    /**
+     * @param mixed $stopEnd
+     */
+    public function setStopEnd($stopEnd)
+    {
+        $this->stopEnd = $stopEnd;
     }
 }

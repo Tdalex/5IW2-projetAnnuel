@@ -10,19 +10,7 @@
 
 
     <body onload="initialize()">
-        <div id="googleMap"></div>
-        <div id="search">
-            <label>Départ de</label>
-            <input class="autocomplete" id="addressDep" type="text" name="addressDep">
-            <label>Destination</label>
-            <input class="autocomplete" id="addressDes" type="text" name="addressDes">
-            <!-- Ajout des input -->
-            <div id="container"></div>
-            <button id="filldetails" onclick="addFields()">Ajouter une étape</button>
-            <button onclick="codeAddress()">Chercher</button>
-
-            <div id="directions-panel"></div>
-        </div>
+        {{ render(controller('AppBundle:Roadtrip:new')) }}
     </body>
 
     <h1>Roadtrips list</h1>
