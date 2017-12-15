@@ -9,7 +9,7 @@ use AppBundle\Entity\Tag;
 
 
 /**
-* @ORM\Entity
+* @ORM\Entity(repositoryClass="AppBundle\Repository\RoadtripRepository")
 */
 class Roadtrip
 {
@@ -29,7 +29,7 @@ class Roadtrip
 	* @ORM\Column(type="string")
 	*/
 	private $slug;
-	
+
 	/**
 	* @var string
 	*
@@ -57,7 +57,7 @@ class Roadtrip
 	* @ORM\Column(type="boolean", options={"default" : false})
 	*/
 	private $isRemoved;
-	
+
 	/**
      * @ORM\OneToMany(targetEntity="Stop", mappedBy="stop_id")
      * @ORM\JoinColumn(name="stops", referencedColumnName="id", onDelete="SET NULL")
@@ -75,17 +75,17 @@ class Roadtrip
      * @ORM\JoinColumn(name="stopEnd", referencedColumnName="id")
      */
     protected $stopEnd;
-	
+
 	/**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="owner", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $owner;
-	
+
 	public function __construct(){
 		$this->createdAt = new \DateTime();
     }
-    
+
     /**
     * @ORM\ManyToMany(targetEntity="Tag", cascade={"persist", "remove"})
     */

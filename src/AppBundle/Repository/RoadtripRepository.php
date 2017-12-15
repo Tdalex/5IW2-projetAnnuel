@@ -4,8 +4,8 @@ namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class ArticleRepository extends EntityRepository{
-    
+class RoadtripRepository extends EntityRepository{
+
     public function findByTag($tag, $isRemoved = false)
 	{
 		$query = $this->createQueryBuilder('a')
