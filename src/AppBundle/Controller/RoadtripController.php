@@ -6,6 +6,8 @@ use AppBundle\Entity\Roadtrip;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -42,6 +44,7 @@ class RoadtripController extends Controller
     {
         $roadtrip = new Roadtrip();
         $form = $this->createForm('AppBundle\Form\RoadtripType', $roadtrip);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

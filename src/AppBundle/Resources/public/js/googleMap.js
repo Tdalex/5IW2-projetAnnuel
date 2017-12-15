@@ -165,12 +165,13 @@ function codeAddress() {
     document.getElementById('addressDes').addEventListener('change', onChangeHandler);
     var addressesFix = [addressDep, addressDes];
     //Recuperer tous les input créer dynamiquement
-    var container = document.getElementById('container').getElementsByTagName("input");
+    var container = document.getElementById('container-stop').getElementsByTagName("section");
     //Tableau des adresses intermediaires
     var addressesInt = [];
-    for(i=0;i<container.length;i++){
-        addressesInt[i] = document.getElementById(container[i].id).value;
-        document.getElementById(container[i].id).addEventListener('change', onChangeHandler);
+    for(i=1;i<container.length;i++){
+        input = container[i].getElementsByClassName("autocomplete-field")[0];
+        addressesInt[i-1] = document.getElementById(input.id).value;
+        document.getElementById(input.id).addEventListener('change', onChangeHandler);
     }
     //Tous mettre dans le tableau adresses
     var addresses = addressesFix.concat(addressesInt);

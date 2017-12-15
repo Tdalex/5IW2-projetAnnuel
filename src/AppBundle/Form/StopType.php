@@ -27,7 +27,10 @@ class StopType extends AbstractType
             ))
             ->add('address', TextType::class, array(
                 'required' => true,
-                'label' => 'Adresse'
+                'label' => 'Adresse',
+                'attr' => array(
+                    'class' => 'autocomplete-field autocomplete'
+                )
             ))
             ->add('lat', HiddenType::class)
             ->add('long', HiddenType::class);

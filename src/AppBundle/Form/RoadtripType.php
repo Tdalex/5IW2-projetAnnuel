@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -29,7 +30,17 @@ class RoadtripType extends AbstractType
             ->add('description', TextareaType::class, array(
                 'label' => 'Description du roadtrip'
             ))
-            ->add('stops', StopType::class)
+            ->add('stops', CollectionType::class, array(
+                'entry_type' => StopType::class,
+                'label' => 'Etapes',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'required' => false,
+                'attr' => array(
+                    'class' => 'stop-collection',
+                ),
+            ))
         ;
     }
     

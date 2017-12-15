@@ -61,8 +61,10 @@
 
 
 {% block javascripts %}
-    {% javascripts '@AppBundle/Resources/public/js/googleMap.js'
-                   '@AppBundle/Resources/public/js/form.js'
+    {% javascripts
+        '@AppBundle/Resources/public/js/jquery-3.2.1.min.js'
+        '@AppBundle/Resources/public/js/googleMap.js'
+        '@AppBundle/Resources/public/js/form.js'
     %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
