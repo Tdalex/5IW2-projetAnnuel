@@ -26,14 +26,14 @@ class Waypoint
 	* @ORM\Column(type="string")
 	*/
 	private $slug;
-    
+
 	/**
 	* @var string
 	*
 	* @ORM\Column(type="string")
 	*/
     private $theme;
-    
+
 
 	/**
 	* @var string
@@ -42,7 +42,7 @@ class Waypoint
 	* @ORM\Column(type="string")
 	*/
 	private $theme_slug;
-    
+
 	/**
 	* @var string
 	*
@@ -71,7 +71,7 @@ class Waypoint
 	* @ORM\Column(type="string")
 	*/
     private $description;
-    
+
     /**
      * Constructor
      */

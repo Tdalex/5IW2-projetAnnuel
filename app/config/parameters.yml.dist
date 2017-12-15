@@ -8,6 +8,8 @@ parameters:
     mailer_host: smtp.gmail.com
     mailer_user: tdalexsmtp@gmail.com
     mailer_password: rootsmtp
+    disable_delivery: true
+    delivery_addresses : tdalexsmtp@gmail.com
     encryption: tls
     port: 587
     auth_mode: login
