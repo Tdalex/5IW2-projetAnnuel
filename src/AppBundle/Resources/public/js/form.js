@@ -25,8 +25,4 @@ $(document).ready(function(){
         initAutocomplete();
         nbClick ++;
     });
-
-    $("body").on('DOMSubtreeModified', "#search", function() {
-        initialize();
-    });
 });

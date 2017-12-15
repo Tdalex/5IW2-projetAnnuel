@@ -107,7 +107,6 @@ function getItinerary(pointsMarqueurs, map){
             stopover: true
         });
     }
-    console.log('waypoints : ', waypoints);
     var request = {
         origin : pointsMarqueurs[0],
         destination: pointsMarqueurs[1],
@@ -392,9 +391,5 @@ $(document).ready(function(){
         $('#container-stop').append($prototypeStop);
         initAutocomplete();
         nbClick ++;
-    });
-
-    $("body").on('DOMSubtreeModified', "#search", function() {
-        initialize();
     });
 });

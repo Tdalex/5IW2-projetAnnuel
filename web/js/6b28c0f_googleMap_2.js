@@ -102,7 +102,6 @@ function getItinerary(pointsMarqueurs, map){
             stopover: true
         });
     }
-    console.log('waypoints : ', waypoints);
     var request = {
         origin : pointsMarqueurs[0],
         destination: pointsMarqueurs[1],
