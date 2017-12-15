@@ -3,12 +3,15 @@ parameters:
     database_port: null
     database_name: roadtrip
     database_user: root
-    database_password: null	
-    mailer_transport: smtp
-    mailer_host: 127.0.0.1
+    database_password: null
+    mailer_transport: gmail
+    mailer_host: smtp.gmail.com
     mailer_user: tdalexsmtp@gmail.com
-    mailer_password: null
-    secret: ThisTokenIsNotSoSecretChangeIt
-    facebook_app_id: 153461931962515
+    mailer_password: rootsmtp
+    encryption: tls
+    port: 587
+    auth_mode: login
+    secret: ThisTokenIsNotSoSecretChangeI
+    facebook_app_id: '153461931962515'
     facebook_app_secret: 62c350339d7642ab58194a02cd8deba4
     google_api_key: AIzaSyD-I7_9giJEZ6ilQ-21tnFvo5KCcgShXIM

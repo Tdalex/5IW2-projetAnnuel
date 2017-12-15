@@ -35,10 +35,10 @@ class UserController extends Controller
     /**
      * Creates a new user entity.
      *
-     * @Route("/new", name="user_new")
+     * @Route("/inscription", name="user_register")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function registerAction(Request $request)
     {
         $user = new User();
         $form = $this->createForm('AppBundle\Form\UserType', $user);
@@ -46,44 +46,103 @@ class UserController extends Controller
         if ($form->isSubmitted()) {
             if($form->isValid()){
                 $user->setEnabled(false);
+                $token = bin2hex(random_bytes(20));
+                $user->setToken($token);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
 
-                return $this->redirectToRoute('user_show', array('id' => $user->getId()));
+                 //send email
+                $view = $this->container->get('templating')->render('AppBundle:Mails:mail_activate_account.html.twig', [
+                    'token'    => $token,
+                    'user'     => $user,
+                    'id'       => $user->getId()
+                ]);
+
+                $message = \Swift_Message::newInstance()
+                    ->setSubject('Roadtrip: activation de compte')
+                    ->setFrom('noreply@roadtrip.loc')
+                    ->setBody($view, 'text/html');
+
+                // Adds mail send
+                $message->setTo($user->getEmail());
+                $response = $this->container->get('mailer')->send($message);
+
+                return $this->redirectToRoute('user_index');
             }
         }
 
-        return $this->render('AppBundle:user:new.html.twig', array(
+        return $this->render('AppBundle:user:register.html.twig', array(
             'user' => $user,
             'form' => $form->createView()
         ));
     }
 
     /**
-     * Finds and displays a user entity.
+     * Creates a new user entity.
      *
-     * @Route("/{id}", name="user_show")
-     * @Method("GET")
+     * @Route("/connect", name="user_connect")
+     * @Method("POST")
      */
-    public function showAction(User $user)
+    public function connectAction(Request $request)
     {
-        $deleteForm = $this->createDeleteForm($user);
+        $email    = trim($request->request->get('email'));
+        $password = trim($request->request->get('plainPassword'));
 
-        return $this->render('AppBundle:user:show.html.twig', array(
-            'user' => $user,
-            'delete_form' => $deleteForm->createView(),
-        ));
+        $em       = $this->get('doctrine')->getManager();
+        $query    = $em->createQuery("SELECT u FROM AppBundle\Entity\User u WHERE u.email =:email AND u.enabled = true")
+                       ->setParameter('email', $email);
+
+        $user   = $query->getOneOrNullResult();
+        $errors = array();
+
+        if ($user) {
+            $encoder_service = $this->get('security.encoder_factory');
+            $encoder = $encoder_service->getEncoder($user);
+
+            if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt()) || $password == $user->getPassword()) {
+                $birthdate = null;
+                if($user->getBirthDate() !== null)
+                    $birthdate = $user->getBirthDate()->format('d-m-Y');
+
+                $currentUser = array(
+                    'id'        => $user->getId(),
+                    'firstname' => $user->getFirstName(),
+                    'lastname'  => $user->getLastName(),
+                    'email'     => $user->getEmail(),
+                    'gender'    => $user->getGender(),
+                    'birthdate' => $birthdate,
+                    'role'      => $user->getRoles()[0]
+                );
+
+                $session = $this->get('session');
+                $session->set('currentUser', $currentUser);
+                return $this->redirectToRoute('my_account');
+            } else {
+                $errors[] = "Email ou mot de passe incorrect";
+            }
+        } else {
+            $errors[] = "Email ou mot de passe incorrect";
+        }
+
+        return $this->redirect('/');
     }
 
     /**
      * Displays a form to edit an existing user entity.
      *
-     * @Route("/{id}/edit", name="user_edit")
+     * @Route("/mon-compte", name="my_account")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, User $user)
+    public function myAccountAction(Request $request)
     {
+        $session = $this->get('session');
+        $currentUser = $session->get('currentUser');
+
+        $user = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findOne();
+
+
+
         $deleteForm = $this->createDeleteForm($user);
         $editForm = $this->createForm('AppBundle\Form\UserType', $user);
         $editForm->handleRequest($request);
@@ -136,7 +195,7 @@ class UserController extends Controller
             ->getForm()
         ;
     }
-    
+
      /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -147,7 +206,7 @@ class UserController extends Controller
     public function loginFacebookAction(Request $request)
     {
         $config = [
-            'callback' => $this->container->getParameter('sitemapDomain') . '' . $this->generateUrl('front_user_login_fb'),
+            'callback' => 'roadtrip.loc/' . $this->generateUrl('front_user_login_fb'),
             'keys'     => [
                 'id'     => $this->container->getParameter('facebook_app_id'),
                 'secret' => $this->container->getParameter('facebook_app_secret')
@@ -225,7 +284,9 @@ class UserController extends Controller
                 $token = bin2hex(random_bytes(20));
                 $user->setToken($token);
 
-                $this->get('by.user')->save($user);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
                 $register = true;
             }
         }else{
@@ -244,7 +305,7 @@ class UserController extends Controller
                     'birthdate' => $birthdate
                 );
 
-               
+
                 $session = $this->get('session');
                 $session->set('currentUser', $currentUser);
 
@@ -259,22 +320,134 @@ class UserController extends Controller
 
         if($register){
             //send email
-            // $view = $this->container->get('templating')->render('AppBundle:Mails:mail_activate_account.html.twig', [
-            //     'token'    => $token,
-            //     'user'     => $user,
-            //     'id'       => $user->getId()
-            // ]);
+            $view = $this->container->get('templating')->render('AppBundle:Mails:mail_activate_account.html.twig', [
+                'token'    => $token,
+                'user'     => $user,
+                'id'       => $user->getId()
+            ]);
 
-            // $message = \Swift_Message::newInstance()
-            //     ->setSubject($this->get('translator')->trans('front.mail.user.activate.object', array(), 'front'))
-            //     ->setFrom('noreply@roadtrip.loc')
-            //     ->setBody($view, 'text/html');
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Roadtrip: activation de compte')
+                ->setFrom('noreply@roadtrip.loc')
+                ->setBody($view, 'text/html');
 
-            // // Adds mail send
-            // $message->setTo($dataPush['user']['email']);
-            // $response = $this->container->get('mailer')->send($message);
+            // Adds mail send
+            $message->setTo($user->getEmail());
+            $response = $this->container->get('mailer')->send($message);
         }
         return $this->redirect('/');
+    }
+
+      /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @Route("/activate/{id}/{token}", name="user_activate")
+     * @Method("GET")
+     */
+    public function activateAction(User $user, $token, Request $request)
+    {
+        if ($user && $user->getToken() == $token && !$user->isEnabled()) {
+            $user->setEnabled(true);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            $birthdate = null;
+            if($user->getBirthDate() !== null)
+                $birthdate = $user->getBirthDate()->format('d-m-Y');
+
+            $currentUser = array(
+                'id'        => $user->getId(),
+                'firstname' => $user->getFirstName(),
+                'lastname'  => $user->getLastName(),
+                'email'     => $user->getEmail(),
+                'gender'    => $user->getGender(),
+                'birthdate' => $birthdate,
+                'role'      => $user->getRoles()[0]
+            );
+
+            $session = $this->get('session');
+            $session->set('currentUser', $currentUser);
+
+            //send email
+            $view = $this->container->get('templating')->render('AppBundle:Mails:mail_register.html.twig', [
+                'user'     => $currentUser
+            ]);
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Roadtrip: Compte activé')
+                ->setFrom('noreply@roadtrip.loc')
+                ->setBody($view, 'text/html');
+
+            // Adds mail send
+            $message->setTo($currentUser['email']);
+            $response = $this->container->get('mailer')->send($message);
+
+            return $this->redirectToRoute('my_account');
+        }
+        return $this->redirect('/');
+    }
+
+     /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @Route("/reinitialisation/{id}/{token}", name="user_reset_password")
+     * @Method({"GET","POST"})
+     */
+    public function resetPasswordAction(Request $request,user $user, $token)
+    {
+        $errors = array();
+        if($user->getForgotToken() == $token){
+            if($this->getRequest()->isMethod('POST')){
+                $passwords = $request->request->all()['password'];
+                if($passwords[0] == $passwords[1]){
+                    $encoder_service = $this->get('security.encoder_factory');
+                    $encoder = $encoder_service->getEncoder($user);
+                    $encoded = $encoder->encodePassword($user, $passwords[0]);
+                    $user->setPassword($encoded);
+
+                    $user->setForgotToken(bin2hex(random_bytes(20)));
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($user);
+                    $em->flush();
+
+                    $currentUser = array(
+                        'firstname' => $user->getFirstName(),
+                        'lastname'  => $user->getLastName(),
+                        'gender'    => $user->getGender(),
+                        'email'     => $user->getEmail(),
+                    );
+
+                    //send email
+                    $view = $this->container->get('templating')->render('AppBundle:Mails:mail_password_changed.html.twig', [
+                        'user' => $currentUser
+                    ]);
+
+                    $message = \Swift_Message::newInstance()
+                        ->setSubject('Roadtrip: Mot de passe modifié')
+                        ->setFrom('noreply@roadtrip.loc')
+                        ->setBody($view, 'text/html');
+
+                    // Adds mail send
+                    $message->setTo($user->getEmail());
+                    $response = $this->container->get('mailer')->send($message);
+
+                    $session = $this->get('session');
+                    $session->set('currentUser', $currentUser);
+                    return $this->redirectToRoute('my_account');
+                }
+                $errors[] = 'les mots de passes sont différents';
+            }
+        }else{
+            $errors[] = 'token invalide';
+        }
+
+        return $this->render('AppBundle:user:reset_password.html.twig', array(
+            'user' => $user,
+            'errors' => $errors
+        ));
     }
 
 }

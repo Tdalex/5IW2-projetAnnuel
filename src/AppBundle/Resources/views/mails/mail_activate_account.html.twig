@@ -1,0 +1,4 @@
+<p>Bonjour {% if user.gender == 'MALE' %}M.{% else %}Mme.{% endif %} {{ user.lastname }},<br>Afin d'activer votre compte, veuillez suivre le lien suivant:<p>
+<a href="{{ app.request.getSchemeAndHttpHost() ~ path('user_activate', {'id': user.id, 'token': token}) }}">{{ app.request.getSchemeAndHttpHost() ~ path('user_activate', {'id': user.id, 'token': token}) }}</a>
+<br>
+<p>A bientôt sur Roadtrip</p>

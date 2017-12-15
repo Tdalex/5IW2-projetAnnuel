@@ -10,9 +10,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @ORM\Table(name="User")
- * 
+ *
  * @UniqueEntity(fields={"facebookId"}, message="Compte facebook déjà lié", groups={"User"})
  * @UniqueEntity(fields={"email"}, message="Email déjà utilisé", groups={"User"})
  *
@@ -30,7 +30,7 @@ class User extends BaseUser
      * @ORM\ManyToMany(targetEntity="Roadtrip")
      */
     protected $favorite;
-    
+
     /**
      * FacebookId
      *
@@ -52,7 +52,7 @@ class User extends BaseUser
      * )
      */
     protected $firstName;
-    
+
     /**
      * Lastname
      *
@@ -139,12 +139,12 @@ class User extends BaseUser
      * @ORM\Column(type="datetime")
      */
     protected $updated;
-    
+
     public function __construct(){
 		$this->created = new \DateTime();
 		$this->updated = new \DateTime();
     }
-    
+
     /**
      * Add favorite
      *
