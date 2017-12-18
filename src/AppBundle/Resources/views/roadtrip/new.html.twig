@@ -1,18 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {#<h1>Roadtrip creation</h1>
-
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('roadtrip_index') }}">Back to the list</a>
-        </li>
-    </ul>#}
     <div id="googleMap"></div>
     <div id="search">
         {{ form_start(form) }}
@@ -26,16 +14,31 @@
                 {{ form_label(form.title) }}
                 {{ form_widget(form.title) }}
             </div>
-            <div>à
+            <div>
                 {{ form_label(form.description) }}
                 {{ form_widget(form.description) }}
+            </div>
+            <div>
+                {{ form_label(form.duration) }}
+                {{ form_widget(form.duration) }}
             </div>
             <button id="filldetails">Ajouter une étape</button>
             <div id="container-stop">
                 {% set prototype_stop = form.stops.vars.prototype %}
                 <div id="prototype-stop" class="prototype-stop hide" hidden>
                     <section class="form-group">
-                        {{ form_widget(prototype_stop.address) }}
+                        <div>
+                            {{ form_label(prototype_stop.address) }}
+                            {{ form_widget(prototype_stop.address) }}
+                        </div>
+                        <div>
+                            {{ form_label(prototype_stop.title) }}
+                            {{ form_widget(prototype_stop.title) }}
+                        </div>
+                        <div>
+                            {{ form_label(prototype_stop.description) }}
+                            {{ form_widget(prototype_stop.description) }}
+                        </div>
                     </section>
                 </div>
             </div>

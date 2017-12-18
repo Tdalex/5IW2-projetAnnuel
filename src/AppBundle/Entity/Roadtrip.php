@@ -59,7 +59,7 @@ class Roadtrip
 	private $isRemoved;
 
 	/**
-     * @ORM\OneToMany(targetEntity="Stop", mappedBy="stop_id")
+     * @ORM\OneToMany(targetEntity="Stop", mappedBy="roadTripStop")
      * @ORM\JoinColumn(name="stops", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $stops;
@@ -90,6 +90,13 @@ class Roadtrip
     * @ORM\ManyToMany(targetEntity="Tag", cascade={"persist", "remove"})
     */
     protected $tags;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="duration", type="integer")
+     */
+    private $duration;
 
     /**
      * Get id
@@ -415,5 +422,21 @@ class Roadtrip
     public function setStopEnd($stopEnd)
     {
         $this->stopEnd = $stopEnd;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDuration()
+    {
+        return $this->duration;
+    }
+
+    /**
+     * @param mixed $duration
+     */
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
     }
 }

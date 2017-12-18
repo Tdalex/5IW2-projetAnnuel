@@ -19,11 +19,11 @@ class StopType extends AbstractType
         $builder
             ->add('title', TextType::class, array(
                 'required' => false,
-                'label' => 'Titre'
+                'label' => 'Titre de l\'étape'
             ))
             ->add('description', TextareaType::class, array(
                 'required' => false,
-                'label' => 'Description'
+                'label' => 'Description de l\'étape'
             ))
             ->add('address', TextType::class, array(
                 'required' => true,

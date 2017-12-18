@@ -1,7 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    {% stylesheets '@AppBundle/Resources/public/css/style.css' %}
+    {% stylesheets
+        '@AppBundle/Resources/public/css/style.css'
+        '@AppBundle/Resources/public/css/bootstrap.min.css'
+        '@AppBundle/Resources/public/css/bootstrap-theme.min.css'
+    %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
 {% endblock %}
@@ -63,6 +67,7 @@
 {% block javascripts %}
     {% javascripts
         '@AppBundle/Resources/public/js/jquery-3.2.1.min.js'
+        '@AppBundle/Resources/public/js/bootstrap.min.js'
         '@AppBundle/Resources/public/js/googleMap.js'
         '@AppBundle/Resources/public/js/form.js'
     %}

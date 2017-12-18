@@ -77,7 +77,7 @@ class Stop
     protected $waypoint;
     
 	/**
-     * @ORM\ManyToOne(targetEntity="Roadtrip")
+     * @ORM\ManyToOne(targetEntity="Roadtrip", inversedBy="stops")
      * @ORM\JoinColumn(name="roadTripStop", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $roadTripStop;
