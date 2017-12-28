@@ -13,3 +13,8 @@ html, body {
 #search {
     text-align: center;
 }
+
+#index-banner .opacity{
+    background-color: rgba(34, 150, 243, 0.55);
+    min-height: 632px;
+}

@@ -23,6 +23,7 @@ class RoadtripFixture extends Fixture
             $roadtrip->setTitle($faker->name);
             $roadtrip->setDescription($faker->text);
             $roadtrip->setCreatedAt($faker->dateTime);
+            $roadtrip->setDuration('10');
             $manager->persist($roadtrip);
         }
 

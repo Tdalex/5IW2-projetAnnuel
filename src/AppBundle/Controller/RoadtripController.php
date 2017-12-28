@@ -35,6 +35,18 @@ class RoadtripController extends Controller
     }
 
     /**
+     * Template temporaire.
+     *
+     * @Route("/accueil", name="roadtrip_accueil")
+     * @Method("GET")
+     */
+    public function accueilAction()
+    {
+
+        return $this->render('AppBundle:roadtrip:accueil.html.twig');
+    }
+
+    /**
      * Creates a new roadtrip entity.
      *
      * @Route("/new", name="roadtrip_new")

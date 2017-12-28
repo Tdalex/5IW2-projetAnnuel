@@ -15,7 +15,10 @@ class UserFixture extends Fixture
 
         $user = $userManager->createUser();
         $user->setUsername('admin');
+        $user->setFirstname('admin');
+        $user->setLastname('admin');
         $user->setEmail('admin@email.admin');
+        $user->setGender('male');
         $user->setPlainPassword('admin');
         $user->setEnabled(true);
         $user->setRoles(array('ROLE_SUPER_ADMIN'));
@@ -26,7 +29,10 @@ class UserFixture extends Fixture
         
         for ($i = 0; $i < 20; $i++) {
             $user = $userManager->createUser();
+            $user->setFirstname($faker->firstname);
             $user->setUsername($faker->firstname);
+            $user->setLastname($faker->lastname);
+            $user->setGender('male');
             $user->setEmail($faker->email);
             $user->setPlainPassword('test');
             $user->setEnabled(true);
