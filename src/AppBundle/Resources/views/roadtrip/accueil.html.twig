@@ -86,6 +86,11 @@
         </div>
     </div>
 
+    <!--Parallax-->
+    <div class="parallax-container">
+        <div class="parallax"><img src="{{ asset('bundles/app/images/parallax.jpeg') }}" style="width: 100%"></div>
+    </div>
+
     <!--Work-->
     <div class="section scrollspy" id="work">
         <div class="container">
@@ -168,6 +173,7 @@
         '@AppBundle/Resources/public/js/app.js'
     %}
         <script src="{{ asset_url }}"></script>
+    <script>$('.parallax').parallax();</script>
     {% endjavascripts %}
 {%  endblock %}
 
