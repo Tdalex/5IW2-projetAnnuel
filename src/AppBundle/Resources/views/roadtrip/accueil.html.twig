@@ -1,0 +1,179 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {% stylesheets
+        '@AppBundle/Resources/public/css/style.css'
+        '@AppBundle/Resources/public/css/bootstrap.min.css'
+        '@AppBundle/Resources/public/css/materialize.min.css'
+        '@AppBundle/Resources/public/css/bootstrap-theme.min.css'
+        '@AppBundle/Resources/public/min/plugin-min.css'
+        '@AppBundle/Resources/public/min/custom-min.css'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+    <!-- Pre Loader -->
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+
+    </div>
+    <!--Navigation-->
+    <div class="navbar-fixed">
+        <nav id="nav_f" class="default_color" role="navigation">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <a href="#" id="logo-container" class="brand-logo">RoadTrippeurs</a>
+                    <ul class="right hide-on-med-and-down">
+                        <li><a href="#">Inscription</a></li>
+                        <li><a href="#">Connexion</a></li>
+                    </ul>
+                    <ul id="nav-mobile" class="side-nav">
+                        <li><a href="#">Inscription</a></li>
+                        <li><a href="#">Connexion</a></li>
+                    </ul>
+                    <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!--Hero-->
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="opacity">
+            <div class="container">
+                <h1 class="text_h center header cd-headline letters type">
+                    <span>J'aime</span>
+                    <span class="cd-words-wrapper waiting">
+                    <b class="is-visible">Découvrir</b>
+                    <b>Planifier</b>
+                    <b>Prendre la route</b>
+                </span>
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- background-image: url("/bundles/app/images/map.png");background-color: rgba(248, 247, 216, 0.7); -->
+
+    <!--Form roadtrip-->
+    <div id="intro" class="section scrollspy">
+        <div class="container">
+            <div class="row">
+                <div  class="col s12">
+                    <h2 class="center header text_h2"> Créer votre propre aventure <span class="span_h2"> Organisez votre voyage  </span>Trouver les bons plans. </h2>
+                </div>
+                <div class="input-field col s6">
+                    <i class="material-icons prefix">place</i>
+                    <input id="icon_prefix" type="text" class="validate">
+                    <label for="icon_prefix">Départ de</label>
+                </div>
+                <div class="input-field col s6">
+                    <i class="material-icons prefix">pin_drop</i>
+                    <input id="icon_telephone" type="tel" class="validate">
+                    <label for="icon_telephone">Destination</label>
+                </div>
+                <div class="input-field col s12 center-align">
+                    <a class="waves-effect blue lighten-1 btn">Trouver mon roadtrip</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Parallax-->
+    <div class="parallax-container">
+        <div class="parallax"><img src="{{ asset('bundles/app/images/parallax.jpeg') }}" style="width: 100%"></div>
+    </div>
+
+    <!--Work-->
+    <div class="section scrollspy" id="work">
+        <div class="container">
+            <h2 class="header text_b">Nos meilleurs roadtrips</h2>
+            <div class="row">
+                <div class="col s12 m4 l4">
+                    <div class="card">
+                        <div class="card-image waves-effect waves-block waves-light">
+                            <img class="activator" src="{{ asset('bundles/app/images/roadtrip.jpg') }}" alt="roadtrip">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title activator grey-text text-darken-4">Le guide du sud <i class="material-icons right">more_vert</i></span>
+                            <p><a href="#">Paris - Marseille</a></p>
+                        </div>
+                        <div class="card-reveal">
+                            <span class="card-title grey-text text-darken-4">Le guide du sud<i class="material-icons right">close</i></span>
+                            <p>Ici plus d'information sur le roadtrip et les étapes intérmédiaires.</p>
+                            <p class="center-align"><a class="waves-effect blue lighten-1 btn">Voir ce roadtrip</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m4 l4">
+                    <div class="card">
+                        <div class="card-image waves-effect waves-block waves-light">
+                            <img class="activator" src="{{ asset('bundles/app/images/roadtrip.jpg') }}" alt="roadtrip">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title activator grey-text text-darken-4">Le guide du sud <i class="material-icons right">more_vert</i></span>
+                            <p><a href="#">Paris - Marseille</a></p>
+                        </div>
+                        <div class="card-reveal">
+                            <span class="card-title grey-text text-darken-4">Le guide du sud<i class="material-icons right">close</i></span>
+                            <p>Ici plus d'information sur le roadtrip et les étapes intérmédiaires.</p>
+                            <p class="center-align"><a class="waves-effect blue lighten-1 btn">Voir ce roadtrip</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m4 l4">
+                    <div class="card">
+                        <div class="card-image waves-effect waves-block waves-light">
+                            <img class="activator" src="{{ asset('bundles/app/images/roadtrip.jpg') }}" alt="roadtrip">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title activator grey-text text-darken-4">Le guide du sud <i class="material-icons right">more_vert</i></span>
+                            <p><a href="#">Paris - Marseille</a></p>
+                        </div>
+                        <div class="card-reveal">
+                            <span class="card-title grey-text text-darken-4">Le guide du sud<i class="material-icons right">close</i></span>
+                            <p>Ici plus d'information sur le roadtrip et les étapes intérmédiaires.</p>
+                            <p class="center-align"><a class="waves-effect blue lighten-1 btn">Voir ce roadtrip</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Footer-->
+    <footer id="contact" class="page-footer default_color scrollspy">
+        <div class="footer-copyright default_color">
+            <div class="container">
+                <p class="right">RoadTrippeurs</p>
+            </div>
+        </div>
+    </footer>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {% javascripts
+        '@AppBundle/Resources/public/js/jquery-3.2.1.min.js'
+        '@AppBundle/Resources/public/js/bootstrap.min.js'
+        '@AppBundle/Resources/public/js/materialize.min.js'
+        '@AppBundle/Resources/public/min/plugin-min.js'
+        '@AppBundle/Resources/public/min/custom-min.js'
+        '@AppBundle/Resources/public/js/googleMap.js'
+        '@AppBundle/Resources/public/js/form.js'
+        '@AppBundle/Resources/public/js/app.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    <script>$('.parallax').parallax();</script>
+    {% endjavascripts %}
+{%  endblock %}
+

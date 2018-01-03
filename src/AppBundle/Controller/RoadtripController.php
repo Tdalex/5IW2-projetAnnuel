@@ -35,6 +35,18 @@ class RoadtripController extends Controller
     }
 
     /**
+     * Template temporaire.
+     *
+     * @Route("/accueil", name="roadtrip_accueil")
+     * @Method("GET")
+     */
+    public function accueilAction()
+    {
+
+        return $this->render('AppBundle:roadtrip:accueil.html.twig');
+    }
+
+    /**
      * Creates a new roadtrip entity.
      *
      * @Route("/new", name="roadtrip_new")
@@ -155,6 +167,22 @@ class RoadtripController extends Controller
      * @return \Symfony\Component\Form\Form The form
      */
     private function createDeleteForm(Roadtrip $roadtrip)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('roadtrip_delete', array('slug' => $roadtrip->getSlug())))
+            ->setMethod('DELETE')
+            ->getForm()
+        ;
+    }
+
+    /**
+     * search roadtrip.
+     *
+     * @param Roadtrip $roadtrip The roadtrip entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function serchAction(Roadtrip $roadtrip)
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('roadtrip_delete', array('slug' => $roadtrip->getSlug())))

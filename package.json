@@ -20,6 +20,6 @@
   },
   "homepage": "https://github.com/Tdalex/symfonyTest#readme",
   "dependencies": {
-    "@symfony/webpack-encore": "^0.17.0"
+    "@symfony/webpack-encore": "^0.17.1"
   }
 }
