@@ -21,7 +21,7 @@ class RoadtripController extends Controller
      * Lists all roadtrip entities.
      *
      * @Route("/", name="roadtrip_index")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
     public function indexAction()
     {
@@ -42,17 +42,42 @@ class RoadtripController extends Controller
      */
     public function newAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $roadtrip = new Roadtrip();
-        $form = $this->createForm('AppBundle\Form\RoadtripType', $roadtrip);
+        $form = $this->createForm('AppBundle\Form\RoadtripType', $roadtrip, array('action' => $this->generateUrl('roadtrip_new')));
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($roadtrip);
-            $em->flush();
+        if ($form->isSubmitted()) {
+            if(!$form->isValid()) {
+                $errors = [];
 
-            return $this->redirectToRoute('roadtrip_show', array('slug' => $roadtrip->getSlug()));
+                if ($form->count() > 0) {
+                    foreach ($form->all() as $child) {
+                        /**
+                         * @var \Symfony\Component\Form\Form $child
+                         */
+                        if (!$child->isValid()) {
+                            $errors[$child->getName()] = $this->getErrorMessages($child);
+                        }
+                    }
+                }
+                /**
+                 * @var \Symfony\Component\Form\FormError $error
+                 */
+                foreach ($form->getErrors() as $key => $error) {
+                    $errors[] = $error->getMessage();
+                }
+                dump($errors);
+            }
+            else {
+                //dump($request->request->all());die;
+                $roadtrip->setIsRemoved(false);
+                $em->persist($roadtrip);
+                $em->flush();
+
+                return $this->redirectToRoute('roadtrip_show', array('slug' => $roadtrip->getSlug()));
+            }
         }
 
         return $this->render('AppBundle:roadtrip:new.html.twig', array(

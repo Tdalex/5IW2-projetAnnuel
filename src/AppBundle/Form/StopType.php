@@ -17,6 +17,16 @@ class StopType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('stopNumber', HiddenType::class, array(
+                'label' => 'Stop n°',
+                'required' => false
+            ))
+            ->add('lat', HiddenType::class, array(
+                'label' => 'Latitude'
+            ))
+            ->add('lon', HiddenType::class, array(
+                'label' => 'Longitude'
+            ))
             ->add('title', TextType::class, array(
                 'required' => false,
                 'label' => 'Titre de l\'étape'
@@ -32,8 +42,9 @@ class StopType extends AbstractType
                     'class' => 'autocomplete-field autocomplete'
                 )
             ))
-            ->add('lat', HiddenType::class)
-            ->add('long', HiddenType::class);
+            //->add('lat', HiddenType::class)
+            //->add('lon', HiddenType::class);
+        ;
     }
     
     /**
@@ -42,7 +53,8 @@ class StopType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Stop'
+            'data_class' => 'AppBundle\Entity\Stop',
+            'csrf_protection' => false
         ));
     }
 
@@ -51,7 +63,7 @@ class StopType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_stop';
+        return 'stop';
     }
 
 

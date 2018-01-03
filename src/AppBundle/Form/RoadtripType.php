@@ -2,8 +2,10 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Stop;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -39,11 +41,20 @@ class RoadtripType extends AbstractType
                 'label' => 'Etapes',
                 'allow_add' => true,
                 'allow_delete' => true,
-                'prototype' => true,
                 'required' => false,
+                'by_reference' => false,
                 'attr' => array(
                     'class' => 'stop-collection',
                 ),
+                'delete_empty' => function (Stop $stop = null) {
+                    return null === $stop || empty($stop->getAddress());
+                },
+            ))
+            ->add('submit', SubmitType::class, array(
+                'label' => 'Valider',
+                'attr' => array(
+                    'class' => 'btn btn-primary',
+                )
             ))
         ;
     }
@@ -54,7 +65,8 @@ class RoadtripType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Roadtrip'
+            'data_class' => 'AppBundle\Entity\Roadtrip',
+            'csrf_protection' => false
         ));
     }
 
@@ -63,7 +75,7 @@ class RoadtripType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_roadtrip';
+        return 'roadtrip';
     }
 
 

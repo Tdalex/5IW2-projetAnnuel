@@ -28,6 +28,10 @@
                 <div id="prototype-stop" class="prototype-stop hide" hidden>
                     <section class="form-group">
                         <div>
+                            {{ form_label(prototype_stop.stopNumber) }}
+                            {{ form_widget(prototype_stop.stopNumber) }}
+                        </div>
+                        <div>
                             {{ form_label(prototype_stop.address) }}
                             {{ form_widget(prototype_stop.address) }}
                         </div>
@@ -41,6 +45,9 @@
                         </div>
                     </section>
                 </div>
+            </div>
+            <div>
+                {{ form_row(form.submit) }}
             </div>
         {{ form_end(form, {'render_rest': false}) }}
 

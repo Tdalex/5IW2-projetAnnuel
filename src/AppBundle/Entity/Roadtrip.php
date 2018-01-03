@@ -59,25 +59,25 @@ class Roadtrip
 	private $isRemoved;
 
 	/**
-     * @ORM\OneToMany(targetEntity="Stop", mappedBy="roadTripStop")
+     * @ORM\OneToMany(targetEntity="Stop", mappedBy="roadTripStop", cascade={"persist"})
      * @ORM\JoinColumn(name="stops", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $stops;
 
     /**
-     * @ORM\OneToOne(targetEntity="Stop")
+     * @ORM\OneToOne(targetEntity="Stop", cascade={"persist"})
      * @ORM\JoinColumn(name="stopStart", referencedColumnName="id")
      */
     protected $stopStart;
 
     /**
-     * @ORM\OneToOne(targetEntity="Stop")
+     * @ORM\OneToOne(targetEntity="Stop", cascade={"persist"})
      * @ORM\JoinColumn(name="stopEnd", referencedColumnName="id")
      */
     protected $stopEnd;
 
 	/**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
      * @ORM\JoinColumn(name="owner", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $owner;
