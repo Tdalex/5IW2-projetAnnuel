@@ -66,8 +66,6 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    disable_delivery: '%disable_delivery%'
-    delivery_addresses: ['%delivery_addresses%']
     transport: '%mailer_transport%'
     host: '%mailer_host%'
     username: '%mailer_user%'

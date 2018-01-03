@@ -149,4 +149,20 @@ class RoadtripController extends Controller
             ->getForm()
         ;
     }
+
+    /**
+     * search roadtrip.
+     *
+     * @param Roadtrip $roadtrip The roadtrip entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function serchAction(Roadtrip $roadtrip)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('roadtrip_delete', array('slug' => $roadtrip->getSlug())))
+            ->setMethod('DELETE')
+            ->getForm()
+        ;
+    }
 }

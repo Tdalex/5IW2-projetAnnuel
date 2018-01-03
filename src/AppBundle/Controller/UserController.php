@@ -45,6 +45,7 @@ class UserController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             if($form->isValid()){
+
                 $user->setEnabled(false);
                 $token = bin2hex(random_bytes(20));
                 $user->setToken($token);
@@ -52,22 +53,19 @@ class UserController extends Controller
                 $em->persist($user);
                 $em->flush();
 
-                 //send email
+                //send email
                 $view = $this->container->get('templating')->render('AppBundle:Mails:mail_activate_account.html.twig', [
                     'token'    => $token,
                     'user'     => $user,
                     'id'       => $user->getId()
                 ]);
 
-                $message = \Swift_Message::newInstance()
-                    ->setSubject('Roadtrip: activation de compte')
+                $message = (new \Swift_Message('Roadtrip: activation de compte'))
                     ->setFrom('noreply@roadtrip.loc')
+                    ->setTo($user->getEmail())
                     ->setBody($view, 'text/html');
 
-                // Adds mail send
-                $message->setTo($user->getEmail());
                 $response = $this->container->get('mailer')->send($message);
-
                 return $this->redirectToRoute('user_index');
             }
         }
