@@ -19,7 +19,7 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
         ]);
     }
-	
+
 	/**
      * @Route("/hello", name="front_content_block_page_hello")
 	 * @Method({"GET"})
@@ -32,7 +32,7 @@ class DefaultController extends Controller
 			'firstname' => "toto"
         ]);
     }
-	
+
     /**
      * @Route("/hello/{firstname}", name="front_content_block_page")
 	 * @Method({"GET"})
