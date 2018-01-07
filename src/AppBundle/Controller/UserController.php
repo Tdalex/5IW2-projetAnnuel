@@ -232,7 +232,7 @@ class UserController extends Controller
             if($dataPush['user']['plainPassword']['first']){
                 $encoder_service = $this->get('security.encoder_factory');
                 $encoder = $encoder_service->getEncoder($user);
-                $encoded = $encoder->encodePassword($user, $dataPush['user']['plainPassword']['first']);
+                $encoded = $encoder->encodePassword($dataPush['user']['plainPassword']['first'], $user->getSalt());
                 $user->setPassword($encoded);
             }
 
@@ -243,7 +243,7 @@ class UserController extends Controller
                 if($dataPush['user']['plainPassword']['first']){
                     $encoder_service = $this->get('security.encoder_factory');
                     $encoder = $encoder_service->getEncoder($user);
-                    $encoded = $encoder->encodePassword($user, $dataPush['user']['plainPassword']['first']);
+                    $encoded = $encoder->encodePassword($dataPush['user']['plainPassword']['first'], $user->getSalt());
                     $user->setPassword($encoded);
                 }
                 $user->setEnabled(false);
@@ -375,7 +375,7 @@ class UserController extends Controller
                 if($passwords[0] == $passwords[1]){
                     $encoder_service = $this->get('security.encoder_factory');
                     $encoder = $encoder_service->getEncoder($user);
-                    $encoded = $encoder->encodePassword($user, $passwords[0]);
+                    $encoded = $encoder->encodePassword($passwords[0], $user->getSalt());
                     $user->setPassword($encoded);
 
                     $user->setForgotToken(bin2hex(random_bytes(20)));
