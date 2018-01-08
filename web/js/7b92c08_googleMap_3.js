@@ -162,28 +162,37 @@ function codeAddress() {
     //Si onChangeHandler est appelé reinitialise la map
     var onChangeHandler = initialize();
     var addressDep = document.getElementById('addressDep').value;
+    var addressDepId = document.getElementById('addressDep').id;
     document.getElementById('addressDep').addEventListener('change', onChangeHandler);
     var addressDes = document.getElementById('addressDes').value;
+    var addressDesId = document.getElementById('addressDes').id;
     document.getElementById('addressDes').addEventListener('change', onChangeHandler);
     var addressesFix = [addressDep, addressDes];
+    var idFix = [addressDepId, addressDesId];
     //Recuperer tous les input créer dynamiquement
     var container = document.getElementById('container-stop').getElementsByTagName("section");
     //Tableau des adresses intermediaires
     var addressesInt = [];
+    var idInt = [];
     for(i=1;i<container.length;i++){
         input = container[i].getElementsByClassName("autocomplete-field")[0];
         addressesInt[i-1] = document.getElementById(input.id).value;
+        idInt[i-1] = document.getElementById(input.id).id;
         document.getElementById(input.id).addEventListener('change', onChangeHandler);
     }
     //Tous mettre dans le tableau adresses
     var addresses = addressesFix.concat(addressesInt);
+    var ids = idFix.concat(idInt);
     for(i=0;i<addresses.length;i++){
-        geocodeAddress(addresses[i]);
+        if(i >= 2) {
+            ids[i] = ids[i].substring(0, ids[i].length-7);
+        }
+        geocodeAddress(addresses[i], ids[i]);
     }
     getItinerary(addresses, map);
 }
 
-function geocodeAddress(address){
+function geocodeAddress(address, id ){
     geocoder.geocode( { 'address': address}, function(results, status) {
         if (status == 'OK') {
             map.setCenter(results[0].geometry.location);
@@ -193,7 +202,8 @@ function geocodeAddress(address){
             });
             lat = marker.getPosition().lat();
             lng = marker.getPosition().lng();
-            console.log(address + ',' + lat + ',' + lng);
+            $('#'+id+'lat').val(lat);
+            $('#'+id+'lon').val(lng);
         } else {
             alert('Geocode n\'a pas abouti car : ' + status);
         }

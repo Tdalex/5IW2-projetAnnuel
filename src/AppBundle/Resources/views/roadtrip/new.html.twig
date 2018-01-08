@@ -7,12 +7,12 @@
             <div>
                 {{ form_label(form.stopStart) }}
                 {{ form_widget(form.stopStart.address, {'id': 'addressDep', 'attr' : {'class': 'autocomplete'}}) }}
-                {{ form_widget(form.stopStart.lat) }}
-                {{ form_widget(form.stopStart.lon) }}
+                {{ form_widget(form.stopStart.lat, {'id': 'addressDeplat'}) }}
+                {{ form_widget(form.stopStart.lon, {'id': 'addressDeplon'}) }}
                 {{ form_label(form.stopEnd) }}
                 {{ form_widget(form.stopEnd.address, {'id': 'addressDes', 'attr' : {'class': 'autocomplete'}}) }}
-                {{ form_widget(form.stopEnd.lat) }}
-                {{ form_widget(form.stopEnd.lon) }}
+                {{ form_widget(form.stopEnd.lat, {'id': 'addressDeslat'}) }}
+                {{ form_widget(form.stopEnd.lon, {'id': 'addressDeslon'}) }}
             </div>
             <div>
                 {{ form_label(form.title) }}
