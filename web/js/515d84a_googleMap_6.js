@@ -190,6 +190,7 @@ function codeAddress() {
         geocodeAddress(addresses[i], ids[i]);
     }
     getItinerary(addresses, map);
+    $('#roadtrip_submit').prop('disabled', false);
 }
 
 function geocodeAddress(address, id ){

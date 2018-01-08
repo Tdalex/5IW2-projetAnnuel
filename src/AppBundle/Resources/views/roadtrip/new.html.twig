@@ -7,7 +7,6 @@
             <div>
                 {{ form_label(form.stopStart) }}
                 {{ form_widget(form.stopStart.address, {'id': 'addressDep', 'attr' : {'class': 'autocomplete'}}) }}
-                
                 {{ form_widget(form.stopStart.title) }}
                 {{ form_widget(form.stopStart.description) }}
                 {{ form_widget(form.stopStart.lat, {'id': 'addressDeplat'}) }}
@@ -34,7 +33,7 @@
                 {{ form_label(form.duration) }}
                 {{ form_widget(form.duration) }}
             </div>
-            <button id="filldetails">Ajouter une étape</button>
+            <button id="filldetails" class="btn btn-success">Ajouter une étape</button>
             <div id="container-stop">
                 {% set prototype_stop = form.stops.vars.prototype %}
                 <div id="prototype-stop" class="prototype-stop hide" hidden>
@@ -59,12 +58,11 @@
                 </div>
             </div>
             <div>
-                {{ form_row(form.submit) }}
+                <!-- Ajout des marqueurs sur la carte et remplissage des latitude et longitude des différents points -->
+                <button class="btn btn-info" onclick="codeAddress()">Chercher sur la carte</button>
+                {{ form_row(form.submit, {'attr' : {'disabled': 'disabled'}}) }}
             </div>
         {{ form_end(form, {'render_rest': false}) }}
-
-        <!-- Ajout des input -->
-        <button onclick="codeAddress()">Chercher sur la carte</button>
 
         <div id="directions-panel"></div>
     </div>
