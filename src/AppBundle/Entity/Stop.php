@@ -21,13 +21,6 @@ class Stop
 	*/
     private $id;
     
-    /**
-	* @var integer
-	*
-	* @ORM\Column( type="integer")
-	*/
-    private $stopNumber;
-    
 	/**
 	* @var string
 	*
@@ -308,29 +301,6 @@ class Stop
         return $this->address;
     }
 
-    /**
-     * Set stopNumber
-     *
-     * @param integer $stopNumber
-     *
-     * @return Stop
-     */
-    public function setStopNumber($stopNumber)
-    {
-        $this->stopNumber = $stopNumber;
-
-        return $this;
-    }
-
-    /**
-     * Get stopNumber
-     *
-     * @return integer
-     */
-    public function getStopNumber()
-    {
-        return $this->stopNumber;
-    }
     /**
      * Constructor
      */

@@ -7,12 +7,20 @@
             <div>
                 {{ form_label(form.stopStart) }}
                 {{ form_widget(form.stopStart.address, {'id': 'addressDep', 'attr' : {'class': 'autocomplete'}}) }}
+                
+                {{ form_widget(form.stopStart.title) }}
+                {{ form_widget(form.stopStart.description) }}
                 {{ form_widget(form.stopStart.lat, {'id': 'addressDeplat'}) }}
                 {{ form_widget(form.stopStart.lon, {'id': 'addressDeplon'}) }}
+            </div>
+            <div>
                 {{ form_label(form.stopEnd) }}
                 {{ form_widget(form.stopEnd.address, {'id': 'addressDes', 'attr' : {'class': 'autocomplete'}}) }}
+                {{ form_widget(form.stopEnd.title) }}
+                {{ form_widget(form.stopEnd.description) }}
                 {{ form_widget(form.stopEnd.lat, {'id': 'addressDeslat'}) }}
                 {{ form_widget(form.stopEnd.lon, {'id': 'addressDeslon'}) }}
+            </div>
             </div>
             <div>
                 {{ form_label(form.title) }}
@@ -32,7 +40,6 @@
                 <div id="prototype-stop" class="prototype-stop hide" hidden>
                     <section class="form-group">
                         <div>
-                            {{ form_widget(prototype_stop.stopNumber) }}
                             {{ form_widget(prototype_stop.lat) }}
                             {{ form_widget(prototype_stop.lon) }}
                         </div>

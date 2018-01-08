@@ -17,10 +17,6 @@ class StopType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('stopNumber', HiddenType::class, array(
-                'label' => 'Stop n°',
-                'required' => false
-            ))
             ->add('lat', HiddenType::class, array(
                 'label' => 'Latitude'
             ))
