@@ -7,14 +7,36 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * User controller.
  *
- * @Route("user")
+ * @Route("mon-compte")
  */
 class UserController extends Controller
 {
+    /**
+     * Lists all user entities.
+     *
+     * @Route("/test", name="user_mail_test")
+     * @Method("GET")
+     */
+    public function sendEmailAction(\Swift_Mailer $mailer)
+    {
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom('tdalexsmtp@gmail.com')
+            ->setTo('tdalexsmtp@gmail.com')
+            ->setBody('You should see me from the profiler!')
+        ;
+
+        $mailer->send($message);
+        dump($message);
+        return $this->render('default/index.html.twig', [
+            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
+        ]);
+    }
+
     /**
      * Lists all user entities.
      *
@@ -23,13 +45,28 @@ class UserController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $session = $this->get('session');
+        $currentUser = $session->get('currentUser');
+        if(!empty($currentUser)){
+            $user = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findOne($currentUser['id']);
 
-        $users = $em->getRepository('AppBundle:User')->findAll();
+            if($user){
+                $editForm = $this->createForm('AppBundle\Form\UserType', $user);
+                $editForm->handleRequest($request);
 
-        return $this->render('AppBundle:user:index.html.twig', array(
-            'users' => $users,
-        ));
+                if ($editForm->isSubmitted() && $editForm->isValid()) {
+                    $this->getDoctrine()->getManager()->flush();
+
+                    return $this->redirectToRoute('user_index', array('id' => $user->getId()));
+                }
+
+                return $this->render('AppBundle:user:my_account.html.twig', array(
+                    'user' => $user,
+                    'edit_form' => $editForm->createView(),
+                ));
+            }
+        }
+        return $this->redirectToRoute('roadtrip_index');
     }
 
     /**
@@ -66,7 +103,8 @@ class UserController extends Controller
                     ->setBody($view, 'text/html');
 
                 $response = $this->container->get('mailer')->send($message);
-                return $this->redirectToRoute('user_index');
+                return new Response($view);
+                return $this->redirectToRoute('roadtrip_index');
             }
         }
 
@@ -79,7 +117,7 @@ class UserController extends Controller
     /**
      * Creates a new user entity.
      *
-     * @Route("/connect", name="user_connect")
+     * @Route("/connexion", name="user_connect")
      * @Method("POST")
      */
     public function connectAction(Request $request)
@@ -115,7 +153,7 @@ class UserController extends Controller
 
                 $session = $this->get('session');
                 $session->set('currentUser', $currentUser);
-                return $this->redirectToRoute('my_account');
+                return $this->redirectToRoute('user_index', array('id' => $user->getId()));
             } else {
                 $errors[] = "Email ou mot de passe incorrect";
             }
@@ -123,37 +161,7 @@ class UserController extends Controller
             $errors[] = "Email ou mot de passe incorrect";
         }
 
-        return $this->redirect('/');
-    }
-
-    /**
-     * Displays a form to edit an existing user entity.
-     *
-     * @Route("/mon-compte", name="my_account")
-     * @Method({"GET", "POST"})
-     */
-    public function myAccountAction(Request $request)
-    {
-        $session = $this->get('session');
-        $currentUser = $session->get('currentUser');
-
-        $user = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findOne($id);
-
-        $deleteForm = $this->createDeleteForm($user);
-        $editForm = $this->createForm('AppBundle\Form\UserType', $user);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('user_edit', array('id' => $user->getId()));
-        }
-
-        return $this->render('AppBundle:user:my_account.html.twig', array(
-            'user' => $user,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->redirectToRoute('roadtrip_index');
     }
 
      /**
@@ -208,7 +216,7 @@ class UserController extends Controller
             );
             $adapter->disconnect();
         }catch(\Exception $e){
-            return $this->redirect('/');
+            return $this->redirectToRoute('roadtrip_index');
         }
 
         $facebookId = trim($dataPush['facebookId']);
@@ -224,7 +232,7 @@ class UserController extends Controller
             if($dataPush['user']['plainPassword']['first']){
                 $encoder_service = $this->get('security.encoder_factory');
                 $encoder = $encoder_service->getEncoder($user);
-                $encoded = $encoder->encodePassword($user, $dataPush['user']['plainPassword']['first']);
+                $encoded = $encoder->encodePassword($dataPush['user']['plainPassword']['first'], $user->getSalt());
                 $user->setPassword($encoded);
             }
 
@@ -235,7 +243,7 @@ class UserController extends Controller
                 if($dataPush['user']['plainPassword']['first']){
                     $encoder_service = $this->get('security.encoder_factory');
                     $encoder = $encoder_service->getEncoder($user);
-                    $encoded = $encoder->encodePassword($user, $dataPush['user']['plainPassword']['first']);
+                    $encoded = $encoder->encodePassword($dataPush['user']['plainPassword']['first'], $user->getSalt());
                     $user->setPassword($encoded);
                 }
                 $user->setEnabled(false);
@@ -269,7 +277,7 @@ class UserController extends Controller
                 $session = $this->get('session');
                 $session->set('currentUser', $currentUser);
 
-                return $this->redirect('/');
+                return $this->redirectToRoute('roadtrip_index');
 
             //account not activated
             }else{
@@ -294,8 +302,9 @@ class UserController extends Controller
             // Adds mail send
             $message->setTo($user->getEmail());
             $response = $this->container->get('mailer')->send($message);
+            return new Response($view);
         }
-        return $this->redirect('/');
+        return $this->redirectToRoute('roadtrip_index');
     }
 
       /**
@@ -343,10 +352,11 @@ class UserController extends Controller
             // Adds mail send
             $message->setTo($currentUser['email']);
             $response = $this->container->get('mailer')->send($message);
+            return new Response($view);
 
-            return $this->redirectToRoute('my_account');
+            return $this->redirectToRoute('user_index', array('id' => $user->getId()));
         }
-        return $this->redirect('/');
+        return $this->redirectToRoute('roadtrip_index');
     }
 
      /**
@@ -365,7 +375,7 @@ class UserController extends Controller
                 if($passwords[0] == $passwords[1]){
                     $encoder_service = $this->get('security.encoder_factory');
                     $encoder = $encoder_service->getEncoder($user);
-                    $encoded = $encoder->encodePassword($user, $passwords[0]);
+                    $encoded = $encoder->encodePassword($passwords[0], $user->getSalt());
                     $user->setPassword($encoded);
 
                     $user->setForgotToken(bin2hex(random_bytes(20)));
@@ -396,7 +406,8 @@ class UserController extends Controller
 
                     $session = $this->get('session');
                     $session->set('currentUser', $currentUser);
-                    return $this->redirectToRoute('my_account');
+                    return new Response($view);
+                    return $this->redirectToRoute('user_index', array('id' => $user->getId()));
                 }
                 $errors[] = 'les mots de passes sont différents';
             }

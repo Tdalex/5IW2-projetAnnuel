@@ -19,5 +19,14 @@ class RoadtripRepository extends EntityRepository{
 
 				return $query->getResult();
 	}
+
+	public function search($filters)
+	{
+		$query = $this->createQueryBuilder('a')
+				->orderBy('a.title', 'ASC')
+				->getQuery();
+
+				return $query->getResult();
+	}
 }
 ?>
