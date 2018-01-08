@@ -22,7 +22,8 @@ $(document).ready(function(){
         });
 
         $('#container-stop').append($prototypeStop);
+        $('#roadtrip_stops_'+nbClick+'_stopNumber').val(nbClick);
         initAutocomplete();
-        nbClick ++;
+        nbClick++;
     });
 });

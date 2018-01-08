@@ -13,6 +13,7 @@ this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+th
 var geocoder;
 var map;
 var placeSearch, autocomplete;
+var lat, lng;
 function initialize() {
     geocoder = new google.maps.Geocoder();
 
@@ -75,6 +76,7 @@ function createMarker(event, map){
         map: map,
         draggable: true
     });
+    console.log(marqueur);
     return marqueur;
 }
 
@@ -201,6 +203,9 @@ function geocodeAddress(address){
                 map: map,
                 position: results[0].geometry.location
             });
+            lat = marker.getPosition().lat();
+            lng = marker.getPosition().lng();
+            console.log(address + ',' + lat + ',' + lng);
         } else {
             alert('Geocode n\'a pas abouti car : ' + status);
         }
@@ -396,7 +401,8 @@ $(document).ready(function(){
         });
 
         $('#container-stop').append($prototypeStop);
+        $('#roadtrip_stops_'+nbClick+'_stopNumber').val(nbClick);
         initAutocomplete();
-        nbClick ++;
+        nbClick++;
     });
 });
