@@ -60,7 +60,7 @@ class Roadtrip
 
 	/**
      * @ORM\OneToMany(targetEntity="Stop", mappedBy="roadTripStop", cascade={"persist"})
-     * @ORM\JoinColumn(name="stops", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="stops", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $stops;
 
@@ -78,7 +78,7 @@ class Roadtrip
 
 	/**
      * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
-     * @ORM\JoinColumn(name="owner", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="owner", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $owner;
 
