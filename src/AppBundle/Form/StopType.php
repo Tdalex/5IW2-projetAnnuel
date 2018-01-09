@@ -42,7 +42,7 @@ class StopType extends AbstractType
             //->add('lon', HiddenType::class);
         ;
     }
-    
+
     /**
      * {@inheritdoc}
      */
