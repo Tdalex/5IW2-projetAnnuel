@@ -42,7 +42,6 @@ class RoadtripType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'required' => false,
-                'by_reference' => false,
                 'attr' => array(
                     'class' => 'stop-collection',
                 ),

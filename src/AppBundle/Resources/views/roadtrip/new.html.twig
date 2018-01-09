@@ -20,7 +20,6 @@
                 {{ form_widget(form.stopEnd.lat, {'id': 'addressDeslat'}) }}
                 {{ form_widget(form.stopEnd.lon, {'id': 'addressDeslon'}) }}
             </div>
-            </div>
             <div>
                 {{ form_label(form.title) }}
                 {{ form_widget(form.title) }}
@@ -63,7 +62,6 @@
                 {{ form_row(form.submit, {'attr' : {'disabled': 'disabled'}}) }}
             </div>
         {{ form_end(form, {'render_rest': false}) }}
-
-        <div id="directions-panel"></div>
+    <div id="directions-panel"></div>
     </div>
 {% endblock %}

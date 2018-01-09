@@ -57,13 +57,12 @@ class RoadtripController extends Controller
         $em = $this->getDoctrine()->getManager();
         $roadtrip = new Roadtrip();
         $form = $this->createForm('AppBundle\Form\RoadtripType', $roadtrip, array('action' => $this->generateUrl('roadtrip_new')));
-
+        //dump($roadtrip->getId());die;
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
             if(!$form->isValid()) {
                 $errors = [];
-
                 if ($form->count() > 0) {
                     foreach ($form->all() as $child) {
                         /**
@@ -85,7 +84,21 @@ class RoadtripController extends Controller
             else {
                 //dump($request->request->all());die;
                 $roadtrip->setIsRemoved(false);
+                //$roadtrip->getStopStart()->setRoadTripStop($roadtrip->getId());
+                //dump($roadtrip);die;
                 $em->persist($roadtrip);
+                $em->flush();
+
+                //mise à jour de la colonne "roadtripStop" de chaque stop avec l'identifiant du roadtrip en cours de création
+                $idRoadtrip = $roadtrip->getId();
+                $rt = $em->getRepository('AppBundle:Roadtrip')->findOneBy(array('id' => $idRoadtrip));
+                $roadtrip->getStopStart()->setRoadTripStop($rt);
+                $roadtrip->getStopEnd()->setRoadTripStop($rt);
+                $stops = $roadtrip->getStops();
+                foreach ($stops as $stop) {
+                    $stop->setRoadTripStop($rt);
+                }
+
                 $em->flush();
 
                 return $this->redirectToRoute('roadtrip_show', array('slug' => $roadtrip->getSlug()));
