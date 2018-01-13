@@ -135,20 +135,66 @@ class RoadtripController extends Controller
      */
     public function editAction(Request $request, Roadtrip $roadtrip)
     {
+        //récupération de la liste de tous les stops en enlevant le départ et la destination pour pouvoir les afficher dans le form
+        $startStop = $roadtrip->getStopStart()->getId();
+        $endStop = $roadtrip->getStopEnd()->getId();
+        $allStops = $roadtrip->getStops()->toArray();
+        $stops = array();
+        foreach($allStops as $stop) {
+            if($stop->getId() == $startStop || $stop->getId() == $endStop) {
+                continue;
+            }
+            else {
+                $stops[] = $stop;
+            }
+        }
+
+        $em = $this->getDoctrine()->getManager();
         $deleteForm = $this->createDeleteForm($roadtrip);
         $editForm = $this->createForm('AppBundle\Form\RoadtripType', $roadtrip);
         $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        if ($editForm->isSubmitted()) {
+            if(!$editForm->isValid()) {
+                $errors = [];
+                if ($editForm->count() > 0) {
+                    foreach ($editForm->all() as $child) {
+                        /**
+                         * @var \Symfony\Component\Form\Form $child
+                         */
+                        if (!$child->isValid()) {
+                            $errors[$child->getName()] = $this->getErrorMessages($child);
+                        }
+                    }
+                }
+                /**
+                 * @var \Symfony\Component\Form\FormError $error
+                 */
+                foreach ($editForm->getErrors() as $key => $error) {
+                    $errors[] = $error->getMessage();
+                }
+                dump($errors);
+            }
+            else {
+                $idRoadtrip = $roadtrip->getId();
+                $rt = $em->getRepository('AppBundle:Roadtrip')->findOneBy(array('id' => $idRoadtrip));
+                $roadtrip->getStopStart()->setRoadTripStop($rt);
+                $roadtrip->getStopEnd()->setRoadTripStop($rt);
+                $stops = $roadtrip->getStops();
+                foreach ($stops as $stop) {
+                    $stop->setRoadTripStop($rt);
+                }
+                $em->flush();
 
-            return $this->redirectToRoute('roadtrip_edit', array('slug' => $roadtrip->getSlug()));
+                return $this->redirectToRoute('roadtrip_edit', array('slug' => $roadtrip->getSlug()));
+            }
         }
 
         return $this->render('AppBundle:roadtrip:edit.html.twig', array(
             'roadtrip' => $roadtrip,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'stops' => $stops,
         ));
     }
 

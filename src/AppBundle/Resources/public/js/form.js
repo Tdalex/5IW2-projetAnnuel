@@ -2,7 +2,8 @@
  * Created by mohamedchakiri on 09/12/2017.
  */
 $(document).ready(function(){
-    var nbClick = 1;
+    var nbstop = parseInt($('#prototype-stop').attr('data-nbstop'));
+    var nbClick = nbstop + 1;
     //Attention à bien vérifier que vos selecteurs correspondent à votre code
     $('#filldetails').on('click', function(event){
         event.preventDefault();

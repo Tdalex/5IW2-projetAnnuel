@@ -1,6 +1,5 @@
-{% extends 'base.html.twig' %}
-
 {% block body %}
+<body onload="initialize()">
     <div id="googleMap"></div>
     <div id="search">
         {{ form_start(form) }}
@@ -35,7 +34,7 @@
             <button id="filldetails" class="btn btn-success">Ajouter une étape</button>
             <div id="container-stop">
                 {% set prototype_stop = form.stops.vars.prototype %}
-                <div id="prototype-stop" class="prototype-stop hide" hidden>
+                <div id="prototype-stop" class="prototype-stop hide" data-nbstop="0" hidden>
                     <section class="form-group">
                         <div>
                             {{ form_widget(prototype_stop.lat) }}
@@ -64,4 +63,5 @@
         {{ form_end(form, {'render_rest': false}) }}
     <div id="directions-panel"></div>
     </div>
+</body>
 {% endblock %}
