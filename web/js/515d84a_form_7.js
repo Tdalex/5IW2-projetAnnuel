@@ -2,18 +2,6 @@
  * Created by mohamedchakiri on 09/12/2017.
  */
 $(document).ready(function(){
-    var arraySections = [];
-    var i = 1;
-    var allSections = document.querySelectorAll('section');
-    allSections.forEach(function (t) {
-        if(t.hasAttribute('id')) {
-            t.html().replace(/__name__/g, i);
-            i++;
-            arraySections.push(t);
-        }
-    });
-
-    console.log(arraySections);
     var nbstop = parseInt($('#prototype-stop').attr('data-nbstop'));
     var nbClick = nbstop + 1;
     //Attention à bien vérifier que vos selecteurs correspondent à votre code
@@ -39,4 +27,11 @@ $(document).ready(function(){
         initAutocomplete();
         nbClick++;
     });
+
+    $('.delete-tome').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        $(this).parent().parent().attr('id').remove();
+    })
 });

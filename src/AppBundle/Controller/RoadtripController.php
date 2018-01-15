@@ -177,6 +177,7 @@ class RoadtripController extends Controller
             }
             else {
                 $idRoadtrip = $roadtrip->getId();
+                dump($roadtrip);die;
                 $rt = $em->getRepository('AppBundle:Roadtrip')->findOneBy(array('id' => $idRoadtrip));
                 $roadtrip->getStopStart()->setRoadTripStop($rt);
                 $roadtrip->getStopEnd()->setRoadTripStop($rt);

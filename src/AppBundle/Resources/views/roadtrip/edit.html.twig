@@ -36,30 +36,6 @@
         </div>
         <button id="filldetails" class="btn btn-success">Ajouter une étape</button>
         <div id="container-stop">
-            {% set i = 1 %}
-            {% for stop in stops %}
-                <section class="form-group" id="{{ stop.id }}">
-                    <div>
-                        <!-- transformer l'id de chaque widget pour que ça corresponde au format roadtrip_stops_nb_champ -->
-                        <!-- et remplir le nb grâce au i qui s'incrémente à chaque stop trouvé -->
-                        {{ form_widget(edit_form.stops.vars.prototype.lat, {'value' : stop.lat}) }}
-                        {{ form_widget(edit_form.stops.vars.prototype.lon, {'value' : stop.lon}) }}
-                    </div>
-                    <div>
-                        {{ form_label(edit_form.stops.vars.prototype.address) }}
-                        {{ form_widget(edit_form.stops.vars.prototype.address, {'value' : stop.address}) }}
-                    </div>
-                    <div>
-                        {{ form_label(edit_form.stops.vars.prototype.title) }}
-                        {{ form_widget(edit_form.stops.vars.prototype.title, {'value' : stop.title}) }}
-                    </div>
-                    <div>
-                        {{ form_label(edit_form.stops.vars.prototype.description) }}
-                        {{ form_widget(edit_form.stops.vars.prototype.description, {'value' : stop.description}) }}
-                    </div>
-                </section>
-                {% set i = i+1 %}
-            {% endfor %}
             {% set prototype_stop = edit_form.stops.vars.prototype %}
             <div id="prototype-stop" class="prototype-stop hide" data-nbstop="{{ stops|length }}" hidden>
                 <section class="form-group">
@@ -81,6 +57,31 @@
                     </div>
                 </section>
             </div>
+            {% set i = 1 %}
+            {% for stop in stops %}
+                <section class="form-group" id="{{ stop.id }}">
+                    <div>
+                        {% set id = 'roadtrip_stops_'~i %}
+                        {% set name = 'roadtrip[stops]['~i~']' %}
+                        <input type="hidden" id="{{ id~'_lat' }}" name="{{ name~'[lat]' }}" value="{{ stop.lat }}">
+                        <input type="hidden" id="{{ id~'_lon' }}" name="{{ name~'[lon]' }}" value="{{ stop.lon }}">
+                    </div>
+                    <div>
+                        <label for="{{ id~'_address' }}">Adresse</label>
+                        <input type="text" id="{{ id~'_address' }}" name="{{ name~'[address]' }}" class="autocomplete-field autocomplete" value="{{ stop.address }}" placeholder="Indiquez un lieu" autocomplete="off">
+                    </div>
+                    <div>
+                        <label for="{{ id~'_title' }}">Titre de l'étape</label>
+                        <input type="text" id="{{ id~'_title' }}" name="{{ name~'[title]' }}" value="{{ stop.title }}">
+                    </div>
+                    <div>
+                        <label for="{{ id~'_description' }}">Description de l'étape</label>
+                        <textarea id="{{ id~'_description' }}" name="{{ name~'[description]' }}">{{ stop.description }}</textarea>
+                    </div>
+                    <div><a href="#" class="btn btn-danger delete-tome">Supprimer</a></div>
+                </section>
+                {% set i = i+1 %}
+            {% endfor %}
         </div>
         <div>
             <!-- Ajout des marqueurs sur la carte et remplissage des latitude et longitude des différents points -->

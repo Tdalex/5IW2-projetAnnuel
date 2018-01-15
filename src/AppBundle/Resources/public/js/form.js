@@ -27,4 +27,11 @@ $(document).ready(function(){
         initAutocomplete();
         nbClick++;
     });
+
+    $('.delete-tome').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        $(this).parent().parent().attr('id').remove();
+    })
 });
