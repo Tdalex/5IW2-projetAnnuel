@@ -468,7 +468,8 @@ $(document).ready(function(){
         e.preventDefault();
         e.stopPropagation();
 
-        $(this).parent().parent().attr('id').remove();
+        var idSection = $(this).parent().parent().attr('id');
+        $('#'+idSection).remove();
     })
 });
 $(".button-collapse").sideNav();

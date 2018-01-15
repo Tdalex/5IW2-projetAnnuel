@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Roadtrip;
+use AppBundle\Entity\Stop;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -176,14 +178,47 @@ class RoadtripController extends Controller
                 dump($errors);
             }
             else {
+                $rtForm = $request->request->get('roadtrip');
                 $idRoadtrip = $roadtrip->getId();
-                dump($roadtrip);die;
                 $rt = $em->getRepository('AppBundle:Roadtrip')->findOneBy(array('id' => $idRoadtrip));
-                $roadtrip->getStopStart()->setRoadTripStop($rt);
-                $roadtrip->getStopEnd()->setRoadTripStop($rt);
-                $stops = $roadtrip->getStops();
-                foreach ($stops as $stop) {
-                    $stop->setRoadTripStop($rt);
+                $stopRt = $em->getRepository('AppBundle:Stop')->findBy(array('roadTripStop' => $idRoadtrip));
+                foreach ($stopRt as $s) {
+                    $em->remove($s);
+                }
+                //Attribution de chaque valeur récupérées depuis le form à chaque colonne correspondante
+                $sStart = $rtForm['stopStart'];
+                $sEnd = $rtForm['stopEnd'];
+                $sts = $rtForm['stops'];
+                unset($sts['__name__']);
+                $rtSStop = new Stop();
+                $rtEStop = new Stop();
+                $rtStops = new ArrayCollection();
+                //startStop
+                $rtSStop->setAddress($sStart['address']);
+                $rtSStop->setTitle($sStart['title']);
+                $rtSStop->setDescription($sStart['description']);
+                $rtSStop->setLat($sStart['lat']);
+                $rtSStop->setlon($sStart['lon']);
+                $rtSStop->setRoadTripStop($rt);
+                $roadtrip->setStopStart($rtSStop);
+                //endStop
+                $rtEStop->setAddress($sEnd['address']);
+                $rtEStop->setTitle($sEnd['title']);
+                $rtEStop->setDescription($sEnd['description']);
+                $rtEStop->setLat($sEnd['lat']);
+                $rtEStop->setlon($sEnd['lon']);
+                $rtEStop->setRoadTripStop($rt);
+                $roadtrip->setStopEnd($rtEStop);
+                //stops
+                foreach ($sts as $s) {
+                    $st = new Stop();
+                    $st->setAddress($s['address']);
+                    $st->setTitle($s['title']);
+                    $st->setDescription($s['description']);
+                    $st->setLat($s['lat']);
+                    $st->setlon($s['lon']);
+                    $st->setRoadTripStop($rt);
+                    $roadtrip->addStop($st);
                 }
                 $em->flush();
 
