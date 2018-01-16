@@ -5,6 +5,7 @@
         '@AppBundle/Resources/public/css/style.css'
         '@AppBundle/Resources/public/css/bootstrap.min.css'
         '@AppBundle/Resources/public/css/bootstrap-theme.min.css'
+        '@AppBundle/Resources/public/css/jquery.dataTables.min.css'
     %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
@@ -16,27 +17,27 @@
 
     <h1>Roadtrips list</h1>
 
-    <table>
+    <table id="roadtrip_list">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Slug</th>
-                <th>Title</th>
+                <th>Départ</th>
+                <th>Arrivée</th>
+                <th>Titre</th>
                 <th>Description</th>
-                <th>Createdat</th>
-                <th>Isremoved</th>
+                <th>Durée (en jours)</th>
+                <th>Nombre d'étapes intermédiaires</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for roadtrip in roadtrips %}
             <tr>
-                <td><a href="{{ path('roadtrip_show', { 'slug': roadtrip.slug }) }}">{{ roadtrip.slug }}</a></td>
-                <td>{{ roadtrip.slug }}</td>
+                <td>{% if roadtrip.stopStart %}{{ roadtrip.stopStart.address }}{% else %}N/A{% endif %}</td>
+                <td>{% if roadtrip.stopEnd %}{{ roadtrip.stopEnd.address }}{% else %}N/A{% endif %}</td>
                 <td>{{ roadtrip.title }}</td>
                 <td>{{ roadtrip.description }}</td>
-                <td>{% if roadtrip.createdAt %}{{ roadtrip.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if roadtrip.isRemoved %}Yes{% else %}No{% endif %}</td>
+                <td>{{ roadtrip.duration }}</td>
+                <td>{% if roadtrip.stops|length == 0 %}0{% else %}{{ roadtrip.stops|length-2 }}{% endif %}</td>
                 <td>
                     <ul>
                         <li>
@@ -67,6 +68,8 @@
         '@AppBundle/Resources/public/js/bootstrap.min.js'
         '@AppBundle/Resources/public/js/googleMap.js'
         '@AppBundle/Resources/public/js/form.js'
+        '@AppBundle/Resources/public/js/jquery.dataTables.min.js'
+        '@AppBundle/Resources/public/js/configDatatable.js'
     %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
