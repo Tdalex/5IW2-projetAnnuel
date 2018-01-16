@@ -3,11 +3,34 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% block stylesheets %}
+            {% stylesheets
+            '@AppBundle/Resources/public/css/style.css'
+            '@AppBundle/Resources/public/css/bootstrap.min.css'
+            '@AppBundle/Resources/public/css/materialize.min.css'
+            '@AppBundle/Resources/public/css/bootstrap-theme.min.css'
+            %}
+            <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+            {% endstylesheets %}
+        {% endblock %}
     </head>
     <body>
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            {% javascripts
+            '@AppBundle/Resources/public/js/jquery-3.2.1.min.js'
+            '@AppBundle/Resources/public/js/bootstrap.min.js'
+            '@AppBundle/Resources/public/js/materialize.min.js'
+            '@AppBundle/Resources/public/js/googleMap.js'
+            '@AppBundle/Resources/public/js/form.js'
+            '@AppBundle/Resources/public/js/app.js'
+            %}
+            <script src="{{ asset_url }}"></script>
+            <script>$('.parallax').parallax();</script>
+            {% endjavascripts %}
+        {% endblock %}
     </body>
 </html>
