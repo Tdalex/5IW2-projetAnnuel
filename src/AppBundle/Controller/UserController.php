@@ -91,7 +91,7 @@ class UserController extends Controller
                 $em->flush();
 
                 //send email
-                $view = $this->container->get('templating')->render('AppBundle:Mails:mail_activate_account.html.twig', [
+                $view = $this->container->get('templating')->render('AppBundle:mails:mail_activate_account.html.twig', [
                     'token'    => $token,
                     'user'     => $user,
                     'id'       => $user->getId()
@@ -103,7 +103,7 @@ class UserController extends Controller
                     ->setBody($view, 'text/html');
 
                 $response = $this->container->get('mailer')->send($message);
-                return new Response($view);
+
                 return $this->redirectToRoute('roadtrip_index');
             }
         }
@@ -288,7 +288,7 @@ class UserController extends Controller
 
         if($register){
             //send email
-            $view = $this->container->get('templating')->render('AppBundle:Mails:mail_activate_account.html.twig', [
+            $view = $this->container->get('templating')->render('AppBundle:mails:mail_activate_account.html.twig', [
                 'token'    => $token,
                 'user'     => $user,
                 'id'       => $user->getId()
@@ -302,7 +302,6 @@ class UserController extends Controller
             // Adds mail send
             $message->setTo($user->getEmail());
             $response = $this->container->get('mailer')->send($message);
-            return new Response($view);
         }
         return $this->redirectToRoute('roadtrip_index');
     }
@@ -340,7 +339,7 @@ class UserController extends Controller
             $session->set('currentUser', $currentUser);
 
             //send email
-            $view = $this->container->get('templating')->render('AppBundle:Mails:mail_register.html.twig', [
+            $view = $this->container->get('templating')->render('AppBundle:mails:mail_register.html.twig', [
                 'user'     => $currentUser
             ]);
 
@@ -352,7 +351,6 @@ class UserController extends Controller
             // Adds mail send
             $message->setTo($currentUser['email']);
             $response = $this->container->get('mailer')->send($message);
-            return new Response($view);
 
             return $this->redirectToRoute('user_index', array('id' => $user->getId()));
         }
@@ -391,7 +389,7 @@ class UserController extends Controller
                     );
 
                     //send email
-                    $view = $this->container->get('templating')->render('AppBundle:Mails:mail_password_changed.html.twig', [
+                    $view = $this->container->get('templating')->render('AppBundle:mails:mail_password_changed.html.twig', [
                         'user' => $currentUser
                     ]);
 
@@ -406,7 +404,7 @@ class UserController extends Controller
 
                     $session = $this->get('session');
                     $session->set('currentUser', $currentUser);
-                    return new Response($view);
+
                     return $this->redirectToRoute('user_index', array('id' => $user->getId()));
                 }
                 $errors[] = 'les mots de passes sont différents';
