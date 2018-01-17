@@ -8,15 +8,7 @@
                 <h1 class="center-align">Inscription</h1>
                 {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
                 {{ form_errors(form) }}
-                {% for field in form %}
-                    {% if field.vars.errors|length > 0 %}
-                        <ul class="form-errors name">
-                            {% for error in field.vars.errors %}
-                                <p> {{ error.message }} </p>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                {% endfor %}
+
                 <div class="center-align">
                     {{ form_errors(form.gender) }}
                     {{ form_widget(form.gender) }}
@@ -43,23 +35,32 @@
                 </div>
 
                 <div class="center-align">
-                    <button class="btn waves-effect waves-light" type="submit" name="action">{{ 'security.register.sumbit'|trans }}
+                    <button class="btn waves-effect waves-light" type="submit" name="action">Valider
                         <i class="material-icons right">send</i>
                     </button>
                 </div>
 
-                <script>
-                    $(document).ready(function() {
-                        // configure the bootstrap datepicker
-                        $('.js-datepicker').datepicker({
-                            format: 'yyyy-mm-dd'
-                        });
-                    });
 
-                    $(document).on('click', '#_export', function(e) {
-                        window.location.replace("export?" + $('#form-user').serialize());
-                    })
+                <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+                <script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+                <script>
+                    $('.datepicker').pickadate({
+                        selectMonths: true,
+                        selectYears: 100,
+                        closeOnSelect: false,
+                        formatSubmit: 'yyyy-mm-dd',
+                        max: true,
+                        today: '',
+                        clear: '',
+                        close: '',
+                        monthsFull: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                        monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                        weekdaysFull: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                        weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+
+                    });
                 </script>
+
                 {{ form_end(form) }}
             </div>
         </div>

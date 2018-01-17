@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class UserType extends AbstractType
@@ -32,9 +32,9 @@ class UserType extends AbstractType
             'label' => 'Email'
         ]);
 
-        $builder->add('birthdate', DateTimeType::class, array(
-            'label' => 'date de naissance',
-            'attr' => ['class' => 'col-lg-5 js-datepicker'],
+        $builder->add('birthdate', DateType::class, array(
+            'label' => 'Date de naissance',
+            'attr' => ['class' => 'datepicker'],
             'widget' => 'single_text',
             'html5' => false,
             'format' => 'yyyy-MM-dd',
