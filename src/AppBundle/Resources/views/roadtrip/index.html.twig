@@ -1,17 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'AppBundle:default:layout.html.twig' %}
 
-{% block stylesheets %}
-    {% stylesheets
-        '@AppBundle/Resources/public/css/style.css'
-        '@AppBundle/Resources/public/css/bootstrap.min.css'
-        '@AppBundle/Resources/public/css/bootstrap-theme.min.css'
-        '@AppBundle/Resources/public/css/jquery.dataTables.min.css'
-    %}
-        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
-    {% endstylesheets %}
-{% endblock %}
-
-{% block body %}
+{% block content %}
 
     {{ render(controller('AppBundle:Roadtrip:new')) }}
 
@@ -60,19 +49,4 @@
     </ul>
 
 {% endblock %}
-
-
-{% block javascripts %}
-    {% javascripts
-        '@AppBundle/Resources/public/js/jquery-3.2.1.min.js'
-        '@AppBundle/Resources/public/js/bootstrap.min.js'
-        '@AppBundle/Resources/public/js/googleMap.js'
-        '@AppBundle/Resources/public/js/form.js'
-        '@AppBundle/Resources/public/js/jquery.dataTables.min.js'
-        '@AppBundle/Resources/public/js/configDatatable.js'
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places&callback=initAutocomplete"></script>
-{%  endblock %}
 

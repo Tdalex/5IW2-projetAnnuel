@@ -44,7 +44,6 @@ class RoadtripController extends Controller
      */
     public function accueilAction()
     {
-
         return $this->render('AppBundle:roadtrip:accueil.html.twig');
     }
 
