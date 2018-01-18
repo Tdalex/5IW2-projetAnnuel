@@ -10,6 +10,8 @@
             '@AppBundle/Resources/public/css/bootstrap.min.css'
             '@AppBundle/Resources/public/css/materialize.min.css'
             '@AppBundle/Resources/public/css/bootstrap-theme.min.css'
+            '@AppBundle/Resources/public/min/plugin-min.css'
+            '@AppBundle/Resources/public/min/custom-min.css'
             %}
             <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -18,6 +20,7 @@
         {% endblock %}
     </head>
     <body>
+        {% include '@AppBundle/Resources/views/menu/menu.html.twig' %}
         {% block body %}{% endblock %}
         {% block javascripts %}
             {% javascripts
