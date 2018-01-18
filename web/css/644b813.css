@@ -18,6 +18,38 @@ html, body {
     min-height: 632px;
 }
 
+#roadtrip-header {
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    background-position: center;
+    background-image: url("/bundles/app/images/showRoadtrip.jpeg");
+    text-align: center;
+    color: white;
+}
+
+#roadtrip .header{
+    margin: 50px 0 50px 0;
+}
+
+#roadtrip
+h1{
+    margin: 0 !important;
+    color: #f9fcfe;
+}
+p {
+    font-size: 15px;
+}
+
+.float-button{
+    float: left;
+    margin-right: 10px;
+}
+
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
