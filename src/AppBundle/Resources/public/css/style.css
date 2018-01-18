@@ -17,3 +17,16 @@ html, body {
     background-color: rgba(34, 150, 243, 0.55);
     min-height: 632px;
 }
+
+#roadtrip {
+    background: url("/bundles/app/images/parallax.jpeg") no-repeat center center fixed;
+    background-size: cover;
+    min-width: 100%;
+    min-height: 100%;
+    top: 0;
+}
+
+#roadtrip h1{
+    margin: 0 !important;
+    color: #f9fcfe;
+}
