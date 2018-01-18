@@ -6,6 +6,8 @@
     '@AppBundle/Resources/public/min/plugin-min.css'
     '@AppBundle/Resources/public/min/custom-min.css'
     '@AppBundle/Resources/public/css/jquery-ui.min.css'
+    '@AppBundle/Resources/public/css/materialize-social.css'
+    '@AppBundle/Resources/public/css/font-awesome.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
@@ -51,9 +53,24 @@
                         <label for="icon_telephone">Destination</label>
                     </div>
                     <div class="input-field col s12 center-align">
-                        <a class="waves-effect blue lighten-1 btn" id="search_rt">Trouver mon roadtrip</a>
+                        <a class="waves-effect blue lighten-1 btn" id="search_rt" data-url="{{ path('search_roadtrip') }}">Trouver mon roadtrip</a>
                     </div>
                 </form>
+            </div>
+            <div id="results_search" hidden>
+                <h3>Résultats de la recherche</h3>
+                <table id="results_search_roadtrip">
+                    <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

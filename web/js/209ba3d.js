@@ -94,3 +94,25 @@ $('#icon_telephone').autocomplete({
     minLength: 2,
     appendTo: "#form_search"
 });
+
+$('#search_rt').click(function (e) {
+    e.preventDefault();
+    var dep = $('#icon_prefix').val();
+    var dest = $('#icon_telephone').val();
+    var url = $(this).attr('data-url');
+
+    $.ajax({
+        method: "POST",
+        url: url,
+        data: {'dep' : dep, 'dest' : dest},
+        success: function(results) {
+            var res = $.parseJSON(results.roadtrips);
+            var tableResults = $('#results_search_roadtrip tbody');
+            for (var i = 0; i<res.length; i++) {
+                var rt = res[i];
+                tableResults.append('<tr><td>'+rt.title+'</td><td>'+rt.description+'</td><td><a class="btn btn-info" href="">Consulter</a></td></tr>');
+            }
+            $('#results_search').removeAttr('hidden');
+        }
+    });
+});

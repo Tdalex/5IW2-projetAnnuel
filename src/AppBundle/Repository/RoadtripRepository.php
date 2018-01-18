@@ -28,5 +28,20 @@ class RoadtripRepository extends EntityRepository{
 
 				return $query->getResult();
 	}
+
+	public function searchRtDepDest($dep, $dest) {
+        $query = $this->createQueryBuilder('r')
+                ->select('r.title', 'r.description', 'r.slug')
+                ->innerJoin('r.stopStart', 'dep')
+                ->innerJoin('r.stopEnd', 'dest')
+                ->where('dep.address = :dep')
+                ->setParameter('dep', $dep)
+                ->andWhere('dest.address = :dest')
+                ->setParameter('dest', $dest)
+                ->getQuery()
+                ->getResult();
+
+        return $query;
+    }
 }
 ?>
