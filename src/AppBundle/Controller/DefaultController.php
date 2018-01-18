@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
@@ -45,5 +46,19 @@ class DefaultController extends Controller
         return $this->render('default/hello.html.twig', [
 			'firstname' => $firstname
         ]);
+    }
+
+    /**
+     * @Route ("/search_address", name="search_address")
+     * @Method ({"GET", "POST"})
+     *
+     */
+    public function searchAddressAction(Request $request) {
+        $term = $request->request->get('address');
+
+        $em = $this->getDoctrine()->getManager();
+        $addresses = $em->getRepository('AppBundle:Stop')->searchByTerm($term);
+
+        return new JsonResponse($addresses);
     }
 }

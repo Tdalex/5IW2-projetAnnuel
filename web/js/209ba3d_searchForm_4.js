@@ -1,0 +1,43 @@
+//cherche dans la table stop les addresses pour faire de l'autocomplétion pour le champ départ
+$('#icon_prefix').autocomplete({
+    source: function(request, response) {
+        //data-url contient le chemin vers la fonction qui cherche dans la base de données
+        var url = $('#icon_prefix').attr('data-url');
+        $.ajax({
+            url: url,
+            success: function (data) {
+                var results = $.ui.autocomplete.filter($.map(data, function(value, key) {
+                    return {
+                        label: value.address,
+                        value: value.address
+                    }
+                }), request.term);
+                response(results);
+            }
+        });
+    },
+    minLength: 2,
+    appendTo: "#form_search"
+});
+
+//cherche dans la table stop les addresses pour faire de l'autocomplétion pour le champ destination
+$('#icon_telephone').autocomplete({
+    source: function(request, response) {
+        //data-url contient le chemin vers la fonction qui cherche dans la base de données
+        var url = $('#icon_telephone').attr('data-url');
+        $.ajax({
+            url: url,
+            success: function (data) {
+                var results = $.ui.autocomplete.filter($.map(data, function(value, key) {
+                    return {
+                        label: value.address,
+                        value: value.address
+                    }
+                }), request.term);
+                response(results);
+            }
+        });
+    },
+    minLength: 2,
+    appendTo: "#form_search"
+});

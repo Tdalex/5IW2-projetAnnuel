@@ -8,8 +8,8 @@ use AppBundle\Entity\Article;
 use AppBundle\Entity\Waypoint;
 
 /**
-* @ORM\Entity
-*/
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\StopRepository")
+ */
 class Stop
 {
 	/**
