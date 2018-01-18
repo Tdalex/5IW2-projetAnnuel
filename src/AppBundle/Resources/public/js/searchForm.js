@@ -57,6 +57,7 @@ $('#search_rt').click(function (e) {
             var tableResults = $('#results_search_roadtrip tbody');
             for (var i = 0; i<res.length; i++) {
                 var rt = res[i];
+                console.log(rt);
                 tableResults.append('<tr><td>'+rt.title+'</td><td>'+rt.description+'</td><td><a class="btn btn-info" href="">Consulter</a></td></tr>');
             }
             $('#results_search').removeAttr('hidden');
