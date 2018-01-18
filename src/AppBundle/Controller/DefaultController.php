@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Serializer;
 
 class DefaultController extends Controller
 {
@@ -60,5 +61,23 @@ class DefaultController extends Controller
         $addresses = $em->getRepository('AppBundle:Stop')->searchByTerm($term);
 
         return new JsonResponse($addresses);
+    }
+
+    /**
+     * @Route ("/search_roadtrip", name="search_roadtrip")
+     * @Method ({"GET", "POST"})
+     */
+    public function searchRoadtripAction(Request $request) {
+        $dep = $request->request->get('dep');
+        $dest = $request->request->get('dest');
+        $em = $this->getDoctrine()->getManager();
+
+        $roadtrips = $em->getRepository('AppBundle:Roadtrip')->searchRtDepDest($dep, $dest);
+        foreach ($roadtrips as $key => $value){
+            $data['key']['url'] = $this->generateUrl('roadtrip_show', array('slug' => $roadtrips['key']['slug']));
+        }
+        $roadtrips = $this->get('serializer')->serialize($roadtrips, 'json');
+
+        return new JsonResponse(array('roadtrips' => $roadtrips));
     }
 }
