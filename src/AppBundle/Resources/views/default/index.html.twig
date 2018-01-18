@@ -5,6 +5,7 @@
     {% stylesheets
     '@AppBundle/Resources/public/min/plugin-min.css'
     '@AppBundle/Resources/public/min/custom-min.css'
+    '@AppBundle/Resources/public/css/jquery-ui.min.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
@@ -62,24 +63,26 @@
     <!--Form roadtrip-->
     <div id="intro" class="section scrollspy">
         <div class="container">
-            <div class="row">
+            <div class="row" id="form_search">
                 <div  class="col s12">
                     <h2 class="center header text_h2"> Créer votre propre aventure <span class="span_h2"> Organisez votre voyage  </span>Trouver les bons plans. </h2>
                 </div>
                 <!-- Faire la recherche en foncion du départ et de la destination (cf. CEMM) -->
-                <div class="input-field col s6">
-                    <i class="material-icons prefix">place</i>
-                    <input id="icon_prefix" type="text" class="validate">
-                    <label for="icon_prefix">Départ de</label>
-                </div>
-                <div class="input-field col s6">
-                    <i class="material-icons prefix">pin_drop</i>
-                    <input id="icon_telephone" type="tel" class="validate">
-                    <label for="icon_telephone">Destination</label>
-                </div>
-                <div class="input-field col s12 center-align">
-                    <a class="waves-effect blue lighten-1 btn">Trouver mon roadtrip</a>
-                </div>
+                <form role="form" class="form-horizontal">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">place</i>
+                        <input id="icon_prefix" type="text" class="validate" data-id="address" data-url="{{ path('search_address') }}">
+                        <label for="icon_prefix">Départ de</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">pin_drop</i>
+                        <input id="icon_telephone" type="tel" class="validate" data-id="address" data-url="{{ path('search_address') }}">
+                        <label for="icon_telephone">Destination</label>
+                    </div>
+                    <div class="input-field col s12 center-align">
+                        <a class="waves-effect blue lighten-1 btn" id="search_rt">Trouver mon roadtrip</a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -114,6 +117,8 @@
     {% javascripts
     '@AppBundle/Resources/public/min/plugin-min.js'
     '@AppBundle/Resources/public/min/custom-min.js'
+    '@AppBundle/Resources/public/js/jquery-ui.min.js'
+    '@AppBundle/Resources/public/js/searchForm.js'
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
