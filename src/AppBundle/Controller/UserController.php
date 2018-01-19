@@ -19,10 +19,31 @@ class UserController extends Controller
     /**
      * my profile
      *
-     * @Route("/gérer", name="user_index")
+     * @Route("/profil", name="user_index")
      * @Method("GET")
      */
     public function indexAction(Request $request)
+    {
+        $session = $this->get('session');
+        $currentUser = $session->get('currentUser');
+        if(!empty($currentUser)){
+            $user = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findOneById($currentUser['id']);
+            $roadtrips = $this->getDoctrine()->getManager()->getRepository('AppBundle:Roadtrip')->findBy(array('owner' => $currentUser['id']));
+            return $this->render('AppBundle:user:my_account.html.twig', array(
+                'user' => $user,
+                'roadtrips' => $roadtrips
+                ));
+        }
+        return $this->redirectToRoute('roadtrip_index');
+    }
+
+    /**
+     * my profile
+     *
+     * @Route("/modification", name="modify_my_account.html.twig")
+     * @Method("GET")
+     */
+    public function modifyMyAccountAction(Request $request)
     {
         $session = $this->get('session');
         $currentUser = $session->get('currentUser');
@@ -39,7 +60,7 @@ class UserController extends Controller
                     return $this->redirectToRoute('user_index');
                 }
 
-                return $this->render('AppBundle:user:my_account.html.twig', array(
+                return $this->render('AppBundle:user:modify_my_account.html.twig', array(
                     'user' => $user,
                     'edit_form' => $editForm->createView(),
                 ));
@@ -59,7 +80,7 @@ class UserController extends Controller
         $session = $this->get('session');
         $currentUser = $session->set('currentUser', array());
 
-        return $this->redirectToRoute('roadtrip_index');
+        return $this->redirectToRoute('homepage');
     }
 
 

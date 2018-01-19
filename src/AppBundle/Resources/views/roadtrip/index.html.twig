@@ -42,7 +42,7 @@
                 </nav>
             </div>
             <div class="col s6">
-                {% if app.session.get('currentUser') is not null %}
+                {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
                     <a class="waves-effect waves-light btn-large blue darken-3" href="{{ path('roadtrip_new') }}"><i class="material-icons right">add</i>Ou créez Votre propre Roadtrip</a>
                 {% else %}
                     <a class="waves-effect waves-light btn-large blue darken-3" href="{{ path('user_connectForm') }}"><i class="material-icons right">add</i>Ou créez Votre propre Roadtrip</a>
