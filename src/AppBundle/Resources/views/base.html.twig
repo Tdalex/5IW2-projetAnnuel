@@ -36,6 +36,11 @@
             %}
             <script src="{{ asset_url }}"></script>
             <script>$('.parallax').parallax();</script>
+            <script type="text/javascript">
+                if (window.location.hash && window.location.hash == '#_=_') {
+                    window.location.href = window.location.href.split('#_=_')[0];
+                }
+            </script>
             {% endjavascripts %}
         {% endblock %}
     </body>

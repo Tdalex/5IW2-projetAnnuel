@@ -17,47 +17,26 @@ use Symfony\Component\HttpFoundation\Response;
 class UserController extends Controller
 {
     /**
-     * Lists all user entities.
+     * my profile
      *
-     * @Route("/test", name="user_mail_test")
+     * @Route("/gérer", name="user_index")
      * @Method("GET")
      */
-    public function sendEmailAction(\Swift_Mailer $mailer)
-    {
-        $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('tdalexsmtp@gmail.com')
-            ->setTo('tdalexsmtp@gmail.com')
-            ->setBody('You should see me from the profiler!')
-        ;
-
-        $mailer->send($message);
-        dump($message);
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
-    }
-
-    /**
-     * Lists all user entities.
-     *
-     * @Route("/", name="user_index")
-     * @Method("GET")
-     */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $session = $this->get('session');
         $currentUser = $session->get('currentUser');
         if(!empty($currentUser)){
-            $user = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findOne($currentUser['id']);
-
-            if($user){
+            $user = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findOneById($currentUser['id']);
+            if(isset($user[0]) && $user[0]){
+                $user = $user[0];
                 $editForm = $this->createForm('AppBundle\Form\UserType', $user);
                 $editForm->handleRequest($request);
 
                 if ($editForm->isSubmitted() && $editForm->isValid()) {
                     $this->getDoctrine()->getManager()->flush();
 
-                    return $this->redirectToRoute('user_index', array('id' => $user->getId()));
+                    return $this->redirectToRoute('user_index');
                 }
 
                 return $this->render('AppBundle:user:my_account.html.twig', array(
@@ -67,6 +46,32 @@ class UserController extends Controller
             }
         }
         return $this->redirectToRoute('roadtrip_index');
+    }
+
+    /**
+     * my profile
+     *
+     * @Route("/disconnect", name="user_disconnect")
+     * @Method("GET")
+     */
+    public function disconnectAction(Request $request)
+    {
+        $session = $this->get('session');
+        $currentUser = $session->set('currentUser', array());
+
+        return $this->redirectToRoute('roadtrip_index');
+    }
+
+
+     /**
+     * connect
+     *
+     * @Route("/se-connecter", name="user_connectForm")
+     * @Method("GET")
+     */
+    public function connectFormAction()
+    {
+        return $this->render('AppBundle:user:login.html.twig');
     }
 
     /**
@@ -153,7 +158,7 @@ class UserController extends Controller
 
                 $session = $this->get('session');
                 $session->set('currentUser', $currentUser);
-                return $this->redirectToRoute('user_index', array('id' => $user->getId()));
+                return $this->redirectToRoute('user_index');
             } else {
                 $errors[] = "Email ou mot de passe incorrect";
             }
@@ -174,7 +179,7 @@ class UserController extends Controller
     public function loginFacebookAction(Request $request)
     {
         $config = [
-            'callback' => 'roadtrip.loc/' . $this->generateUrl('front_user_login_fb'),
+            'callback' => 'http://roadtrip.loc' . $this->generateUrl('user_login_fb'),
             'keys'     => [
                 'id'     => $this->container->getParameter('facebook_app_id'),
                 'secret' => $this->container->getParameter('facebook_app_secret')
@@ -199,19 +204,15 @@ class UserController extends Controller
             }else{
                 $gender = 'MALE';
             }
-
-            $dataPush  = array(
+            $dataPush = array(
                 'facebookId' => $userProfile->identifier,
                 'user'       => array(
-                    'firstName' => $userProfile->firstName,
-                    'lastName'  => $userProfile->lastName,
-                    'gender'    => $gender,
-                    'email'     => $userProfile->email,
-                    'birthdate' => $birthdate,
-                    'plainPassword' => array(
-                        'first'  => $userProfile->identifier,
-                        'second' => $userProfile->identifier,
-                    )
+                    'firstName'     => $userProfile->firstName,
+                    'lastName'      => $userProfile->lastName,
+                    'gender'        => $gender,
+                    'email'         => $userProfile->email,
+                    'birthdate'     => $birthdate,
+                    'plainPassword' => $userProfile->identifier
                 )
             );
             $adapter->disconnect();
@@ -229,34 +230,28 @@ class UserController extends Controller
         //register
         if(!$user){
             $user = new user();
-            if($dataPush['user']['plainPassword']['first']){
-                $encoder_service = $this->get('security.encoder_factory');
-                $encoder = $encoder_service->getEncoder($user);
-                $encoded = $encoder->encodePassword($dataPush['user']['plainPassword']['first'], $user->getSalt());
-                $user->setPassword($encoded);
-            }
 
-            // Bind value with form
-            $form = $this->createForm(UserType::class, $user);
-            $form->handleRequest($dataPush);
-            if ($form->isValid()) {
-                if($dataPush['user']['plainPassword']['first']){
-                    $encoder_service = $this->get('security.encoder_factory');
-                    $encoder = $encoder_service->getEncoder($user);
-                    $encoded = $encoder->encodePassword($dataPush['user']['plainPassword']['first'], $user->getSalt());
-                    $user->setPassword($encoded);
-                }
-                $user->setEnabled(false);
-                $user->setFacebookId($facebookId);
+            $user->setFirstname($dataPush['user']['firstName']);
+            $user->setLastname($dataPush['user']['lastName']);
+            $user->setgender($dataPush['user']['gender']);
+            $user->setEmail($dataPush['user']['email']);
 
-                $token = bin2hex(random_bytes(20));
-                $user->setToken($token);
+            $encoder_service = $this->get('security.encoder_factory');
+            $encoder = $encoder_service->getEncoder($user);
+            $encoded = $encoder->encodePassword($dataPush['user']['plainPassword'], $user->getSalt());
+            $user->setPassword($encoded);
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($user);
-                $em->flush();
-                $register = true;
-            }
+            $user->setEnabled(false);
+            $user->setFacebookId($facebookId);
+
+            $token = bin2hex(random_bytes(20));
+            $user->setToken($token);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            $register = true;
+
         }else{
             //account activated
             if($user->isEnabled()){
@@ -306,7 +301,7 @@ class UserController extends Controller
         return $this->redirectToRoute('roadtrip_index');
     }
 
-      /**
+    /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      *
@@ -352,7 +347,7 @@ class UserController extends Controller
             $message->setTo($currentUser['email']);
             $response = $this->container->get('mailer')->send($message);
 
-            return $this->redirectToRoute('user_index', array('id' => $user->getId()));
+            return $this->redirectToRoute('user_index');
         }
         return $this->redirectToRoute('roadtrip_index');
     }
@@ -405,7 +400,7 @@ class UserController extends Controller
                     $session = $this->get('session');
                     $session->set('currentUser', $currentUser);
 
-                    return $this->redirectToRoute('user_index', array('id' => $user->getId()));
+                    return $this->redirectToRoute('user_index');
                 }
                 $errors[] = 'les mots de passes sont différents';
             }

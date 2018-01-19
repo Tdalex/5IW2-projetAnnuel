@@ -24,7 +24,7 @@ vagrantfile:
                         hostname: roadtrip-loc
                         network:
                             private_network: 192.168.56.242
-                        memory: '256'
+                        memory: '512'
                         cpus: '1'
         provision:
             puppet:
