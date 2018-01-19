@@ -80,4 +80,30 @@ class DefaultController extends Controller
 
         return new JsonResponse(array('roadtrips' => $roadtrips));
     }
+
+    /**
+     * @Route ("/contact_us", name="contact_us")
+     * @Method ({"GET", "POST"})
+     */
+    public function contactUsAction(Request $request) {
+        $nom = $request->request->get('nom');
+        $prenom = $request->request->get('prenom');
+        $email = $request->request->get('email');
+        $sujet = $request->request->get('sujet');
+        $message = $request->request->get('message');
+
+        $msend = (new \Swift_Message('De '.$nom.' '.$prenom.' : '.$sujet))
+            ->setFrom($email)
+            ->setTo('noreply@roadtrip.loc')
+            ->setBody($message, 'text/html');
+
+        $response = $this->container->get('mailer')->send($msend);
+
+        $this->addFlash(
+            'notice',
+            'Votre message a bien été envoyé !'
+        );
+
+        return $this->redirectToRoute('homepage');
+    }
 }

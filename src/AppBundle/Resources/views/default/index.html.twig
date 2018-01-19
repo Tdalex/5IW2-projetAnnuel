@@ -79,9 +79,34 @@
     </div>
 
     <!--Form contact-->
-    <div class="section scrollspy" id="work">
+    <div class="section scrollspy" id="contact">
         <div class="container">
             <h2 class="header text_b">Contactez-nous</h2>
+            <form role="form" class="form-horizontal">
+                <div class="input-field col s8">
+                    <label for="contact_name">Nom</label>
+                    <input id="contact_name" type="text" class="validate">
+                </div>
+                <div class="input-field col s8">
+                    <label for="contact_fname">Prénom</label>
+                    <input id="contact_fname" type="text" class="validate">
+                </div>
+                <div class="input-field col s8">
+                    <label for="contact_mail">Mail</label>
+                    <input id="contact_mail" type="email" class="validate">
+                </div>
+                <div class="input-field col s12">
+                    <label for="contact_subject">Sujet</label>
+                    <input id="contact_subject" type="text" class="validate">
+                </div>
+                <div class="input-field col s12">
+                    <label for="contact_message">Message</label>
+                    <textarea id="contact_message" class="materialize-textarea" placeholder="Votre message ..."></textarea>
+                </div>
+                <div class="input-field col s12 center-align">
+                    <a class="waves-effect blue lighten-1 btn" id="contact_send" data-url="{{ path('contact_us') }}">Envoyer</a>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -94,6 +119,7 @@
     '@AppBundle/Resources/public/min/custom-min.js'
     '@AppBundle/Resources/public/js/jquery-ui.min.js'
     '@AppBundle/Resources/public/js/searchForm.js'
+    '@AppBundle/Resources/public/js/contactUs.js'
     '@AppBundle/Resources/public/js/jquery-3.2.1.min.js'
     '@AppBundle/Resources/public/js/materialize.min.js'
     '@AppBundle/Resources/public/js/bootstrap.min.js'
