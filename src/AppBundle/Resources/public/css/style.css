@@ -74,4 +74,22 @@ p {
     color: white;
  }
 
+.search-map{
+    height: 90%;
+    width: 25em;
+    background: #2196f399;
+    position: absolute;
+    z-index: 1;
+    top: 82px;
+    left: 20px
+}.collapsible{
+     border-top: none !important;
+     border-right: none !important;
+     border-left: none !important;
+     border-bottom: none !important;
+ }.collapsible-body {
+    background-color: #ffffffbf;
+   }
+
+
 
