@@ -50,9 +50,9 @@ class RoadtripType extends AbstractType
                 },
             ))
             ->add('submit', SubmitType::class, array(
-                'label' => 'Valider',
+                'label' => 'Enregistrer mon roadtrip',
                 'attr' => array(
-                    'class' => 'btn btn-primary',
+                    'class' => 'full-width green lighten-3',
                 )
             ))
         ;

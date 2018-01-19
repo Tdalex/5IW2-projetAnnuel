@@ -114,13 +114,18 @@
 
 
 {% block javascripts %}
-    {{ parent() }}
     {% javascripts
     '@AppBundle/Resources/public/min/plugin-min.js'
     '@AppBundle/Resources/public/min/custom-min.js'
     '@AppBundle/Resources/public/js/jquery-ui.min.js'
     '@AppBundle/Resources/public/js/searchForm.js'
     '@AppBundle/Resources/public/js/contactUs.js'
+    '@AppBundle/Resources/public/js/jquery-3.2.1.min.js'
+    '@AppBundle/Resources/public/js/materialize.min.js'
+    '@AppBundle/Resources/public/js/bootstrap.min.js'
+    '@AppBundle/Resources/public/js/googleMap.js'
+    '@AppBundle/Resources/public/js/form.js'
+    '@AppBundle/Resources/public/js/app.js'
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
