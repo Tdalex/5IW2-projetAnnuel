@@ -125,16 +125,23 @@ function getItinerary(pointsMarqueurs, map){
 
 function getInfosRoutes(response){
     var route = response.routes[0];
-    var summaryPanel = document.getElementById('directions-panel');
-    summaryPanel.innerHTML = '';
-    //Pour chaque route afficher informations
+    /*var summaryPanel = document.getElementById('directions-panel');
+    summaryPanel.innerHTML = '';*/
+    var message;
+    for (var i = 0; i < route.legs.length; i++) {
+        var routeSegment = i + 1;
+        message = 'Infos route ' + routeSegment + ' : ' + route.legs[i].distance.text + '<br>' + route.legs[i].start_address + ' à ' + route.legs[i].end_address;
+        Materialize.toast(message, 30000);
+        message  = '';
+    }
+    /*//Pour chaque route afficher informations
     for (var i = 0; i < route.legs.length; i++) {
         var routeSegment = i + 1;
         summaryPanel.innerHTML += '<b>Infos route: ' + routeSegment + '</b><br>';
         summaryPanel.innerHTML += route.legs[i].start_address + ' à ';
         summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
         summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-    }
+    }*/
 }
 
 

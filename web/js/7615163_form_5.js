@@ -12,7 +12,7 @@ $(document).ready(function(){
         var $prototypeStop = $('#prototype-stop').clone();
         $prototypeStop = $($prototypeStop.html().replace(/__name__/g, nbClick));
 
-        var $linkDelete = $('<div><a href="#" class="btn btn-danger delete-tome">Supprimer</a></div>');
+        var $linkDelete = $('<div class="center-align"><a href="#"><i class="material-icons text-darken-4">delete_forever</i><a></div>');
         $prototypeStop.append($linkDelete);
 
         $linkDelete.on('click', function(e){

@@ -52,7 +52,7 @@ class RoadtripType extends AbstractType
             ->add('submit', SubmitType::class, array(
                 'label' => 'Enregistrer mon roadtrip',
                 'attr' => array(
-                    'class' => 'full-width green lighten-3',
+                    'class' => 'full-width blue lighten-1',
                 )
             ))
         ;

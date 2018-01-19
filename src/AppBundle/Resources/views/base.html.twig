@@ -24,7 +24,9 @@
     <body>
         {% include '@AppBundle/Resources/views/includes/menu.html.twig' %}
         {% block body %}{% endblock %}
-        {% include '@AppBundle/Resources/views/includes/footer.html.twig' %}
+        {% block footer %}
+            {% include '@AppBundle/Resources/views/includes/footer.html.twig' %}
+        {% endblock %}
         {% block javascripts %}
             {% javascripts
             '@AppBundle/Resources/public/js/materialize.min.js'
