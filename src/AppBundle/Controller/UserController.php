@@ -19,7 +19,7 @@ class UserController extends Controller
     /**
      * my profile
      *
-     * @Route("/", name="user_index")
+     * @Route("/gérer", name="user_index")
      * @Method("GET")
      */
     public function indexAction(Request $request)
@@ -47,6 +47,21 @@ class UserController extends Controller
         }
         return $this->redirectToRoute('roadtrip_index');
     }
+
+    /**
+     * my profile
+     *
+     * @Route("/disconnect", name="user_disconnect")
+     * @Method("GET")
+     */
+    public function disconnectAction(Request $request)
+    {
+        $session = $this->get('session');
+        $currentUser = $session->set('currentUser', array());
+
+        return $this->redirectToRoute('roadtrip_index');
+    }
+
 
      /**
      * connect
