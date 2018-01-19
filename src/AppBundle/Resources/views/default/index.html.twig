@@ -51,9 +51,24 @@
                         <label for="icon_telephone">Destination</label>
                     </div>
                     <div class="input-field col s12 center-align">
-                        <a class="waves-effect blue lighten-1 btn" id="search_rt">Trouver mon roadtrip</a>
+                        <a class="waves-effect blue lighten-1 btn" id="search_rt" data-url="{{ path('search_roadtrip') }}">Trouver mon roadtrip</a>
                     </div>
                 </form>
+            </div>
+            <div id="results_search" hidden>
+                <h3>Résultats de la recherche</h3>
+                <table id="results_search_roadtrip">
+                    <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -69,16 +84,6 @@
             <h2 class="header text_b">Contactez-nous</h2>
         </div>
     </div>
-
-    <!--Footer-->
-    <footer id="contact" class="page-footer default_color scrollspy">
-        <div class="footer-copyright default_color">
-            <div class="container">
-                <p class="right">RoadTripeurs</p>
-            </div>
-        </div>
-    </footer>
-
 
 {% endblock %}
 

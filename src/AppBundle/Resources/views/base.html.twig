@@ -12,6 +12,8 @@
             '@AppBundle/Resources/public/css/bootstrap-theme.min.css'
             '@AppBundle/Resources/public/min/plugin-min.css'
             '@AppBundle/Resources/public/min/custom-min.css'
+            '@AppBundle/Resources/public/css/materialize-social.css'
+            '@AppBundle/Resources/public/css/font-awesome.css'
             %}
             <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -20,8 +22,9 @@
         {% endblock %}
     </head>
     <body>
-        {% include '@AppBundle/Resources/views/menu/menu.html.twig' %}
+        {% include '@AppBundle/Resources/views/includes/menu.html.twig' %}
         {% block body %}{% endblock %}
+        {% include '@AppBundle/Resources/views/includes/footer.html.twig' %}
         {% block javascripts %}
             {% javascripts
             '@AppBundle/Resources/public/js/jquery-3.2.1.min.js'

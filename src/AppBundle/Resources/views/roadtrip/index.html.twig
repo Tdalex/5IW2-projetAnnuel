@@ -21,21 +21,46 @@
                     <h2 class="center header text_h2"> <span class="span_h2"> Envie de voyage ? </span> Regardez et trouvez votre <span class="span_h2"> bonheur </span> parmi tous ces <span class="span_h2">roadtrips</span>.</h2>
                 </div>
             </div>
+            <div class="row">
+                {# rajouter le contrôle sur le user: si il est connecter, affiche le bouton create, sinon juste le tableau #}{#
+                <ul>
+                    <li>
+                        <a href="{{ path('roadtrip_new') }}" class="btn btn-primary">Nouveau roadtrip</a>
+                    </li>
+                </ul>#}
+            </div>
+        </div>
+    </div>
+
+    <!--Work-->
+    <div class="container">
+        <div class="row">
+            {% for roadtrip in roadtrips %}
+                <div class="col s12 m4 l4">
+                    <div class="card">
+                        <div class="card-image waves-effect waves-block waves-light">
+                            <img class="activator" src="{{ asset('bundles/app/images/roadtrip.jpg') }}" alt="roadtrip">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title activator grey-text text-darken-4"><div class="truncate">{{ roadtrip.title }}</div><i class="material-icons right">more_vert</i></span>
+                            <p><a href="{{ path('roadtrip_show', { 'slug': roadtrip.slug }) }}">{% if roadtrip.stopStart %}{{ roadtrip.stopStart.address }}{% else %}N/A{% endif %} - {% if roadtrip.stopEnd %}{{ roadtrip.stopEnd.address }}{% else %}N/A{% endif %}</a></p>
+                        </div>
+                        <div class="card-reveal">
+                            <span class="card-title grey-text text-darken-4">{{ roadtrip.title }}<i class="material-icons right">close</i></span>
+                            <p>{{ roadtrip.description }}</p>
+                            <p>Durée : {{ roadtrip.duration }} jours</p>
+                            <p>Etapes : {% if roadtrip.stops|length == 0 %}0{% else %}{{ roadtrip.stops|length-2 }}{% endif %}</p>
+                            <p class="center-align"><a class="waves-effect blue lighten-1 btn" href="{{ path('roadtrip_show', { 'slug': roadtrip.slug }) }}">Voir ce roadtrip</a></p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 
     {#{{ render(controller('AppBundle:Roadtrip:new')) }}#}
 
-    {# rajouter le contrôle sur le user: si il est connecter, affiche le bouton create, sinon juste le tableau #}
-    <ul>
-        <li>
-            <a href="{{ path('roadtrip_new') }}" class="btn btn-primary">Nouveau roadtrip</a>
-        </li>
-    </ul>
-
-    <h1>Les roadtrips</h1>
-
-    <table id="roadtrip_list">
+    {#<table id="roadtrip_list">
         <thead>
             <tr>
                 <th>Départ</th>
@@ -69,17 +94,7 @@
             </tr>
         {% endfor %}
         </tbody>
-    </table>
-
-
-    <!--Footer-->
-    <footer id="contact" class="page-footer default_color scrollspy">
-        <div class="footer-copyright default_color">
-            <div class="container">
-                <p class="right">RoadTripeurs</p>
-            </div>
-        </div>
-    </footer>
+    </table>#}
 
 {% endblock %}
 
