@@ -17,28 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 class UserController extends Controller
 {
     /**
-     * Lists all user entities.
-     *
-     * @Route("/test", name="user_mail_test")
-     * @Method("GET")
-     */
-    public function sendEmailAction(\Swift_Mailer $mailer)
-    {
-        $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('tdalexsmtp@gmail.com')
-            ->setTo('tdalexsmtp@gmail.com')
-            ->setBody('You should see me from the profiler!')
-        ;
-
-        $mailer->send($message);
-        dump($message);
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
-    }
-
-    /**
-     * Lists all user entities.
+     * my profile
      *
      * @Route("/", name="user_index")
      * @Method("GET")
@@ -306,7 +285,7 @@ class UserController extends Controller
         return $this->redirectToRoute('roadtrip_index');
     }
 
-      /**
+    /**
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      *
