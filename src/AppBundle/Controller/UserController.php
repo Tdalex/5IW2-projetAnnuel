@@ -48,6 +48,17 @@ class UserController extends Controller
         return $this->redirectToRoute('roadtrip_index');
     }
 
+     /**
+     * connect
+     *
+     * @Route("/se-connecter", name="user_connectForm")
+     * @Method("GET")
+     */
+    public function connectFormAction()
+    {
+        return $this->render('AppBundle:user:login.html.twig');
+    }
+
     /**
      * Creates a new user entity.
      *
@@ -153,7 +164,7 @@ class UserController extends Controller
     public function loginFacebookAction(Request $request)
     {
         $config = [
-            'callback' => 'roadtrip.loc/' . $this->generateUrl('front_user_login_fb'),
+            'callback' => 'roadtrip.loc' . $this->generateUrl('user_login_fb'),
             'keys'     => [
                 'id'     => $this->container->getParameter('facebook_app_id'),
                 'secret' => $this->container->getParameter('facebook_app_secret')
@@ -164,6 +175,7 @@ class UserController extends Controller
             $adapter = new \Hybridauth\Provider\Facebook($config);
             $adapter->authenticate();
             $isConnected = $adapter->isConnected();
+            var_dump($isConnected);die();
             $userProfile = $adapter->getUserProfile();
 
             $birthdate = "";
