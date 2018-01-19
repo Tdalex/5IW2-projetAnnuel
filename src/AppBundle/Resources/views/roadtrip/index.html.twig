@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="row">
-                {% if app.session.get('currentUser') is not null %}
+                {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
                     <ul>
                         <li>
                             <a href="{{ path('roadtrip_new') }}" class="btn btn-primary">Nouveau roadtrip</a>
