@@ -74,7 +74,7 @@ class DefaultController extends Controller
 
         $roadtrips = $em->getRepository('AppBundle:Roadtrip')->searchRtDepDest($dep, $dest);
         foreach ($roadtrips as $key => $value){
-            $data['key']['url'] = $this->generateUrl('roadtrip_show', array('slug' => $roadtrips['key']['slug']));
+            $roadtrips[$key]['url'] = $this->generateUrl('roadtrip_show', array('slug' => $roadtrips[$key]['slug']));
         }
         $roadtrips = $this->get('serializer')->serialize($roadtrips, 'json');
 
