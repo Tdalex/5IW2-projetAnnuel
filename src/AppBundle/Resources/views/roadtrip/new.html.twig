@@ -11,104 +11,107 @@
 {% endblock %}
 
 {% block body %}
-<body onload="initialize()">
+    <body onload="initialize()">
     <div id="googleMap"></div>
     <div class="search-map">
+        {{ form_start(form) }}
         <div class="row">
             <div class="col s12">
+                <div>
+                    {{ form_widget(form.title, {'attr' : {'placeholder': 'Titre du roadtrip'}}) }}
+                </div>
                 <!--Accordeon-->
                 <ul class = "collapsible" data-collapsible = "expandable">
                     <li>
                         <div class = "collapsible-header active">
                             <i class = "material-icons">place</i>Départ</div>
-                        <div class = "collapsible-body"><p>This is first section.</p></div>
+                        <div class = "collapsible-body">
+                            <div class="container">
+                                {{ form_widget(form.stopStart.address, {'id': 'addressDep', 'attr' : {'class': 'autocomplete'}}) }}
+                                {{ form_widget(form.stopStart.title, {'attr' : {'placeholder': 'Titre du départ'}}) }}
+                                {{ form_widget(form.stopStart.description, {'attr' : {'placeholder': 'Description du départ'}}) }}
+                                {{ form_widget(form.stopStart.lat, {'id': 'addressDeplat'}) }}
+                                {{ form_widget(form.stopStart.lon, {'id': 'addressDeplon'}) }}
+                            </div>
+                        </div>
                     </li>
 
                     <li>
-                        <div class = "collapsible-header active">
+                        <div class = "collapsible-header">
                             <i class = "material-icons">flag</i>Arrivé</div>
-                        <div class = "collapsible-body"><p>This is second section.</p></div>
+                        <div class = "collapsible-body">
+                            <div class="container">
+                                {{ form_widget(form.stopEnd.address, {'id': 'addressDes', 'attr' : {'class': 'autocomplete'}}) }}
+                                {{ form_widget(form.stopEnd.title, {'attr' : {'placeholder': 'Titre de la destination'}}) }}
+                                {{ form_widget(form.stopEnd.description, {'attr' : {'placeholder': 'Description de la destination'}}) }}
+                                {{ form_widget(form.stopEnd.lat, {'id': 'addressDeslat'}) }}
+                                {{ form_widget(form.stopEnd.lon, {'id': 'addressDeslon'}) }}
+                            </div>
+                        </div>
                     </li>
 
                     <li>
                         <div class = "collapsible-header">
                             <i class = "material-icons">pin_drop</i>Etapes</div>
-                        <div class = "collapsible-body"><p>This is third section.</p></div>
+                        <div class = "collapsible-body">
+                            <div class="container">
+                                <button id="filldetails" class="btn btn-success">Ajouter une étape</button>
+                                <div id="container-stop">
+                                    {% set prototype_stop = form.stops.vars.prototype %}
+                                    <div id="prototype-stop" class="prototype-stop hide" data-nbstop="0" hidden>
+                                        <section class="form-group">
+                                            <div>
+                                                {{ form_widget(prototype_stop.lat) }}
+                                                {{ form_widget(prototype_stop.lon) }}
+                                            </div>
+                                            <div>
+                                                {{ form_label(prototype_stop.address) }}
+                                                {{ form_widget(prototype_stop.address) }}
+                                            </div>
+                                            <div>
+                                                {{ form_label(prototype_stop.title) }}
+                                                {{ form_widget(prototype_stop.title, {'attr' : {'placeholder': 'Titre de l\'étape'}}) }}
+                                            </div>
+                                            <div>
+                                                {{ form_label(prototype_stop.description) }}
+                                                {{ form_widget(prototype_stop.description, {'attr' : {'placeholder': 'Desription de l\'étape'}}) }}
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </li>
                 </ul>
+                <!-- Ajout des marqueurs sur la carte et remplissage des latitude et longitude des différents points -->
+                <div>
+                    {{ form_widget(form.duration, {'attr': {'placeholder': 'Durée en jour'}}) }}
+                </div>
+                <div>
+                    {{ form_widget(form.description, {'attr': {'placeholder': 'Description du roadtrip'}}) }}
+                </div>
+                {{ form_row(form.submit) }}
+                {{ form_end(form, {'render_rest': false}) }}
+                <br><button class="waves-effect waves-light btn blue lighten-1 full-width" onclick="codeAddress()">Chercher sur la carte</button>
             </div>
         </div>
     </div>
-    <div id="search">
-        <button class="btn btn-info" onclick="codeAddress()">Chercher sur la carte</button>
-        {{ form_start(form) }}
-            <div>
-                {{ form_label(form.stopStart) }}
-                {{ form_widget(form.stopStart.address, {'id': 'addressDep', 'attr' : {'class': 'autocomplete'}}) }}
-                {{ form_widget(form.stopStart.title, {'attr' : {'placeholder': 'Titre du départ'}}) }}
-                {{ form_widget(form.stopStart.description, {'attr' : {'placeholder': 'Description du départ'}}) }}
-                {{ form_widget(form.stopStart.lat, {'id': 'addressDeplat'}) }}
-                {{ form_widget(form.stopStart.lon, {'id': 'addressDeplon'}) }}
+
+    <div id="">
+        <div class="container">
+            <div class="row">
+                <div id="directions-panel"></div>
             </div>
-            <div>
-                {{ form_label(form.stopEnd) }}
-                {{ form_widget(form.stopEnd.address, {'id': 'addressDes', 'attr' : {'class': 'autocomplete'}}) }}
-                {{ form_widget(form.stopEnd.title, {'attr' : {'placeholder': 'Titre de la destination'}}) }}
-                {{ form_widget(form.stopEnd.description, {'attr' : {'placeholder': 'Description de la destination'}}) }}
-                {{ form_widget(form.stopEnd.lat, {'id': 'addressDeslat'}) }}
-                {{ form_widget(form.stopEnd.lon, {'id': 'addressDeslon'}) }}
-            </div>
-            <div>
-                {{ form_label(form.title) }}
-                {{ form_widget(form.title, {'attr' : {'placeholder': 'Titre du roadtrip'}}) }}
-            </div>
-            <div>
-                {{ form_label(form.description) }}
-                {{ form_widget(form.description, {'attr': {'placeholder': 'Description du roadtrip'}}) }}
-            </div>
-            <div>
-                {{ form_label(form.duration) }}
-                {{ form_widget(form.duration) }}
-            </div>
-            <button id="filldetails" class="btn btn-success">Ajouter une étape</button>
-            <div id="container-stop">
-                {% set prototype_stop = form.stops.vars.prototype %}
-                <div id="prototype-stop" class="prototype-stop hide" data-nbstop="0" hidden>
-                    <section class="form-group">
-                        <div>
-                            {{ form_widget(prototype_stop.lat) }}
-                            {{ form_widget(prototype_stop.lon) }}
-                        </div>
-                        <div>
-                            {{ form_label(prototype_stop.address) }}
-                            {{ form_widget(prototype_stop.address) }}
-                        </div>
-                        <div>
-                            {{ form_label(prototype_stop.title) }}
-                            {{ form_widget(prototype_stop.title, {'attr' : {'placeholder': 'Titre de l\'étape'}}) }}
-                        </div>
-                        <div>
-                            {{ form_label(prototype_stop.description) }}
-                            {{ form_widget(prototype_stop.description, {'attr' : {'placeholder': 'Desription de l\'étape'}}) }}
-                        </div>
-                    </section>
-                </div>
-            </div>
-            <div>
-                <!-- Ajout des marqueurs sur la carte et remplissage des latitude et longitude des différents points -->
-                {{ form_row(form.submit, {'attr' : {'disabled': 'disabled'}}) }}
-            </div>
-        {{ form_end(form, {'render_rest': false}) }}
-    <div id="directions-panel"></div>
+        </div>
     </div>
 
-    <ul>
+    {#<ul>
         <li>
             <a href="{{ path('roadtrip_index') }}" class="btn btn-info">Retour aux roadtrips</a>
         </li>
-    </ul>
+    </ul>#}
 
-</body>
+    </body>
 {% endblock %}
 
 {% block javascripts %}

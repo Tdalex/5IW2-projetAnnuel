@@ -74,6 +74,10 @@ p {
     color: white;
  }
 
+.full-width{
+    min-width: 100%;
+}
+
 .search-map{
     height: 90%;
     width: 25em;
@@ -81,7 +85,8 @@ p {
     position: absolute;
     z-index: 1;
     top: 82px;
-    left: 20px
+    left: 20px;
+    overflow: scroll;
 }.collapsible{
      border-top: none !important;
      border-right: none !important;
@@ -90,6 +95,10 @@ p {
  }.collapsible-body {
     background-color: #ffffffbf;
    }
+
+.search-map input{
+    background-color: white;
+}
 
 
 
