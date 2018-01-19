@@ -5,55 +5,63 @@
     {% stylesheets
     '@AppBundle/Resources/public/min/plugin-min.css'
     '@AppBundle/Resources/public/min/custom-min.css'
+    '@AppBundle/Resources/public/css/style.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ roadtrip.title }}</h1>
-
-    <i>Durée : {{ roadtrip.duration }}{% if roadtrip.duration == 1 %} jour{% else %} jours{% endif %}</i>
-
-    <p><b>Description : </b>{{ roadtrip.description }}</p>
-
-    <h3>Les étapes</h3>
-    {% set i = 1 %}
-    <div id="etapes">
-        {% for stop in roadtrip.stops %}
-            {% if roadtrip.stopStart == stop %}
-                <div id="depart"><b>Départ : </b>{{ stop.address }}</div>
-            {% elseif roadtrip.stopEnd == stop %}
-                <div id="destination"><b>Destination : </b>{{ stop.address }}</div>
-            {% else %}
-                <div class="etape"><b>Etape {{ i }} : </b>{{ stop.address }}</div>
-                {% set i = i+1 %}
-            {% endif %}
-        {% endfor %}
-    </div>
-
-    <ul>
-        <li>
-            <a href="{{ path('roadtrip_index') }}" class="btn btn-info">Retour aux roadtrips</a>
-        </li>
-        <li>
-            <a href="{{ path('roadtrip_edit', { 'slug': roadtrip.slug }) }}" class="btn btn-warning">Modifier</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete" class="btn btn-danger">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
-
-    <!--Footer-->
-    <footer id="contact" class="page-footer default_color scrollspy">
-        <div class="footer-copyright default_color">
-            <div class="container">
-                <p class="right">RoadTripeurs</p>
+    <div id="roadtrip-header">
+        <div class="container">
+            <div class="header">
+                <h1 class="left-align">{{ roadtrip.title }}</h1>
+                <h4 class="left-align">Durée : {{ roadtrip.duration }}{% if roadtrip.duration == 1 %} jour{% else %} jours{% endif %}</h4>
+                <div class="left-align">
+                </div>
+                <div class="row">
+                    <div class="col s12 left-align">
+                        <a class="waves-effect waves-light btn-large orange lighten-1" href="{{ path('roadtrip_edit', { 'slug': roadtrip.slug }) }}"><i class="material-icons left">edit</i>Modifier</a>
+                        {{ form_start(delete_form, {'attr': {'class': 'float-button'}}) }}
+                            <button type="submit" class="waves-effect waves-light btn-large red darken-2"><i class="material-icons left">delete</i> Supprimer</button>
+                        {{ form_end(delete_form) }}
+                    </div>
+                </div>
             </div>
         </div>
-    </footer>
+    </div>
+
+    <div id="roadtrip-content">
+        <div class="container">
+            <div class="description">
+                <div class="row">
+                    <div class="col s8">
+                        <h2>Description</h2>
+                        <p>{{ roadtrip.description }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="steps">
+                <div class="row">
+                    <div class="col s8">
+                        <h2>Etapes</h2>
+                        {% set i = 1 %}
+                        {% for stop in roadtrip.stops %}
+                            {% if roadtrip.stopStart == stop %}
+                                <div id="depart"><strong>Départ : </strong>{{ stop.address }}</div>
+                            {% elseif roadtrip.stopEnd == stop %}
+                                <div id="destination"><strong>Destination : </strong>{{ stop.address }}</div>
+                            {% else %}
+                                <div class="etape"><strong>Etape {{ i }} : </strong>{{ stop.address }}</div>
+                                {% set i = i+1 %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block javascripts %}
