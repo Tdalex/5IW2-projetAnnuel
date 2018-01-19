@@ -41,9 +41,12 @@
                     </div>
                 </nav>
             </div>
-            {# rajouter le contrôle sur le user: si il est connecter, affiche le bouton create, sinon juste le tableau #}
             <div class="col s6">
-                <a class="waves-effect waves-light btn-large blue darken-3" href="{{ path('roadtrip_new') }}"><i class="material-icons right">add</i>Ou créez Votre propre Roadtrip</a>
+                {% if app.session.get('currentUser') is not null %}
+                    <a class="waves-effect waves-light btn-large blue darken-3" href="{{ path('roadtrip_new') }}"><i class="material-icons right">add</i>Ou créez Votre propre Roadtrip</a>
+                {% else %}
+                    <a class="waves-effect waves-light btn-large blue darken-3" href="{{ path('user_connectForm') }}"><i class="material-icons right">add</i>Ou créez Votre propre Roadtrip</a>
+                {% endif %}
             </div>
         </div>
         <div class="row">
@@ -69,44 +72,6 @@
             {% endfor %}
         </div>
     </div>
-
-    {#{{ render(controller('AppBundle:Roadtrip:new')) }}#}
-
-    {#<table id="roadtrip_list">
-        <thead>
-            <tr>
-                <th>Départ</th>
-                <th>Arrivée</th>
-                <th>Titre</th>
-                <th>Description</th>
-                <th>Durée (en jours)</th>
-                <th>Nombre d'étapes intermédiaires</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for roadtrip in roadtrips %}
-            <tr>
-                <td>{% if roadtrip.stopStart %}{{ roadtrip.stopStart.address }}{% else %}N/A{% endif %}</td>
-                <td>{% if roadtrip.stopEnd %}{{ roadtrip.stopEnd.address }}{% else %}N/A{% endif %}</td>
-                <td>{{ roadtrip.title }}</td>
-                <td>{{ roadtrip.description }}</td>
-                <td>{{ roadtrip.duration }}</td>
-                <td>{% if roadtrip.stops|length == 0 %}0{% else %}{{ roadtrip.stops|length-2 }}{% endif %}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a class="btn btn-info" href="{{ path('roadtrip_show', { 'slug': roadtrip.slug }) }}">Consulter</a>
-                        </li>
-                        <li>
-                            <a class="btn btn-warning" href="{{ path('roadtrip_edit', { 'slug': roadtrip.slug }) }}">Modifier</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>#}
 
 {% endblock %}
 

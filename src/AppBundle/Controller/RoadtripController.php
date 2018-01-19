@@ -58,8 +58,9 @@ class RoadtripController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $roadtrip = new Roadtrip();
+        $user = $request->getSession()->get('currentUser')['email'];
+        $owner = $em->getRepository('AppBundle:User')->findOneBy(array('email' => $user));
         $form = $this->createForm('AppBundle\Form\RoadtripType', $roadtrip, array('action' => $this->generateUrl('roadtrip_new')));
-        //dump($roadtrip->getId());die;
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
@@ -84,10 +85,8 @@ class RoadtripController extends Controller
                 dump($errors);
             }
             else {
-                //dump($request->request->all());die;
                 $roadtrip->setIsRemoved(false);
-                //$roadtrip->getStopStart()->setRoadTripStop($roadtrip->getId());
-                //dump($roadtrip);die;
+                $roadtrip->setOwner($owner);
                 $em->persist($roadtrip);
                 $em->flush();
 

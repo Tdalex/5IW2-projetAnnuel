@@ -14,8 +14,13 @@
                 <a href="{{ path('homepage') }}" id="logo-container" class="brand-logo">RoadTripeurs</a>
                 <ul class="right hide-on-med-and-down">
                     <li><a href="{{ path('roadtrip_index') }}">Roadtrips</a></li>
-                    <li><a href="{{ path('user_register') }}">Inscription</a></li>
-                    <li><a href="{{ path('fos_user_security_login') }}">Connexion</a></li>
+                    {% if app.session.get('currentUser') is not null %}
+                        <li><a href="{{ path('user_index') }}">Profil</a></li>
+                        <li><a href="{{ path('user_disconnect') }}">Déconnexion</a></li>
+                    {% else %}
+                        <li><a href="{{ path('user_register') }}">Inscription</a></li>
+                        <li><a href="{{ path('user_connectForm') }}">Connexion</a></li>
+                    {% endif %}
                 </ul>
                 <ul id="nav-mobile" class="side-nav">
                     <li><a href="#">Roadtrips</a></li>
