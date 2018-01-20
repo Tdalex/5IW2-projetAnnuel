@@ -2,15 +2,17 @@
 
 
 {% block body %}
-    <div class="container">
-        <div id="actions">
-            <div class="row">
-                <div class="col s12 left-align">
-                    <a class="waves-effect waves-light btn orange lighten-1" href="{{ path('modify_my_account.html.twig') }}"><i class="material-icons left">edit</i>Modifier mes informations</a>
-                </div>
+    <div id="profile" class="container">
+        <div class="header-profile">
+            <div id="name" class="center-align">
+                <img class="" src="{{ asset('bundles/app/images/profile.jpg') }}" />
+                <h2 class="">{{ user[0].firstName }} {{ user[0].lastName }}</h2>
             </div>
         </div>
-        <div id="mes_informations">
+        <div class="edit-button right-align">
+            <a class="waves-effect waves-light btn blue lighten-2" href="{{ path('modify_my_account.html.twig') }}"><i class="material-icons right">mode_edit</i>Modifier</a>
+        </div>
+        <div class="content-profile">
             <div class="row">
                 <div class="col s8">
                     <h4>Mes informations</h4>
@@ -30,7 +32,7 @@
                 </div>
             </div>
         </div>
-        <div id="mes_roadtrips">
+        <div class="roadtrip-profile content-profile">
             <div class="row">
                 <div class="col s8">
                     <h4>Mes roadtrips</h4>
@@ -63,11 +65,8 @@
                 </div>
             </div>
         </div>
-
-        <div class="right-align">
-            <a href="{{ path('roadtrip_index') }}" class="btn btn-info">Retour à l'accueil</a>
-        </div>
     </div>
+
 {% endblock %}
 
 

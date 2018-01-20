@@ -1,65 +1,71 @@
 {% extends 'AppBundle::base.html.twig' %}
 
+
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col s12 m8 offset-m2 l6 offset-l3">
-                <h1 class="center-align">Modification des informations</h1>
-                {{ form_start(edit_form, {'attr': {'class': 'form-horizontal'}}) }}
-                {{ form_errors(edit_form) }}
+    <div id="register">
+        <div class="container">
+            <div class="row">
+                <div class="content-register col s12 m8 offset-m2 l6 offset-l3">
+                    <h3 class="center-align">Modification profile</h3>
+                    {{ form_start(edit_form, {'attr': {'class': 'form-horizontal'}}) }}
+                    <div class="center-align">
+                        {{ form_errors(edit_form.gender) }}
+                        {{ form_widget(edit_form.gender) }}
+                    </div>
+                    <div class="center-align col 6">
+                        {{ form_errors(edit_form.lastName) }}
+                        {{ form_row(edit_form.lastName) }}
+                    </div>
+                    <div class="center-align col 6">
+                        {{ form_errors(edit_form.firstName) }}
+                        {{ form_row(edit_form.firstName) }}
+                    </div>
+                    <div class="center-align col 6">
+                        {{ form_errors(edit_form.email) }}
+                        {{ form_row(edit_form.email) }}
+                    </div>
+                    <div class="center-align col 6">
+                        {{ form_errors(edit_form.birthdate) }}
+                        {{ form_row(edit_form.birthdate) }}
+                    </div>
+                    <div class="center-align">
+                        {{ form_errors(edit_form.plainPassword) }}
+                        {{ form_row(edit_form.plainPassword) }}
+                    </div>
 
-                <div class="center-align">
-                    {{ form_errors(edit_form.gender) }}
-                    {{ form_widget(edit_form.gender) }}
-                </div>
-                <div>
-                    {{ form_errors(edit_form.lastName) }}
-                    {{ form_row(edit_form.lastName) }}
-                </div>
-                <div>
-                    {{ form_errors(edit_form.firstName) }}
-                    {{ form_row(edit_form.firstName) }}
-                </div>
-                <div>
-                    {{ form_errors(edit_form.email) }}
-                    {{ form_row(edit_form.email) }}
-                </div>
-                <div>
-                    {{ form_errors(edit_form.birthdate) }}
-                    {{ form_row(edit_form.birthdate) }}
-                </div>
-                <div>
-                    {{ form_errors(edit_form.plainPassword) }}
-                    {{ form_row(edit_form.plainPassword) }}
-                </div>
+                    <div class="center-align">
+                        <button class="btn waves-effect waves-light full-width" type="submit" name="action">Valider
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
 
-                <div class="center-align">
-                    <button class="btn waves-effect waves-light" type="submit" name="action">Valider
-                        <i class="material-icons right">send</i>
-                    </button>
+                    {{ form_end(edit_form) }}
                 </div>
-
-                <script>
-                    $('.datepicker').pickadate({
-                        selectMonths: true,
-                        selectYears: 100,
-                        closeOnSelect: false,
-                        formatSubmit: 'yyyy-mm-dd',
-                        max: true,
-                        today: '',
-                        clear: '',
-                        close: '',
-                        monthsFull: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre']
-                    });
-                </script>
-
-                {{ form_end(edit_form) }}
+                <div class="button-retour center-align col s12 m8 offset-m2 l6 offset-l3">
+                    <a href="{{ path('user_index') }}" class="btn waves-effect waves-light full-width light-blue">Retour au profil</a>
+                </div>
             </div>
         </div>
-        <div class="right-align">
-            <a href="{{ path('user_index') }}" class="btn btn-info">Retour au profil</a>
-        </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+    <script>
+        $('.datepicker').pickadate({
+            selectMonths: true,
+            selectYears: 100,
+            closeOnSelect: false,
+            formatSubmit: 'yyyy-mm-dd',
+            max: true,
+            today: '',
+            clear: '',
+            close: '',
+            monthsFull: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Decembre']
+        });
+    </script>
 {% endblock %}
 
 
