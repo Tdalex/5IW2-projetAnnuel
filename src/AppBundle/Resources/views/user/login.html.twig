@@ -2,44 +2,35 @@
 
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col s12 m8 offset-m2 l6 offset-l3">
-                <h1 class="center-align">Connexion</h1>
-                <div>
-                </div>
-                <div>
-                    <div class="row">
-                        <form action="{{ path("user_connect") }}" method="post">
-                            <div class="col s12">
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input type="email" id="email" name="email" required="required" class="validate"/>
-                                        <label for="email">Email</label>
-                                    </div>
-                                    <div class="input-field col s12">
-                                        <input id="password" name="password" type="password" class="validate" required="required">
-                                        <label for="password">Mot de passe</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col s6">
-                                <div class="full-width">
-                                    <button class="btn waves-effect waves-light" id="_submit" name="_submit" type="submit" name="action">Se connecter
-                                        <i class="material-icons right">send</i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col s6">
-                                <div class="full-width">
-                                    <a class="waves-effect waves-light btn social facebook" href="{{ path('user_login_fb') }}">
-                                        <i class="fa fa-facebook"></i>
-                                        Se connecter avec Facebook
-                                    </a>
-                                </div>
-                            </div>
-                        </form>
+    <div id="register">
+        <div class="container">
+            <div class="row">
+                <div class="content-login col s12 m8 offset-m2 l6 offset-l3">
+                    <h1 class="center-align">Connexion</h1>
+                    <a class="waves-effect waves-light btn social facebook full-width" href="{{ path('user_login_fb') }}">
+                        <i class="fa fa-facebook"></i>
+                        Se connecter avec Facebook
+                    </a>
+                    <div class="row center-align">
+                        <h4>OU</h4>
                     </div>
+                    <form action="{{ path("user_connect") }}" method="post">
+                        <div class="full-width">
+                                <div class="input-field col s12">
+                                    <input type="email" id="email" name="email" required="required" class="validate"/>
+                                    <label for="email">Email</label>
+                                </div>
+                                <div class="input-field col s12">
+                                    <input id="password" name="password" type="password" class="validate" required="required">
+                                    <label for="password">Mot de passe</label>
+                                </div>
+                        </div>
+                        <div class="col s12">
+                            <button class="btn waves-effect waves-light full-width" id="_submit" name="_submit" type="submit" name="action">Se connecter
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -48,10 +39,10 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script>
-        $('.page-footer').css('position','absolute');
-        $('.page-footer').css('width','100%');
-        $('.page-footer').css('bottom','0');
-    </script>
+    {#<script>#}
+        {#$('.page-footer').css('position','absolute');#}
+        {#$('.page-footer').css('width','100%');#}
+        {#$('.page-footer').css('bottom','0');#}
+    {#</script>#}
 
 {% endblock %}
