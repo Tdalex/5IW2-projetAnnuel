@@ -19,6 +19,14 @@
                 <h4 class="left-align">Durée : {{ roadtrip.duration }}{% if roadtrip.duration == 1 %} jour{% else %} jours{% endif %}</h4>
                 <div class="left-align">
                 </div>
+                <div class="row">
+                    <div class="col s12 left-align">
+                        <a class="waves-effect waves-light btn-large orange lighten-1" href="{{ path('roadtrip_edit', { 'slug': roadtrip.slug }) }}"><i class="material-icons left">edit</i>Modifier</a>
+                        {{ form_start(delete_form, {'attr': {'class': 'float-button'}}) }}
+                        <button type="submit" class="waves-effect waves-light btn-large red darken-2"><i class="material-icons left">delete</i> Supprimer</button>
+                        {{ form_end(delete_form) }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

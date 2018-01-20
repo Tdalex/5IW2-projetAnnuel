@@ -23,13 +23,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="center-align">
-                                <button class="btn waves-effect waves-light" id="_submit" name="_submit" type="submit" name="action">Se connecter
-                                    <i class="material-icons right">send</i>
-                                </button>
-                                <a class="waves-effect waves-light btn social facebook" href="{{ path('user_login_fb') }}">
-                                    <i class="fa fa-facebook"></i>
-                                Se connecter avec Facebook</a>
+                            <div class="col s6">
+                                <div class="full-width">
+                                    <button class="btn waves-effect waves-light" id="_submit" name="_submit" type="submit" name="action">Se connecter
+                                        <i class="material-icons right">send</i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col s6">
+                                <div class="full-width">
+                                    <a class="waves-effect waves-light btn social facebook" href="{{ path('user_login_fb') }}">
+                                        <i class="fa fa-facebook"></i>
+                                        Se connecter avec Facebook
+                                    </a>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -37,4 +44,14 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('.page-footer').css('position','absolute');
+        $('.page-footer').css('width','100%');
+        $('.page-footer').css('bottom','0');
+    </script>
+
 {% endblock %}
