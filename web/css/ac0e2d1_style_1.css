@@ -13,6 +13,10 @@ html, body {
     text-align: center;
 }
 
+#index-banner{
+    background-image: url("/bundles/app/images/map2.png") !important;
+}
+
 #index-banner .opacity{
     background-color: rgba(34, 150, 243, 0.55);
     min-height: 632px;
@@ -119,6 +123,10 @@ p {
     background-color: #ffffffbf;
    }
 
+  .search-map h4{
+      color: white;
+  }
+
 .search-map input, textarea{
     color: white;
 }
@@ -157,9 +165,11 @@ p {
     height: 270px;
     -webkit-background-size: cover;
     color : white;
-}.name{
+}
+.header-profile.name{
      margin: 15px;
- }img{
+ }
+.header-profile img{
        width: 100px;
        height: 100px;
        position: relative;
@@ -170,7 +180,6 @@ p {
        -o-border-radius: 50%;
        border-radius: 50%;
        margin: 15px 0 0;
-
    }
 
 #profile .edit-button{
