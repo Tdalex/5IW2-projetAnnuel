@@ -40,7 +40,7 @@
                         <p><i>Vous n'avez pas encore créé de roadtrip. Retournez à la liste des roadtrips pour pouvoir partager votre propre aventure !</i></p>
                     {% else %}
                         {% for roadtrip in roadtrips %}
-                            <div class="col s12 m4 l4">
+                            <div class="col s12 m6 l6">
                                 <div class="card">
                                     <div class="card-image waves-effect waves-block waves-light">
                                         <img class="activator" src="{{ asset('bundles/app/images/roadtrip.jpg') }}" alt="roadtrip">
@@ -55,8 +55,6 @@
                                         <p>Durée : {{ roadtrip.duration }} jours</p>
                                         <p>Etapes : {% if roadtrip.stops|length == 0 %}0{% else %}{{ roadtrip.stops|length-2 }}{% endif %}</p>
                                         <p class="center-align"><a class="waves-effect blue lighten-1 btn" href="{{ path('roadtrip_show', { 'slug': roadtrip.slug }) }}">Voir ce roadtrip</a></p>
-                                        <p class="center-align"><a class="waves-effect orange lighten-1 btn" href="{{ path('roadtrip_edit', { 'slug': roadtrip.slug }) }}">Modifier ce roadtrip</a></p>
-                                        <p class="center-align"><a class="waves-effect red lighten-1 btn" href="{{ path('roadtrip_delete', { 'slug': roadtrip.slug }) }}">Supprimer ce roadtrip</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -69,5 +67,18 @@
 
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@AppBundle/Resources/public/min/plugin-min.js'
+    '@AppBundle/Resources/public/min/custom-min.js'
+    '@AppBundle/Resources/public/js/jquery.dataTables.min.js'
+    '@AppBundle/Resources/public/js/dataTables.bootstrap4.min.js'
+    '@AppBundle/Resources/public/js/configDatatable.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places&callback=initAutocomplete"></script>
+{% endblock %}
 
 
