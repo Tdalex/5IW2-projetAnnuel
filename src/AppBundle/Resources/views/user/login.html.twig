@@ -14,6 +14,11 @@
                     <div class="row center-align">
                         <h4>OU</h4>
                     </div>
+                    {% for flashMessage in app.session.flashbag.get('error') %}
+                        <div class="row center-align">
+                            <h4>{{ flashMessage }}</h4>
+                        </div>
+                    {% endfor %}
                     <form action="{{ path("user_connect") }}" method="post">
                         <div class="full-width">
                                 <div class="input-field col s12">

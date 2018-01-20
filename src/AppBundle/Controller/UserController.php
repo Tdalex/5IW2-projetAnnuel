@@ -156,7 +156,6 @@ class UserController extends Controller
                        ->setParameter('email', $email);
 
         $user   = $query->getOneOrNullResult();
-        $errors = array();
 
         if ($user) {
             $encoder_service = $this->get('security.encoder_factory');
@@ -181,13 +180,13 @@ class UserController extends Controller
                 $session->set('currentUser', $currentUser);
                 return $this->redirectToRoute('user_index');
             } else {
-                $errors[] = "Email ou mot de passe incorrect";
+                $this->addFlash('error', 'Email ou mot de passe incorrect');
             }
         } else {
-            $errors[] = "Email ou mot de passe incorrect";
+            $this->addFlash('error', 'Email ou mot de passe incorrect');
         }
 
-        return $this->redirectToRoute('roadtrip_index');
+        return $this->redirectToRoute('user_connectForm');
     }
 
      /**
