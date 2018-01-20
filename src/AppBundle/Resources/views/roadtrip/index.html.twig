@@ -45,7 +45,7 @@
                 {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
                     <a class="waves-effect waves-light btn-large blue darken-3" href="{{ path('roadtrip_new') }}"><i class="material-icons right">add</i>Ou créez Votre propre Roadtrip</a>
                 {% else %}
-                    <a class="waves-effect waves-light btn-large blue darken-3" href="{{ path('user_connectForm') }}">Se connecter</a>
+                    <a class="waves-effect waves-light btn-large blue darken-3" href="{{ path('user_connectForm') }}">Ou créez Votre propre Roadtrip</a>
                 {% endif %}
             </div>
         </div>
