@@ -270,6 +270,26 @@ class RoadtripController extends Controller
     }
 
     /**
+     * Deletes a roadtrip entity.
+     *
+     * @Route("/{slug}", name="roadtrip_delete")
+     * @Method("DELETE")
+     */
+    public function removeAction(Request $request, Roadtrip $roadtrip)
+    {
+        $form = $this->createDeleteForm($roadtrip);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $roadtrip = setIsRemoved(1);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('roadtrip_index');
+    }
+
+    /**
      * Creates a form to delete a roadtrip entity.
      *
      * @param Roadtrip $roadtrip The roadtrip entity

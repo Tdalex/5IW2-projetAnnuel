@@ -1,0 +1,29 @@
+<!--filtre-->
+<div id="search" class="row">
+    <form id="myForm" method="POST" action="{{ path('roadtrip_index') }}">
+        <div class="col s4">
+            <div class="input-field">
+                <i class="material-icons prefix">search</i>
+                <input name="filters[address]" id="search" type="text" class="validate">
+                <label for="search">Mot clé</label>
+            </div>
+        </div>
+        <div class="col s3">
+            <p class="range-field">
+                <label>Durée en jours</label>
+                <input type="text" id="durations" value="" name="filters[durations]" />
+            </p>
+        </div>
+        <div class="col s3">
+            <p class="range-field">
+                <label>Nombre de stops</label>
+                <input type="text" id="nbstops" value="" name="filters[nbStops]" />
+            </p>
+        </div>
+        <div class="col s2">
+            <a class="btn-floating btn-large red" onclick="submit()">
+                <i class="large material-icons">search</i>
+            </a>
+        </div>
+    </form>
+</div>

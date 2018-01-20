@@ -37,36 +37,13 @@
 
     <!--content-->
     <div class="container">
-        <!--filtre-->
-        <div id="search" class="row">
-            <form id="myForm" method="POST" action="{{ path('roadtrip_index') }}">
-                <div class="col s4">
-                    <div class="input-field">
-                        <i class="material-icons prefix">search</i>
-                        <input name="filters[address]" id="search" type="text" class="validate">
-                        <label for="search">Mot clé</label>
-                    </div>
-                </div>
-                <div class="col s3">
-                    <p class="range-field">
-                        <label>Durée</label>
-                        <input type="text" id="durations" value="" name="filters[durations]" />
-                    </p>
-                </div>
-                <div class="col s3">
-                    <p class="range-field">
-                        <label>Nombre de stops</label>
-                        <input type="text" id="nbstops" value="" name="filters[nbStops]" />
-                    </p>
-                </div>
-                <div class="col s2">
-                    <a class="btn-floating btn-large red" onclick="submit()">
-                        <i class="large material-icons">search</i>
-                    </a>
-                </div>
-            </form>
-        </div>
+        {{ include('@AppBundle/Resources/views/includes/filtres.html.twig') }}
 
+        {% if roadtrips is empty %}
+            <div class="container">
+                <h4 class="center-align">Aucun road trip ne correspond à votre recherche</h4>
+            </div>
+        {% else %}
         <div class="row">
             {% for roadtrip in roadtrips %}
                 <div class="col s12 m4 l4">
@@ -89,6 +66,7 @@
                 </div>
             {% endfor %}
         </div>
+        {% endif %}
     </div>
 
 
@@ -105,41 +83,9 @@
     '@AppBundle/Resources/public/js/configDatatable.js'
     '@AppBundle/Resources/public/slider/js/ion-rangeSlider/ion.rangeSlider.js'
     '@AppBundle/Resources/public/slider/js/ion-rangeSlider/ion.rangeSlider.min.js'
+    '@AppBundle/Resources/public/js/filtres.js'
     %}
     <script src="{{ asset_url }}"></script>
-    <script>
-        $(function () {
-            $("#durations").ionRangeSlider({
-                hide_min_max: true,
-                keyboard: true,
-                min: 0,
-                max: 30,
-                from: 10,
-                to: 20,
-                type: 'double',
-                step: 1,
-                suffix: "J",
-                grid: true
-            });
-
-            $("#nbstops").ionRangeSlider({
-                hide_min_max: true,
-                keyboard: true,
-                min: 0,
-                max: 30,
-                from: 10,
-                to: 20,
-                type: 'double',
-                step: 1,
-                suffix: "J",
-                grid: true
-            });
-        });
-
-        function submit() {
-            document.getElementById("myForm").submit();
-        };
-    </script>
 
     {% endjavascripts %}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places&callback=initAutocomplete"></script>

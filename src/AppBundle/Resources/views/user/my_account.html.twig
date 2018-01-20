@@ -34,13 +34,12 @@
         </div>
         <div class="roadtrip-profile content-profile">
             <div class="row">
-                <div class="col s8">
                     <h4>Mes roadtrips</h4>
                     {% if roadtrips is empty %}
                         <p><i>Vous n'avez pas encore créé de roadtrip. Retournez à la liste des roadtrips pour pouvoir partager votre propre aventure !</i></p>
                     {% else %}
                         {% for roadtrip in roadtrips %}
-                            <div class="col s12 m6 l6">
+                            <div class="col s12 m4 l4">
                                 <div class="card">
                                     <div class="card-image waves-effect waves-block waves-light">
                                         <img class="activator" src="{{ asset('bundles/app/images/roadtrip.jpg') }}" alt="roadtrip">
@@ -60,7 +59,6 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-                </div>
             </div>
         </div>
     </div>

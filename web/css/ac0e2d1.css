@@ -9,6 +9,10 @@ html, body {
     height: 91%;
 }
 
+#nav_f a{
+    text-decoration: none;
+}
+
 #search {
     text-align: center;
 }
@@ -34,6 +38,12 @@ html, body {
     background-image: url("/bundles/app/images/showRoadtrip.jpeg");
     text-align: center;
     color: white;
+}
+
+#contactez-nous{
+    padding: 50px;
+    border: solid 1px rgba(51,51,51,0.12);
+    background-color: #fafafa;
 }
 
 #register{

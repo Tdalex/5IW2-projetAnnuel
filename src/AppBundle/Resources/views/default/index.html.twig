@@ -6,6 +6,9 @@
     '@AppBundle/Resources/public/min/plugin-min.css'
     '@AppBundle/Resources/public/min/custom-min.css'
     '@AppBundle/Resources/public/css/jquery-ui.min.css'
+    '@AppBundle/Resources/public/slider/css/ion.rangeSlider.css'
+    '@AppBundle/Resources/public/slider/css/ion.rangeSlider.skinFlat.css'
+    '@AppBundle/Resources/public/slider/css/normalize.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
@@ -39,30 +42,7 @@
                     <h2 class="center header text_h2"> Créer votre propre aventure <span class="span_h2"> Organisez votre voyage  </span>Trouver les bons plans. </h2>
                 </div>
                 <!-- Faire la recherche en foncion du départ et de la destination (cf. CEMM) -->
-                <form method="POST" action="{{ path('roadtrip_index') }}">
-                    <div id="search" class="row">
-                        <div class="col s6">
-                            <div class="input-field">
-                                <i class="material-icons prefix">search</i>
-                                <input name="filters[address]" id="search" type="text" class="validate">
-                                <label for="search">Recherche</label>
-                            </div>
-                        </div>
-                        <div class="col s3">
-                            <p class="range-field">
-                                <label>Durée</label>
-                                <input  name="filters[durations]" type="range" id="durations" min="{{ filters.durations.min }}" max="{{ filters.durations.max }}" />
-                            </p>
-                        </div>
-                        <div class="col s3">
-                            <p class="range-field">
-                                <label>Nombre d'étapes</label>
-                                <input name="filters[nbStops]" type="range" id="durations" min="{{ filters.nbStops.min }}" max="{{ filters.nbStops.max }}" />
-                            </p>
-                        </div>
-                    </div>
-                    <button type="submit">valider</button>
-                </form>
+                {{ include('@AppBundle/Resources/views/includes/filtres.html.twig') }}
             </div>
         </div>
     </div>
@@ -77,30 +57,32 @@
         <div class="container">
             <h2 class="header text_b">Contactez-nous</h2>
             <form role="form" class="form-horizontal">
-                <div class="row">
-                    <div class="input-field col s6">
-                        <label for="contact_name">Nom</label>
-                        <input id="contact_name" type="text" class="validate">
+                <div id="contactez-nous">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <label for="contact_name">Nom</label>
+                            <input id="contact_name" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s6">
+                            <label for="contact_subject">Sujet</label>
+                            <input id="contact_subject" type="text" class="validate">
+                        </div>
                     </div>
-                    <div class="input-field col s6">
-                        <label for="contact_subject">Sujet</label>
-                        <input id="contact_subject" type="text" class="validate">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <label for="contact_fname">Prénom</label>
+                            <input id="contact_fname" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s6">
+                            <label for="contact_mail">Mail</label>
+                            <input id="contact_mail" type="email" class="validate">
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s6">
-                        <label for="contact_fname">Prénom</label>
-                        <input id="contact_fname" type="text" class="validate">
-                    </div>
-                    <div class="input-field col s6">
-                        <label for="contact_mail">Mail</label>
-                        <input id="contact_mail" type="email" class="validate">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <label for="contact_message">Message</label>
-                        <textarea id="contact_message" class="materialize-textarea" placeholder="Votre message ..."></textarea>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <label for="contact_message">Message</label>
+                            <textarea id="contact_message" class="materialize-textarea" placeholder="Votre message ..."></textarea>
+                        </div>
                     </div>
                 </div>
                 <div class="input-field col s12 right-align">
@@ -122,11 +104,13 @@
     '@AppBundle/Resources/public/js/contactUs.js'
     '@AppBundle/Resources/public/js/jquery-3.2.1.min.js'
     '@AppBundle/Resources/public/js/materialize.min.js'
-    '@AppBundle/Resources/public/js/bootstrap.min.js'
-    '@AppBundle/Resources/public/js/googleMap.js'
     '@AppBundle/Resources/public/js/form.js'
     '@AppBundle/Resources/public/js/app.js'
+    '@AppBundle/Resources/public/slider/js/ion-rangeSlider/ion.rangeSlider.js'
+    '@AppBundle/Resources/public/slider/js/ion-rangeSlider/ion.rangeSlider.min.js'
+    '@AppBundle/Resources/public/js/filtres.js'
     %}
     <script src="{{ asset_url }}"></script>
+    <script>$('.parallax').parallax();</script>
     {% endjavascripts %}
 {% endblock %}
