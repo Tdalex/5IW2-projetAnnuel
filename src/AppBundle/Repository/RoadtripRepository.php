@@ -23,21 +23,32 @@ class RoadtripRepository extends EntityRepository{
 	public function search($filters)
 	{
 		$query = $this->createQueryBuilder('r')
-					  ->innerJoin('r.stopStart', 'dep')
-					  ->innerJoin('r.stopEnd', 'dest');
+					  ->where('r.isRemoved = false');
 
-		if(isset($filters['duration']) && !empty($duration['duration'])){
-
+		if(isset($filters['duration']) && !empty($filters['duration'])){
+			$query->andWhere('r.duration >= :minDuration')
+					->andWhere('r.duration <= :maxDuration')
+					->setParameter('minDuration', $filters['duration']['min'])
+					->setParameter('maxDuration', $filters['duration']['max']);
 		}
 
-		if(isset($filters['tag'])){
+		if(isset($filters['nbStops']) && !empty($filters['nbStops'])){
+			$query->andWhere('count(r.stops) >= :minNbStops')
+					->andWhere('count(r.stops) <= :maxNbStops')
+					->setParameter('minNbStops', $filters['nbStops']['min'])
+					->setParameter('maxNbStops', $filters['nbStops']['max']);
+		}
 
+		if(isset($filters['address'])){
+			$query->leftJoin('r.stops', 's')
+				->andWhere('s.address like :address')
+				->setParameter('address', '%'.$filters['address']. '%');
 		}
 
 		if(isset($filters['order'])){
-			$query->orderBy('r.'. $duration['order'], 'ASC');
+			$query->orderBy('r.'. $filters['order'], 'ASC');
 		}else{
-			$query->orderBy('r.title', 'ASC');
+			$query->orderBy('r.createdAt', 'DESC');
 		}
 
 
