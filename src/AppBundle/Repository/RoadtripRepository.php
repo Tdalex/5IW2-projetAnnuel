@@ -17,7 +17,7 @@ class RoadtripRepository extends EntityRepository{
 				->orderBy('a.title', 'ASC')
 				->getQuery();
 
-				return $query->getResult();
+		return $query->getResult();
 	}
 
 	public function search($filters)
@@ -26,7 +26,27 @@ class RoadtripRepository extends EntityRepository{
 				->orderBy('a.title', 'ASC')
 				->getQuery();
 
-				return $query->getResult();
+		return $query->getResult();
+	}
+
+	public function findExtremDuration()
+	{
+		$query = $this->createQueryBuilder('a')
+				 ->select('a.duration')
+				 ->orderBy('a.duration','ASC');
+
+		return $query->getQuery()->getResult();
+	}
+
+	public function findExtremNbStops()
+	{
+		$query = $this->createQueryBuilder('a')
+				 ->leftJoin('a.stops', 's')
+				 ->select('count(s) as nbStops')
+				 ->groupBy('a.id')
+				 ->orderBy('nbStops','ASC');
+
+		return $query->getQuery()->getResult();
 	}
 
 	public function searchRtDepDest($dep, $dest) {
