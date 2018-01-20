@@ -86,9 +86,6 @@ p {
     margin-right: 10px;
 }
 
-.range-field{
-    padding-top: 19px;
-}
 #search nav {
     background-color: #2296f3 !important;
     margin-bottom: 2em;
@@ -103,9 +100,6 @@ p {
 }
 
 #search a{
-    width: 100%;
-    height: 65px;
-    padding: 0.5em;
     text-decoration:none;
 }
 #search a:hover{

@@ -7,6 +7,9 @@
     '@AppBundle/Resources/public/min/custom-min.css'
     '@AppBundle/Resources/public/css/jquery.dataTables.min.css'
     '@AppBundle/Resources/public/css/dataTables.bootstrap4.min.css'
+    '@AppBundle/Resources/public/slider/css/ion.rangeSlider.css'
+    '@AppBundle/Resources/public/slider/css/ion.rangeSlider.skinFlat.css'
+    '@AppBundle/Resources/public/slider/css/normalize.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
@@ -18,7 +21,7 @@
         <div class="container">
             <div class="row">
                 <div  class="col s12">
-                    <h2 class="center header text_h2"> <span class="span_h2"> Envie de voyage ? </span> Regardez et trouvez votre <span class="span_h2"> bonheur </span> parmi tous ces <span class="span_h2">roadtrips</span>.</h2>
+                    <h2 class="center header text_h2"> <span class="span_h2"> Envie de voyage ? </span> Cherchez et trouvez votre <span class="span_h2"> bonheur </span> parmi tous ces <span class="span_h2">roadtrips</span>.</h2>
                 </div>
             </div>
         </div>
@@ -37,31 +40,32 @@
         <!--filtre-->
 
         <div id="search" class="row">
-            <div class="col s6">
-                <form>
+            <form>
+                <div class="col s4">
                     <div class="input-field">
                         <i class="material-icons prefix">search</i>
                         <input id="search" type="text" class="validate">
-                        <label for="search">Recherche</label>
+                        <label for="search">Mot clé</label>
                     </div>
-                </form>
-            </div>
-            <div class="col s3">
-                <form action="#">
+                </div>
+                <div class="col s3">
                     <p class="range-field">
                         <label>Durée</label>
-                        <input type="range" id="durations" min="30" max="100" />
+                        <input type="text" id="duration" value="" name="duration" />
                     </p>
-                </form>
-            </div>
-            <div class="col s3">
-                <form action="#">
+                </div>
+                <div class="col s3">
                     <p class="range-field">
                         <label>Nombre de stops</label>
-                        <input type="range" id="durations" min="30" max="100" />
+                        <input type="text" id="nbsteps" value="" name="nbsteps" />
                     </p>
-                </form>
-            </div>
+                </div>
+                <div class="col s2">
+                    <a class="btn-floating btn-large red">
+                        <i class="large material-icons">search</i>
+                    </a>
+                </div>
+            </form>
         </div>
         <div class="row">
             {% for roadtrip in roadtrips %}
@@ -87,6 +91,8 @@
         </div>
     </div>
 
+
+
 {% endblock %}
 
 {% block javascripts %}
@@ -97,8 +103,39 @@
     '@AppBundle/Resources/public/js/jquery.dataTables.min.js'
     '@AppBundle/Resources/public/js/dataTables.bootstrap4.min.js'
     '@AppBundle/Resources/public/js/configDatatable.js'
+    '@AppBundle/Resources/public/slider/js/ion-rangeSlider/ion.rangeSlider.js'
+    '@AppBundle/Resources/public/slider/js/ion-rangeSlider/ion.rangeSlider.min.js'
     %}
     <script src="{{ asset_url }}"></script>
+    <script>
+        $(function () {
+            $("#duration").ionRangeSlider({
+                hide_min_max: true,
+                keyboard: true,
+                min: 0,
+                max: 30,
+                from: 10,
+                to: 20,
+                type: 'double',
+                step: 1,
+                suffix: "J",
+                grid: true
+            });
+
+            $("#nbsteps").ionRangeSlider({
+                hide_min_max: true,
+                keyboard: true,
+                min: 0,
+                max: 30,
+                from: 10,
+                to: 20,
+                type: 'double',
+                step: 1,
+                suffix: "J",
+                grid: true
+            });
+        });
+    </script>
 
     {% endjavascripts %}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places&callback=initAutocomplete"></script>
