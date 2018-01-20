@@ -22,11 +22,26 @@ class RoadtripRepository extends EntityRepository{
 
 	public function search($filters)
 	{
-		$query = $this->createQueryBuilder('a')
-				->orderBy('a.title', 'ASC')
-				->getQuery();
+		$query = $this->createQueryBuilder('r')
+					  ->innerJoin('r.stopStart', 'dep')
+					  ->innerJoin('r.stopEnd', 'dest');
 
-		return $query->getResult();
+		if(isset($filters['duration']) && !empty($duration['duration'])){
+
+		}
+
+		if(isset($filters['tag'])){
+
+		}
+
+		if(isset($filters['order'])){
+			$query->orderBy('r.'. $duration['order'], 'ASC');
+		}else{
+			$query->orderBy('r.title', 'ASC');
+		}
+
+
+		return $query->getQuery()->getResult();
 	}
 
 	public function findExtremDuration()

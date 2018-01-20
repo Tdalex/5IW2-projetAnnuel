@@ -149,7 +149,7 @@ class UserController extends Controller
     public function connectAction(Request $request)
     {
         $email    = trim($request->request->get('email'));
-        $password = trim($request->request->get('plainPassword'));
+        $password = trim($request->request->get('password'));
 
         $em       = $this->get('doctrine')->getManager();
         $query    = $em->createQuery("SELECT u FROM AppBundle\Entity\User u WHERE u.email =:email AND u.enabled = true")
@@ -162,7 +162,7 @@ class UserController extends Controller
             $encoder_service = $this->get('security.encoder_factory');
             $encoder = $encoder_service->getEncoder($user);
 
-            if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt()) || $password == $user->getPassword()) {
+            if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
                 $birthdate = null;
                 if($user->getBirthDate() !== null)
                     $birthdate = $user->getBirthDate()->format('d-m-Y');

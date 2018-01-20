@@ -22,7 +22,7 @@ class RoadtripManager
         }
 
         if($nbStops){
-            $filters['nbStops'] = array(  'min' => $nbStops[0]['nbStops']-2,
+            $filters['nbStops'] = array(    'min' => $nbStops[0]['nbStops']-2,
                                             'max' => end($nbStops)['nbStops']-2);
         }
         return $filters;
