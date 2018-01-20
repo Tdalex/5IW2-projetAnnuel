@@ -72,11 +72,23 @@ p {
     font-size: 15px;
 }
 
+.button-new-roadtrip{
+    background-color: #dcdcdc;
+    padding: 14px;
+    width: 6em;
+    position: fixed;
+    top:10%;
+    z-index: 9999;
+}
+
 .float-button{
     float: left;
     margin-right: 10px;
 }
 
+.range-field{
+    padding-top: 19px;
+}
 #search nav {
     background-color: #2296f3 !important;
     margin-bottom: 2em;

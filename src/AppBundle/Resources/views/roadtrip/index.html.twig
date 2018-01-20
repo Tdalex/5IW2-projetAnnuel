@@ -24,29 +24,43 @@
         </div>
     </div>
 
+    <div class="button-new-roadtrip full-width center-align">
+        {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
+            <a class="waves-effect waves-light btn-large blue darken-3" href="{{ path('roadtrip_new') }}"><i class="material-icons right">airport_shuttle</i>Créez Votre propre Roadtrip</a>
+        {% else %}
+            <a class="waves-effect waves-light btn-large blue darken-3" href="{{ path('user_connectForm') }}"><i class="material-icons right">airport_shuttle</i>Créez Votre propre Roadtrip</a>
+        {% endif %}
+    </div>
+
     <!--content-->
     <div class="container">
         <!--filtre-->
+
         <div id="search" class="row">
             <div class="col s6">
-                <nav>
-                    <div class="nav-wrapper">
-                        <form>
-                            <div class="input-field">
-                                <input id="search" type="search" required>
-                                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                                <i class="material-icons">close</i>
-                            </div>
-                        </form>
+                <form>
+                    <div class="input-field">
+                        <i class="material-icons prefix">search</i>
+                        <input id="search" type="text" class="validate">
+                        <label for="search">Recherche</label>
                     </div>
-                </nav>
+                </form>
             </div>
-            <div class="col s6">
-                {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
-                    <a class="waves-effect waves-light btn-large blue darken-3" href="{{ path('roadtrip_new') }}"><i class="material-icons right">add</i>Ou créez Votre propre Roadtrip</a>
-                {% else %}
-                    <a class="waves-effect waves-light btn-large blue darken-3" href="{{ path('user_connectForm') }}">Ou créez Votre propre Roadtrip</a>
-                {% endif %}
+            <div class="col s3">
+                <form action="#">
+                    <p class="range-field">
+                        <label>Durée</label>
+                        <input type="range" id="durations" min="30" max="100" />
+                    </p>
+                </form>
+            </div>
+            <div class="col s3">
+                <form action="#">
+                    <p class="range-field">
+                        <label>Nombre de stops</label>
+                        <input type="range" id="durations" min="30" max="100" />
+                    </p>
+                </form>
             </div>
         </div>
         <div class="row">
@@ -85,6 +99,7 @@
     '@AppBundle/Resources/public/js/configDatatable.js'
     %}
     <script src="{{ asset_url }}"></script>
+
     {% endjavascripts %}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places&callback=initAutocomplete"></script>
 {% endblock %}
