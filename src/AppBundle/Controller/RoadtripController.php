@@ -99,8 +99,10 @@ class RoadtripController extends Controller
                 $roadtrip->getStopStart()->setRoadTripStop($rt);
                 $roadtrip->getStopEnd()->setRoadTripStop($rt);
                 $stops = $roadtrip->getStops();
-                foreach ($stops as $stop) {
-                    $stop->setRoadTripStop($rt);
+                if (!empty($stops)){
+                    foreach ($stops as $stop) {
+                        $stop->setRoadTripStop($rt);
+                    }
                 }
 
                 $em->flush();
@@ -224,7 +226,7 @@ class RoadtripController extends Controller
                 }
                 $em->flush();
 
-                return $this->redirectToRoute('roadtrip_edit', array('slug' => $roadtrip->getSlug()));
+                return $this->redirectToRoute('roadtrip_show', array('slug' => $roadtrip->getSlug()));
             }
         }
 
