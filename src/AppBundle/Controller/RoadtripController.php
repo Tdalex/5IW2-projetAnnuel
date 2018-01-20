@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Service\RoadtripManager;
 
 /**
  * Roadtrip controller.
@@ -25,14 +26,16 @@ class RoadtripController extends Controller
      * @Route("/", name="roadtrip_index")
      * @Method({"GET", "POST"})
      */
-    public function indexAction()
+    public function indexAction(Request $request, RoadtripManager $roadtripManager)
     {
         $em = $this->getDoctrine()->getManager();
 
         $roadtrips = $em->getRepository('AppBundle:Roadtrip')->findAll();
+        $filters   = $roadtripManager->getFilters($em);
 
         return $this->render('AppBundle:roadtrip:index.html.twig', array(
             'roadtrips' => $roadtrips,
+            'filters'   => $filters
         ));
     }
 
