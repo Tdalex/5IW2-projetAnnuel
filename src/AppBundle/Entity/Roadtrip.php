@@ -99,6 +99,13 @@ class Roadtrip
     private $duration;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="nbStops", type="integer")
+     */
+    private $nbStops;
+
+    /**
      * Get id
      *
      * @return integer
@@ -438,5 +445,21 @@ class Roadtrip
     public function setDuration($duration)
     {
         $this->duration = $duration;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNbStops()
+    {
+        return $this->nbStops;
+    }
+
+    /**
+     * @param mixed $nbStops
+     */
+    public function setNbStops($nbStops)
+    {
+        $this->nbStops = $nbStops;
     }
 }

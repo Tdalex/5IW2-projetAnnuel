@@ -38,35 +38,35 @@
     <!--content-->
     <div class="container">
         <!--filtre-->
-
         <div id="search" class="row">
-            <form>
+            <form method="POST" action="{{ path('roadtrip_index') }}">
                 <div class="col s4">
                     <div class="input-field">
                         <i class="material-icons prefix">search</i>
-                        <input id="search" type="text" class="validate">
+                        <input name="filters[address]" id="search" type="text" class="validate">
                         <label for="search">Mot clé</label>
                     </div>
                 </div>
                 <div class="col s3">
                     <p class="range-field">
                         <label>Durée</label>
-                        <input type="text" id="duration" value="" name="duration" />
+                        <input type="text" id="durations" value="" name="filters[durations]" />
                     </p>
                 </div>
                 <div class="col s3">
                     <p class="range-field">
                         <label>Nombre de stops</label>
-                        <input type="text" id="nbsteps" value="" name="nbsteps" />
+                        <input type="text" id="nbstops" value="" name="filters[nbStops]" />
                     </p>
                 </div>
                 <div class="col s2">
                     <a class="btn-floating btn-large red">
-                        <i class="large material-icons">search</i>
+                        <i type="submit" class="large material-icons">search</i>
                     </a>
                 </div>
             </form>
         </div>
+        
         <div class="row">
             {% for roadtrip in roadtrips %}
                 <div class="col s12 m4 l4">
@@ -109,7 +109,7 @@
     <script src="{{ asset_url }}"></script>
     <script>
         $(function () {
-            $("#duration").ionRangeSlider({
+            $("#durations").ionRangeSlider({
                 hide_min_max: true,
                 keyboard: true,
                 min: 0,
@@ -122,7 +122,7 @@
                 grid: true
             });
 
-            $("#nbsteps").ionRangeSlider({
+            $("#nbstops").ionRangeSlider({
                 hide_min_max: true,
                 keyboard: true,
                 min: 0,

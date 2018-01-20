@@ -8,17 +8,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
+use AppBundle\Service\RoadtripManager;
 
 class DefaultController extends Controller
 {
     /**
      * @Route("/", name="homepage")
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, RoadtripManager $roadtripManager)
     {
+        $em = $this->getDoctrine()->getManager();
+        $allFilters   = $roadtripManager->getFilters($em);
+
         // replace this example code with whatever you need
         return $this->render('AppBundle:default:index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
+            'filters'  => $allFilters
         ]);
     }
 
