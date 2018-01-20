@@ -22,15 +22,19 @@ class RoadtripType extends AbstractType
     {
         $builder
             ->add('stopStart', StopType::class, array(
+                'required' => true,
                 'label' => 'Départ de'
             ))
             ->add('stopEnd', StopType::class, array(
+                'required' => true,
                 'label' => 'Destination'
             ))
             ->add('title', TextType::class, array(
+                'required' => true,
                 'label' => 'Titre du roadtrip'
             ))
             ->add('description', TextareaType::class, array(
+                'required' => true,
                 'label' => 'Description du roadtrip'
             ))
             ->add('duration', IntegerType::class, array(
@@ -57,7 +61,7 @@ class RoadtripType extends AbstractType
             ))
         ;
     }
-    
+
     /**
      * {@inheritdoc}
      */
