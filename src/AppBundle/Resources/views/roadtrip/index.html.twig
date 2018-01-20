@@ -39,7 +39,7 @@
     <div class="container">
         <!--filtre-->
         <div id="search" class="row">
-            <form method="POST" action="{{ path('roadtrip_index') }}">
+            <form id="myForm" method="POST" action="{{ path('roadtrip_index') }}">
                 <div class="col s4">
                     <div class="input-field">
                         <i class="material-icons prefix">search</i>
@@ -60,13 +60,13 @@
                     </p>
                 </div>
                 <div class="col s2">
-                    <a class="btn-floating btn-large red">
-                        <i type="submit" class="large material-icons">search</i>
+                    <a class="btn-floating btn-large red" onclick="submit()">
+                        <i class="large material-icons">search</i>
                     </a>
                 </div>
             </form>
         </div>
-        
+
         <div class="row">
             {% for roadtrip in roadtrips %}
                 <div class="col s12 m4 l4">
@@ -135,6 +135,10 @@
                 grid: true
             });
         });
+
+        function submit() {
+            document.getElementById("myForm").submit();
+        };
     </script>
 
     {% endjavascripts %}
