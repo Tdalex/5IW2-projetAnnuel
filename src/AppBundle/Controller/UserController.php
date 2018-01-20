@@ -41,7 +41,7 @@ class UserController extends Controller
      * my profile
      *
      * @Route("/modification", name="modify_my_account.html.twig")
-     * @Method("GET")
+     * @Method({"GET","POST"})
      */
     public function modifyMyAccountAction(Request $request)
     {
