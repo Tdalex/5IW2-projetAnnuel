@@ -94,7 +94,7 @@
                     {{ form_label(form.description) }}
                     {{ form_widget(form.description, {'attr': {'placeholder': 'Description du roadtrip'}}) }}
                 </div>
-                <button class="waves-effect waves-light btn green lighten-3 full-width" onclick="codeAddress()">Chercher sur la carte</button><br><br>
+                <a class="waves-effect waves-light btn green lighten-3 full-width" onclick="codeAddress()">Chercher sur la carte</a><br><br>
                 {{ form_row(form.submit) }}
                 {{ form_end(form, {'render_rest': false}) }}
             </div>
