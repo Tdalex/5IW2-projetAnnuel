@@ -40,14 +40,9 @@ class RoadtripRepository extends EntityRepository{
 		}
 
 		if(isset($filters['address'])){
-			$query->innerJoin('r.stopStart', 'dep')
-				->innerJoin('r.stopEnd', 'dest')
-				->leftJoin('r.stops', 's')
-				->andWhere($qb->expr()->orX(
-					$qb->expr()->like('dep.address', $filters['address']),
-					$qb->expr()->like('dest.address', $filters['address']),
-					$qb->expr()->like('s.address', $filters['address'])
-				));
+			$query->leftJoin('r.stops', 's')
+				->andWhere('s.address like :address')
+				->setParameter('address', '%'.$filters['address']. '%');
 		}
 
 		if(isset($filters['order'])){

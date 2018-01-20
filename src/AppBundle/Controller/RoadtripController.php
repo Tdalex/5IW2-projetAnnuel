@@ -29,13 +29,19 @@ class RoadtripController extends Controller
     public function indexAction(Request $request, RoadtripManager $roadtripManager)
     {
         $em = $this->getDoctrine()->getManager();
+        $datapush = $request->request->all();
+        $filters = array();
 
-        $roadtrips = $em->getRepository('AppBundle:Roadtrip')->findAll();
-        $filters   = $roadtripManager->getFilters($em);
+        if(isset($datapush['filters'])){
+            $filters =$datapush['filters'];
+        }
+
+        $roadtrips = $em->getRepository('AppBundle:Roadtrip')->search($filters);
+        $allFilters   = $roadtripManager->getFilters($em);
 
         return $this->render('AppBundle:roadtrip:index.html.twig', array(
             'roadtrips' => $roadtrips,
-            'filters'   => $filters
+            'filters'   => $allFilters
         ));
     }
 
