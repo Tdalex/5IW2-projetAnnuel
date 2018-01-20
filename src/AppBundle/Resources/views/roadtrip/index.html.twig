@@ -35,34 +35,30 @@
     <!--content-->
     <div class="container">
         <!--filtre-->
-
-        <div id="search" class="row">
-            <div class="col s6">
-                <form>
+        <form method="POST" action="{{ path('roadtrip_index') }}">
+            <div id="search" class="row">
+                <div class="col s6">
                     <div class="input-field">
                         <i class="material-icons prefix">search</i>
-                        <input id="search" type="text" class="validate">
+                        <input name="filters[address]" id="search" type="text" class="validate">
                         <label for="search">Recherche</label>
                     </div>
-                </form>
-            </div>
-            <div class="col s3">
-                <form action="#">
+                </div>
+                <div class="col s3">
                     <p class="range-field">
                         <label>Durée</label>
-                        <input type="range" id="durations" min="30" max="100" />
+                        <input  name="filters[durations]" type="range" id="durations" min="{{ filters.durations.min }}" max="{{ filters.durations.max }}" />
                     </p>
-                </form>
-            </div>
-            <div class="col s3">
-                <form action="#">
+                </div>
+                <div class="col s3">
                     <p class="range-field">
-                        <label>Nombre de stops</label>
-                        <input type="range" id="durations" min="30" max="100" />
+                        <label>Nombre d'étapes</label>
+                        <input name="filters[nbStops]" type="range" id="durations" min="{{ filters.nbStops.min }}" max="{{ filters.nbStops.max }}" />
                     </p>
-                </form>
+                </div>
             </div>
-        </div>
+            <button type="submit">valider</button>
+        </form>
         <div class="row">
             {% for roadtrip in roadtrips %}
                 <div class="col s12 m4 l4">

@@ -33,8 +33,8 @@ class RoadtripRepository extends EntityRepository{
 		}
 
 		if(isset($filters['nbStops']) && !empty($filters['nbStops'])){
-			$query->andWhere('count(r.stops) >= :minNbStops')
-					->andWhere('count(r.stops) <= :maxNbStops')
+			$query->andWhere('r.nbStops >= :minNbStops')
+					->andWhere('r.nbStops <= :maxNbStops')
 					->setParameter('minNbStops', $filters['nbStops']['min'])
 					->setParameter('maxNbStops', $filters['nbStops']['max']);
 		}
@@ -67,10 +67,8 @@ class RoadtripRepository extends EntityRepository{
 	public function findExtremNbStops()
 	{
 		$query = $this->createQueryBuilder('a')
-				 ->leftJoin('a.stops', 's')
-				 ->select('count(s) as nbStops')
-				 ->groupBy('a.id')
-				 ->orderBy('nbStops','ASC');
+				 ->select('a.nbStops')
+				 ->orderBy('a.nbStops','ASC');
 
 		return $query->getQuery()->getResult();
 	}
