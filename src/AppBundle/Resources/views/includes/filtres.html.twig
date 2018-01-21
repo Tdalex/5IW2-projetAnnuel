@@ -11,13 +11,13 @@
         <div class="col s3">
             <p class="range-field">
                 <label>Durée en jours</label>
-                <input type="text" id="durations" value="" name="durations" />
+                <input type="text" id="durations" value="" data-min="{{ filters.durations.min }}" data-max="{{ filters.durations.max }}" name="durations" />
             </p>
         </div>
         <div class="col s3">
             <p class="range-field">
-                <label>Nombre de stops</label>
-                <input type="text" id="nbstops" value="" name="nbStops" />
+                <label>Nombre d'étapes</label>
+                <input type="text" id="nbstops" value="" data-min="{{ filters.nbStops.min }}" data-max="{{ filters.nbStops.max }}" name="nbStops" />
             </p>
         </div>
         <div class="col s2">
