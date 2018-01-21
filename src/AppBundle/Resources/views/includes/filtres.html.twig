@@ -4,20 +4,20 @@
         <div class="col s4">
             <div class="input-field">
                 <i class="material-icons prefix">search</i>
-                <input name="filters[address]" id="search" type="text" class="validate">
+                <input name="filters[address]" value="{{ choices.address|default('') }}" id="search" type="text" class="validate">
                 <label for="search">Mot clé</label>
             </div>
         </div>
         <div class="col s3">
             <p class="range-field">
                 <label>Durée en jours</label>
-                <input type="text" id="durations" value="" data-min="{{ filters.durations.min }}" data-max="{{ filters.durations.max }}" name="durations" />
+                <input type="text" id="durations" value="" data-min="{{ filters.durations.min }}" data-max="{{ filters.durations.max }}" data-from="{{ choices.durations.min|default(filters.durations.min) }}" data-to="{{ choices.durations.max|default(filters.durations.max) }}" name="durations" />
             </p>
         </div>
         <div class="col s3">
             <p class="range-field">
                 <label>Nombre d'étapes</label>
-                <input type="text" id="nbstops" value="" data-min="{{ filters.nbStops.min }}" data-max="{{ filters.nbStops.max }}" name="nbStops" />
+                <input type="text" id="nbstops" value="" data-min="{{ filters.nbStops.min }}" data-max="{{ filters.nbStops.max }}" data-from="{{ choices.nbStops.min|default(filters.nbStops.min) }}" data-to="{{ choices.nbStops.max|default(filters.nbStops.max) }}" name="nbStops" />
             </p>
         </div>
         <div class="col s2">

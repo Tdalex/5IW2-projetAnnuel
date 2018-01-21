@@ -45,6 +45,7 @@ class RoadtripController extends Controller
         $roadtrips = $em->getRepository('AppBundle:Roadtrip')->search($filters);
         $allFilters   = $roadtripManager->getFilters($em);
         return $this->render('AppBundle:roadtrip:index.html.twig', array(
+            'choices'   => $filters,
             'roadtrips' => $roadtrips,
             'filters'   => $allFilters
         ));
@@ -110,6 +111,7 @@ class RoadtripController extends Controller
                 $roadtrip->getStopStart()->setRoadTripStop($rt);
                 $roadtrip->getStopEnd()->setRoadTripStop($rt);
                 $stops = $roadtrip->getStops();
+                $roadtrip->setNbStops(0);
                 if (!empty($stops)){
                     $roadtrip->setNbStops(count($stops));
                     foreach ($stops as $stop) {
@@ -226,7 +228,10 @@ class RoadtripController extends Controller
                 $rtEStop->setRoadTripStop($rt);
                 $roadtrip->setStopEnd($rtEStop);
                 //stops
-                $roadtrip->setNbStops(count($sts));
+                $roadtrip->setNbStops(0);
+                if($sts){
+                    $roadtrip->setNbStops(count($sts));
+                }
                 foreach ($sts as $s) {
                     $st = new Stop();
                     $st->setAddress($s['address']);
