@@ -33,11 +33,13 @@ class RoadtripController extends Controller
         $filters = array();
 
         if(isset($datapush['filters'])){
-            $filter = $datapush['filters'];
-            $filters['durations']['min'] = $filter['durations'];
-            $filters['durations']['max'] =$filter['durations'];
-            $filters['nbStops']['min']  = $filter['nbStops'];
-            $filters['nbStops']['max']  = $filter['nbStops'];
+            $filters = $datapush['filters'];
+            $durations = explode(';',$datapush['durations']);
+            $nbStops = explode(';',$datapush['nbStops']);
+            $filters['durations']['min'] = $durations[0];
+            $filters['durations']['max'] = $durations[1];
+            $filters['nbStops']['min']   = $nbStops[0];
+            $filters['nbStops']['max']   = $nbStops[1];
         }
 
         $roadtrips = $em->getRepository('AppBundle:Roadtrip')->search($filters);
