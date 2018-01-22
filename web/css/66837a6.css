@@ -79,6 +79,10 @@ html, body {
     background-color: #fafafa;
 }
 
+.card .card-content {
+    max-height: 160px !important;
+}
+
 #register{
     background-image: url("/bundles/app/images/map2.png");
     -webkit-background-size: cover;
