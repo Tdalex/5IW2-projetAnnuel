@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace AppBundle\DataFixtures\ORM;
 
@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 class UserFixture extends Fixture
 {
     public function load(ObjectManager $manager)
-    {       
+    {
         $userManager = $this->container->get('fos_user.user_manager');
 
         $user = $userManager->createUser();
@@ -26,8 +26,8 @@ class UserFixture extends Fixture
         $userManager->updateUser($user, true);
 
         $faker = \Faker\Factory::create();
-        
-        for ($i = 0; $i < 20; $i++) {
+
+        for ($i = 0; $i < 5; $i++) {
             $user = $userManager->createUser();
             $user->setFirstname($faker->firstname);
             $user->setUsername($faker->firstname);
@@ -37,7 +37,7 @@ class UserFixture extends Fixture
             $user->setPlainPassword('test');
             $user->setEnabled(true);
             $user->setRoles(array('ROLE_USER'));
-    
+
             $userManager->updateUser($user, true);
         }
     }

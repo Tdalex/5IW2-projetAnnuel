@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace AppBundle\DataFixtures\ORM;
 
@@ -11,7 +11,7 @@ class TagFixture extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = \Faker\Factory::create();
-        
+
         for ($i = 0; $i < 20; $i++) {
             $tag = new Tag();
             $tag->setTitle($faker->name);

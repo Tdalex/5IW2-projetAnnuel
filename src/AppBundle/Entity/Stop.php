@@ -20,7 +20,7 @@ class Stop
 	* @ORM\GeneratedValue(strategy="AUTO")
 	*/
     private $id;
-    
+
 	/**
 	* @var string
 	*
@@ -28,7 +28,7 @@ class Stop
 	* @ORM\Column(type="string")
 	*/
 	private $slug;
-	
+
 	/**
 	* @var string
 	*
@@ -42,7 +42,7 @@ class Stop
 	* @ORM\Column(type="string")
 	*/
 	private $description;
-	
+
 	/**
 	* @var string
 	*
@@ -63,18 +63,18 @@ class Stop
 	* @ORM\Column(type="string")
 	*/
 	private $address;
-	
+
     /**
      * @ORM\ManyToMany(targetEntity="Waypoint", cascade={"persist", "remove"})
      */
     protected $waypoint;
-    
+
 	/**
      * @ORM\ManyToOne(targetEntity="Roadtrip", inversedBy="stops")
      * @ORM\JoinColumn(name="roadTripStop", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $roadTripStop;
-    
+
     /**
      * Get id
      *

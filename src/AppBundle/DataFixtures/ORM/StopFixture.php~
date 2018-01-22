@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace AppBundle\DataFixtures\ORM;
 
@@ -12,21 +12,21 @@ class StopFixture extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = \Faker\Factory::create();
-        
+
         for ($i = 0; $i < 20; $i++) {
-            $roadtrip = new Stop();
-            $roadtrip->setTitle($faker->name);
-            $roadtrip->setDescription($faker->text);
-            $roadtrip->setStopNumber($i);
-            $roadtrip->setLat($faker->latitude);
-            $roadtrip->setLon($faker->longitude);
-            $roadtrip->setAddress($faker->address);
-            $manager->persist($roadtrip);
+            $stop = new Stop();
+            $stop->setTitle($faker->name);
+            $stop->setDescription($faker->text);
+            $stop->setStopNumber($i);
+            $stop->setLat($faker->latitude);
+            $stop->setLon($faker->longitude);
+            $stop->setAddress($faker->address);
+            $manager->persist($stop);
         }
 
         $manager->flush();
     }
-    
+
     public function getDependencies()
     {
         return array(
