@@ -47,6 +47,7 @@ html, body {
 }
 
 .card .card-content {
+    min-height: 160px !important;
     max-height: 160px !important;
 }
 

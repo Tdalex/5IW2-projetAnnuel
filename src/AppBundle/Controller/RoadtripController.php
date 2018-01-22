@@ -102,6 +102,7 @@ class RoadtripController extends Controller
             else {
                 $roadtrip->setIsRemoved(false);
                 $roadtrip->setOwner($owner);
+                $roadtrip->setNbStops(0);
                 $em->persist($roadtrip);
                 $em->flush();
 
@@ -118,7 +119,6 @@ class RoadtripController extends Controller
                         $stop->setRoadTripStop($rt);
                     }
                 }
-
                 $em->flush();
 
                 return $this->redirectToRoute('roadtrip_show', array('slug' => $roadtrip->getSlug()));
@@ -276,25 +276,6 @@ class RoadtripController extends Controller
         return $this->redirectToRoute('roadtrip_index');
     }
 
-    /**
-     * Deletes a roadtrip entity.
-     *
-     * @Route("/{slug}", name="roadtrip_delete")
-     * @Method("DELETE")
-     */
-    public function removeAction(Request $request, Roadtrip $roadtrip)
-    {
-        $form = $this->createDeleteForm($roadtrip);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $roadtrip = setIsRemoved(1);
-            $em->flush();
-        }
-
-        return $this->redirectToRoute('roadtrip_index');
-    }
 
     /**
      * Creates a form to delete a roadtrip entity.

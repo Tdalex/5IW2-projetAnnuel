@@ -162,53 +162,53 @@ class Waypoint
         return $this->description;
     }
 
-    /**
-     * Set theme
-     *
-     * @param \theme $theme
-     *
-     * @return Waypoint
-     */
-    public function setTheme(\theme $theme)
-    {
-        $this->theme = $theme;
+//    /**
+//     * Set theme
+//     *
+//     * @param \theme $theme
+//     *
+//     * @return Waypoint
+//     */
+//    public function setTheme(\theme $theme)
+//    {
+//        $this->theme = $theme;
+//
+//        return $this;
+//    }
 
-        return $this;
-    }
-
-    /**
-     * Get theme
-     *
-     * @return \theme
-     */
-    public function getTheme()
-    {
-        return $this->theme;
-    }
-
-    /**
-     * Set themeSlug
-     *
-     * @param \theme_slug $themeSlug
-     *
-     * @return Waypoint
-     */
-    public function setThemeSlug(\theme_slug $themeSlug)
-    {
-        $this->theme_slug = $themeSlug;
-
-        return $this;
-    }
-
-    /**
-     * Get themeSlug
-     *
-     * @return \theme_slug
-     */
-    public function getThemeSlug()
-    {
-        return $this->theme_slug;
-    }
+//    /**
+//     * Get theme
+//     *
+//     * @return \theme
+//     */
+//    public function getTheme()
+//    {
+//        return $this->theme;
+//    }
+//
+//    /**
+//     * Set themeSlug
+//     *
+//     * @param \theme_slug $themeSlug
+//     *
+//     * @return Waypoint
+//     */
+//    public function setThemeSlug(\theme_slug $themeSlug)
+//    {
+//        $this->theme_slug = $themeSlug;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Get themeSlug
+//     *
+//     * @return \theme_slug
+//     */
+//    public function getThemeSlug()
+//    {
+//        return $this->theme_slug;
+//    }
 
     /**
      * Set lat
