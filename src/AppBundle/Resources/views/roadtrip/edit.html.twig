@@ -98,9 +98,9 @@
                                             </div>
                                             <div>
                                                 <label for="{{ id~'_description' }}">Description de l'étape</label>
-                                                <textarea id="{{ id~'_description' }}" name="{{ name~'[description]' }}">{{ stop.description }}</textarea>
+                                                <textarea id="{{ id~'_description' }}" name="{{ name~'[description]' }}" class="materialize-textarea">{{ stop.description }}</textarea>
                                             </div>
-                                            <div><a href="#" class="btn btn-danger delete-tome">Supprimer</a></div>
+                                            <div class="center-align"><a href="#" class="delete-tome"><i class="material-icons text-darken-4">delete_forever</i></a></div>
                                         </section>
                                         {% set i = i+1 %}
                                     {% endfor %}
