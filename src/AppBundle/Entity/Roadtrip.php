@@ -77,8 +77,8 @@ class Roadtrip
     protected $stopEnd;
 
 	/**
-     * @ORM\ManyToOne(targetEntity="User", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="owner", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
+     * @ORM\JoinColumn(name="owner", referencedColumnName="id")
      */
     protected $owner;
 
