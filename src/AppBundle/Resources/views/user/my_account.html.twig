@@ -6,7 +6,7 @@
         <div class="header-profile">
             <div id="name" class="center-align">
                 <img class="" src="{{ asset('bundles/app/images/profile.jpg') }}" />
-                <h2 class="">{{ user[0].firstName }} {{ user[0].lastName }}</h2>
+                <h2 class="">{{ app.session.get('currentUser').firstname }} {{ app.session.get('currentUser').lastname }}</h2>
             </div>
         </div>
         <div class="edit-button right-align">
@@ -17,17 +17,17 @@
                 <div class="col s8">
                     <h4>Mes informations</h4>
                     <div id="name">
-                        <i class="material-icons left">account_circle</i>{{ user[0].firstName }} {{ user[0].lastName }}
+                        <i class="material-icons left">account_circle</i>{{ app.session.get('currentUser').firstname }} {{ app.session.get('currentUser').lastname }}
                     </div>
                 </div>
                 <div class="col s8">
                     <div id="mail">
-                        <i class="material-icons left">email</i>{{ user[0].email }}
+                        <i class="material-icons left">email</i>{{ app.session.get('currentUser').email }}
                     </div>
                 </div>
                 <div class="col s8">
                     <div id="birthdate">
-                        <i class="material-icons left">cake</i>{{ user[0].birthdate|date('d/m/Y') }}
+                        <i class="material-icons left">cake</i>{{ app.session.get('currentUser').birthdate|date('d/m/Y') }}
                     </div>
                 </div>
             </div>
