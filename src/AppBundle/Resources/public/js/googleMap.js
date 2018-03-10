@@ -22,6 +22,8 @@ function initialize() {
     }
     map = new google.maps.Map(document.getElementById('googleMap'), mapOptions);
 
+    places = new google.maps.places.PlacesService(map);
+
     // Créer un nouveau style de map
     var styledMapType = new google.maps.StyledMapType(styles, {name: 'Styled Map'});
     //Associer le style a la map et l'afficher.
@@ -54,6 +56,103 @@ function initialize() {
         });
 
     });
+
+
+}
+
+
+function searchPlaces() {
+    var search = {
+        bounds: map.getBounds(),
+        types: ['lodging']
+    };
+
+    var MARKER_PATH = 'https://developers.google.com/maps/documentation/javascript/images/marker_green';
+    var markers = [];
+
+    places.nearbySearch(search, function(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            clearMarkers(markers);
+            // Create a marker for each hotel found, and
+            // assign a letter of the alphabetic to each marker icon.
+            for (var i = 0; i < results.length; i++) {
+                var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
+                var markerIcon = MARKER_PATH + markerLetter + '.png';
+                // Use marker animation to drop the icons incrementally on the map.
+                markers[i] = new google.maps.Marker({
+                    position: results[i].geometry.location,
+                    animation: google.maps.Animation.DROP,
+                    icon: markerIcon
+                });
+                // If the user clicks a hotel marker, show the details of that hotel
+                // in an info window.
+                markers[i].placeResult = results[i];
+                google.maps.event.addListener(markers[i], 'click', showInfoWindow);
+                setTimeout(dropMarker(i, markers), i * 100);
+                addResult(results[i], i);
+            }
+        }
+    });
+}
+
+function showInfoWindow() {
+    var marker = this;
+    places.getDetails({placeId: marker.placeResult.place_id},
+        function(place, status) {
+            if (status !== google.maps.places.PlacesServiceStatus.OK) {
+                return;
+            }
+            infoWindow.open(map, marker);
+            buildIWContent(place);
+        });
+}
+
+function addResult(result, i) {
+    var MARKER_PATH = 'https://developers.google.com/maps/documentation/javascript/images/marker_green';
+    var results = document.getElementById('results');
+    var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
+    var markerIcon = MARKER_PATH + markerLetter + '.png';
+
+    var tr = document.createElement('tr');
+    tr.style.backgroundColor = (i % 2 === 0 ? '#F0F0F0' : '#FFFFFF');
+    tr.onclick = function() {
+        google.maps.event.trigger(markers[i], 'click');
+    };
+
+    var iconTd = document.createElement('td');
+    var nameTd = document.createElement('td');
+    var icon = document.createElement('img');
+    icon.src = markerIcon;
+    icon.setAttribute('class', 'placeIcon');
+    icon.setAttribute('className', 'placeIcon');
+    var name = document.createTextNode(result.name);
+    iconTd.appendChild(icon);
+    nameTd.appendChild(name);
+    tr.appendChild(iconTd);
+    tr.appendChild(nameTd);
+    results.appendChild(tr);
+}
+
+
+function dropMarker(i, markers) {
+    return function() {
+        markers[i].setMap(map);
+    };
+}
+
+function clearMarkers(markers) {
+    for (var i = 0; i < markers.length; i++) {
+        if (markers[i]) {
+            markers[i].setMap(null);
+        }
+    }
+}
+
+function clearResults() {
+    var results = document.getElementById('results');
+    while (results.childNodes[0]) {
+        results.removeChild(results.childNodes[0]);
+    }
 }
 
 function createMarker(event, map){
@@ -171,6 +270,8 @@ function codeAddress() {
     }
     //Tous mettre dans le tableau adresses
     var addresses = addressesFix.concat(addressesInt);
+    //Vider la liste des hotels
+    clearResults();
     //addresses.push(addressInt);
     for(i=0;i<addresses.length;i++){
         geocodeAddress(addresses[i]);
@@ -186,6 +287,11 @@ function geocodeAddress(address){
                 map: map,
                 position: results[0].geometry.location
             });
+            //search hotels for place
+            var place = results[0];
+            map.panTo(place.geometry.location);
+            map.setZoom(15);
+            searchPlaces();
         } else {
             alert('Geocode n\'a pas abouti car : ' + status);
         }

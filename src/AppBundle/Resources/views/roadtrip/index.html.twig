@@ -23,6 +23,11 @@
 
             <div id="directions-panel"></div>
         </div>
+        <div id="listing">
+            <table id="resultsTable">
+                <tbody id="results"></tbody>
+            </table>
+        </div>
     </body>
 
     <h1>Roadtrips list</h1>
@@ -79,6 +84,6 @@
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <!-- Api key : AIzaSyD-I7_9giJEZ6ilQ-21tnFvo5KCcgShXIM -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-I7_9giJEZ6ilQ-21tnFvo5KCcgShXIM&callback=myMap"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places,visualization"></script>
 {%  endblock %}
 
