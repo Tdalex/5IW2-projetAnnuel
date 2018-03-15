@@ -106,6 +106,12 @@ class Roadtrip
     private $nbStops;
 
     /**
+     * @ORM\OneToMany(targetEntity="Avis", mappedBy="roadtripId", cascade={"persist"})
+     * @ORM\JoinColumn(name="avis", referencedColumnName="id")
+     */
+    protected $avis;
+
+    /**
      * Get id
      *
      * @return integer
