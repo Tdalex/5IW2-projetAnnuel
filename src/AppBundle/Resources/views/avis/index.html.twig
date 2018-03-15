@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Avis list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Note</th>
+                <th>Commentaire</th>
+                <th>Createdat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for avi in avis %}
+            <tr>
+                <td><a href="{{ path('avis_show', { 'id': avi.id }) }}">{{ avi.id }}</a></td>
+                <td>{{ avi.note }}</td>
+                <td>{{ avi.commentaire }}</td>
+                <td>{% if avi.createdAt %}{{ avi.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('avis_show', { 'id': avi.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('avis_edit', { 'id': avi.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('avis_new') }}">Create a new avi</a>
+        </li>
+    </ul>
+{% endblock %}

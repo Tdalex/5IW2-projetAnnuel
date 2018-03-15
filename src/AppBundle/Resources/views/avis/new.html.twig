@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+        <div>
+            {{ form_label(form.note) }}
+            {{ form_widget(form.note) }}
+        </div>
+        <div>
+            {{ form_label(form.commentaire) }}
+            {{ form_widget(form.commentaire) }}
+        </div>
+        <div>
+            {{ form_widget(form.roadtripId, {'id': 'roadtripId'}) }}
+            {{ form_widget(form.userId, {'id': 'userId'}) }}
+        </div>
+        {{ form_row(form.submit) }}
+    {{ form_end(form) }}
+{% endblock %}
