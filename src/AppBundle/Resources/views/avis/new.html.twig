@@ -1,5 +1,3 @@
-{% extends 'base.html.twig' %}
-
 {% block body %}
     {{ form_start(form) }}
         <div>
@@ -14,6 +12,5 @@
             {{ form_widget(form.roadtripId, {'id': 'roadtripId'}) }}
             {{ form_widget(form.userId, {'id': 'userId'}) }}
         </div>
-        {{ form_row(form.submit) }}
     {{ form_end(form) }}
 {% endblock %}

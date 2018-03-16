@@ -70,23 +70,7 @@ class Avis
     }
 
     /**
-     * Set roadtripId
-     *
-     * @param integer $roadtripId
-     *
-     * @return Avis
-     */
-    public function setRoadtripId($roadtripId)
-    {
-        $this->roadtripId = $roadtripId;
-
-        return $this;
-    }
-
-    /**
-     * Get roadtripId
-     *
-     * @return int
+     * @return mixed
      */
     public function getRoadtripId()
     {
@@ -94,28 +78,30 @@ class Avis
     }
 
     /**
-     * Set userId
-     *
-     * @param integer $userId
-     *
-     * @return Avis
+     * @param mixed $roadtripId
      */
-    public function setUserId($userId)
+    public function setRoadtripId($roadtripId)
     {
-        $this->userId = $userId;
-
-        return $this;
+        $this->roadtripId = $roadtripId;
     }
 
     /**
-     * Get userId
-     *
-     * @return int
+     * @return mixed
      */
     public function getUserId()
     {
         return $this->userId;
     }
+
+    /**
+     * @param mixed $userId
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+    }
+
+
 
     /**
      * Set note

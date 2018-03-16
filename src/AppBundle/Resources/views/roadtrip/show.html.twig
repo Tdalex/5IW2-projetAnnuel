@@ -68,12 +68,14 @@
     <div id="roadtrip_avis">
         <div class="container">
             {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
-                <div id="button_avis">
-                    <a class="waves-effect waves-light btn-large blue darken-3" id="avis">Donnez votre avis</a>
-                </div>
-                <div id="form_avis" hidden>
-                    {{ render(controller("AppBundle:Avis:new")) }}
-                </div>
+                {% if roadtrip.owner is not app.session.get('currentUser') %}
+                    <div id="button_avis">
+                        <a class="waves-effect waves-light btn-large blue darken-3" id="avis">Donnez votre avis</a>
+                    </div>
+                    <div id="form_avis" hidden>
+                        {{ render(controller("AppBundle:Avis:new", { 'roadtripId': roadtrip.id })) }}
+                    </div>
+                {% endif %}
             {% else %}
                 <em><a href="{{ path('user_connectForm') }}">Connectez-vous</a> ou <a href="{{ path('user_register') }}">inscrivez-vous</a> si vous voulez donner votre avis sur ce roadtrip !</em>
             {% endif %}

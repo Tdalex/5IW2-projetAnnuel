@@ -5,7 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Avis;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Avi controller.
@@ -34,26 +36,37 @@ class AvisController extends Controller
     /**
      * Creates a new avi entity.
      *
-     * @Route("/new", name="avis_new")
+     * @Route("/new/{roadtripId}", name="avis_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, $roadtripId)
     {
+        $em = $this->getDoctrine()->getManager();
         $avi = new Avis();
-        $form = $this->createForm('AppBundle\Form\AvisType', $avi);
-        $form->handleRequest($request);
+        $form = $this->createForm('AppBundle\Form\AvisType', $avi, array('action' => $this->generateUrl('avis_new', ['roadtripId' => $roadtripId])));
+        $form->add('submit', SubmitType::class, array('label' => 'Envoyer votre avis'));
 
+        // récupérer le roadtrip sur lequel l'avis est donné
+        $roadtrip = $em->getRepository('AppBundle:Roadtrip')->findOneBy(array('id' => $roadtripId));
+
+        // récupérer le user courant
+        $u = $request->getSession()->get('currentUser')['id'];
+        $user = $em->getRepository('AppBundle:User')->findOneBy(array('id' => $u));
+
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $avi->setRoadtripId($roadtrip);
+            $avi->setUserId($user);
             $em->persist($avi);
             $em->flush();
 
-            return $this->redirectToRoute('avis_show', array('id' => $avi->getId()));
+            return $this->redirectToRoute('roadtrip_show', array('id' => $roadtripId));
         }
 
         return $this->render('AppBundle:avis:new.html.twig', array(
             'avi' => $avi,
             'form' => $form->createView(),
+            'roadtripId' => $roadtripId,
         ));
     }
 
