@@ -140,10 +140,24 @@ class RoadtripController extends Controller
     public function showAction(Roadtrip $roadtrip)
     {
         $deleteForm = $this->createDeleteForm($roadtrip);
+        $avis = $roadtrip->getAvis();
+        $note = 0;
+        $compteur = 0;
+        $commentaires = [];
+        foreach ($avis as $a) {
+            $note += $a->getNote();
+            $commentaires [] = $a->getCommentaire();
+            $compteur ++;
+        }
+        $moyenne = round($note / $compteur, 1);
+        dump($commentaires);
 
         return $this->render('AppBundle:roadtrip:show.html.twig', array(
             'roadtrip' => $roadtrip,
             'delete_form' => $deleteForm->createView(),
+            'moyenne' => $moyenne,
+            'commentaires' => $commentaires
+
         ));
     }
 

@@ -469,38 +469,4 @@ class Roadtrip
         $this->nbStops = $nbStops;
     }
 
-
-    /**
-     * Add avi
-     *
-     * @param \AppBundle\Entity\Avis $avi
-     *
-     * @return Roadtrip
-     */
-    public function addAvi(\AppBundle\Entity\Avis $avi)
-    {
-        $this->avis[] = $avi;
-
-        return $this;
-    }
-
-    /**
-     * Remove avi
-     *
-     * @param \AppBundle\Entity\Avis $avi
-     */
-    public function removeAvi(\AppBundle\Entity\Avis $avi)
-    {
-        $this->avis->removeElement($avi);
-    }
-
-    /**
-     * Get avis
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAvis()
-    {
-        return $this->avis;
-    }
 }

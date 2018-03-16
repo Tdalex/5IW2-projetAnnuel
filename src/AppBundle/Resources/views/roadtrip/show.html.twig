@@ -17,6 +17,7 @@
             <div class="header">
                 <h1 class="left-align">{{ roadtrip.title }}</h1>
                 <h4 class="left-align">Durée : {{ roadtrip.duration }}{% if roadtrip.duration == 1 %} jour{% else %} jours{% endif %}</h4>
+                <h4 class="left-align">Moyenne : {{ moyenne }}</h4>
                 <div class="left-align">
                 </div>
                 {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
@@ -31,6 +32,7 @@
                         </div>
                     </div>
                 {% endif %}
+                <h4 class="left-align">Propriétaire : {{ roadtrip.owner.firstName }} {{ roadtrip.owner.lastName }}</h4>
             </div>
         </div>
     </div>
@@ -63,12 +65,24 @@
                     </div>
                 </div>
             </div>
+            <div class="commentaires">
+                <div class="row">
+                    <div class="col s8">
+                        <h2>Commentaires</h2>
+                        {% for comm in commentaires %}
+                            <div class="card-panel grey lighten-3">
+                                {{ comm }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div id="roadtrip_avis">
         <div class="container">
             {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
-                {% if roadtrip.owner is not app.session.get('currentUser') %}
+                {% if roadtrip.owner.id != app.session.get('currentUser').id %}
                     <div id="button_avis">
                         <a class="waves-effect waves-light btn-large blue darken-3" id="avis">Donnez votre avis</a>
                     </div>
