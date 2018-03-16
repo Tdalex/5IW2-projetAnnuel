@@ -146,18 +146,21 @@ class RoadtripController extends Controller
         $commentaires = [];
         foreach ($avis as $a) {
             $note += $a->getNote();
-            $commentaires [] = $a->getCommentaire();
+            $commentaires [$compteur]['date'] = $a->getCreatedAt();
+            $commentaires [$compteur]['user'] = $a->getUserId()->getFirstName().' '.$a->getUserId()->getLastName();
+            $commentaires [$compteur]['commentaire'] = $a->getCommentaire();
             $compteur ++;
+
         }
         $moyenne = round($note / $compteur, 1);
-        dump($commentaires);
+
+        //dump($commentaires);
 
         return $this->render('AppBundle:roadtrip:show.html.twig', array(
             'roadtrip' => $roadtrip,
             'delete_form' => $deleteForm->createView(),
             'moyenne' => $moyenne,
-            'commentaires' => $commentaires
-
+            'commentaires' => $commentaires,
         ));
     }
 
