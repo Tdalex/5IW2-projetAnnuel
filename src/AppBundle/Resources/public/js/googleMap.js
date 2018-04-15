@@ -61,14 +61,15 @@ function initialize() {
 }
 
 
-function searchPlaces() {
+function searchPlaces(bound) {
     var search = {
-        bounds: map.getBounds(),
+        bounds: bound,
         types: ['lodging']
     };
 
     var MARKER_PATH = 'https://developers.google.com/maps/documentation/javascript/images/marker_green';
     var markers = [];
+
 
     places.nearbySearch(search, function(results, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -96,6 +97,10 @@ function searchPlaces() {
 }
 
 function showInfoWindow() {
+    var infoWindow = new google.maps.InfoWindow({
+        content: document.getElementById('info-content')
+    });
+
     var marker = this;
     places.getDetails({placeId: marker.placeResult.place_id},
         function(place, status) {
@@ -195,6 +200,8 @@ function getItinerary(pointsMarqueurs, map){
         // trajet 1
         var directionsService = new google.maps.DirectionsService();
         var directionsDisplay = new google.maps.DirectionsRenderer({ 'map': map });
+
+
         var waypoints = [];
         for(i=2;i<pointsMarqueurs.length;i++) {
             waypoints.push({
@@ -215,11 +222,42 @@ function getItinerary(pointsMarqueurs, map){
             if (status == google.maps.DirectionsStatus.OK) {
                 directionsDisplay.setDirections(response);
                 directionsDisplay.suppressMarkers = true;
+                //créer les boxes sur l'itinéraire
+                createBoxes(response);
                 //directionsDisplay.setOptions({polylineOptions:{strokeColor: '#008000'}, preserveViewport: true});
                 getInfosRoutes(response);
             }
         });
     //}
+}
+
+function createBoxes(response){
+    // Direction service for route boxer
+    var routeboxer = new RouteBoxer();
+    var distance = 10; // km
+
+    // Box around the overview path of the first route
+    var path = response.routes[0].overview_path;
+    var bounds = routeboxer.box(path, distance);
+    drawBoxes(bounds);
+    for (var i = 0; i < bounds.length; i++) {
+        searchPlaces(bounds[i]);
+    }
+}
+
+// Draw the array of boxes as polylines on the map
+function drawBoxes(boxes) {
+    boxpolys = new Array(boxes.length);
+    for (var i = 0; i < boxes.length; i++) {
+        boxpolys[i] = new google.maps.Rectangle({
+            bounds: boxes[i],
+            fillOpacity: 0,
+            strokeOpacity: 1.0,
+            strokeColor: '#000000',
+            strokeWeight: 3,
+            map: map
+        });
+    }
 }
 
 function getInfosRoutes(response){
@@ -290,8 +328,8 @@ function geocodeAddress(address){
             //search hotels for place
             var place = results[0];
             map.panTo(place.geometry.location);
-            map.setZoom(15);
-            searchPlaces();
+            // map.setZoom(15);
+            searchPlaces(map.getBounds());
         } else {
             alert('Geocode n\'a pas abouti car : ' + status);
         }
