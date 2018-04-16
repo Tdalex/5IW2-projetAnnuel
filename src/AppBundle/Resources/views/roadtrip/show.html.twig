@@ -80,19 +80,19 @@
             </div>
         </div>
     </div>
-    <div id="roadtrip_avis">
+    <div id="roadtrip_review">
         <div class="container">
             {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
                 {% if roadtrip.owner.id != app.session.get('currentUser').id %}
-                    <div id="button_avis">
-                        <a class="waves-effect waves-light btn-large blue darken-3" id="avis">Donnez votre avis</a>
+                    <div id="button_review">
+                        <a class="waves-effect waves-light btn-large blue darken-3" id="review">Donnez votre avis</a>
                     </div>
-                    <div id="form_avis" hidden>
-                        {{ render(controller("AppBundle:Avis:new", { 'roadtripId': roadtrip.id })) }}
+                    <div id="form_review" hidden>
+                        {{ render(controller("AppBundle:Review:new", { 'roadtripId': roadtrip.id })) }}
                     </div>
                 {% endif %}
             {% else %}
-                <em><a href="{{ path('user_connectForm') }}">Connectez-vous</a> ou <a href="{{ path('user_register') }}">inscrivez-vous</a> si vous voulez donner votre avis sur ce roadtrip !</em>
+                <em><a href="{{ path('user_connectForm') }}">Connectez-vous</a> ou <a href="{{ path('user_register') }}">inscrivez-vous</a> si vous voulez donner votre review sur ce roadtrip !</em>
             {% endif %}
         </div>
     </div>
@@ -109,9 +109,9 @@
     {% endjavascripts %}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places&callback=initAutocomplete"></script>
     <script>
-        $('#avis').click(function (e) {
+        $('#review').click(function (e) {
             e.preventDefault();
-            $('#form_avis').show();
+            $('#form_review').show();
         })
     </script>
 {% endblock %}

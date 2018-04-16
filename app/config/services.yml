@@ -1,7 +1,10 @@
 # Learn more about services, parameters and containers at
 # https://symfony.com/doc/current/service_container.html
 parameters:
-    #parameter_name: value
+    transformer.elastica.user.class: AppBundle\Transformer\ElasticaToUserTransformer
+    transformer.model.user.class:    AppBundle\Transformer\UserToElasticaTransformer
+    listener.user.class:             AppBundle\Listener\UserListener
+
 
 services:
     # default configuration for services in *this* file
@@ -29,7 +32,16 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
-    # add more services, or override services that need manual wiring
-    # AppBundle\Service\ExampleService:
-    #     arguments:
-    #         $someArgument: 'some_value'
+    # Elastica
+
+    transformer.user:
+        class: AppBundle\Service\Transformer\TransformUserService
+
+
+    transformer.model.user:
+        class: AppBundle\Transformer\UserToElasticaTransformer
+        calls:
+            - [ addService,               [ transformUserService, '@transformer.user' ] ]
+
+    transformer.elastica.user:
+        class: AppBundle\Transformer\ElasticaToUserTransformer

@@ -140,11 +140,11 @@ class RoadtripController extends Controller
     public function showAction(Roadtrip $roadtrip)
     {
         $deleteForm = $this->createDeleteForm($roadtrip);
-        $avis = $roadtrip->getAvis();
+        $review = $roadtrip->getReview();
         $note = 0;
         $compteur = 0;
         $commentaires = [];
-        foreach ($avis as $a) {
+        foreach ($review as $a) {
             $note += $a->getNote();
             $commentaires [$compteur]['date'] = $a->getCreatedAt();
             $commentaires [$compteur]['user'] = $a->getUserId()->getFirstName().' '.$a->getUserId()->getLastName();

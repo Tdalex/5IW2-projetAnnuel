@@ -141,10 +141,10 @@ class User extends BaseUser
     protected $updated;
 
     /**
-     * @ORM\OneToMany(targetEntity="Avis", mappedBy="userId", cascade={"persist"})
-     * @ORM\JoinColumn(name="avis", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="Review", mappedBy="userId", cascade={"persist"})
+     * @ORM\JoinColumn(name="review", referencedColumnName="id")
      */
-    protected $avis;
+    protected $review;
 
     public function __construct(){
 		$this->created = new \DateTime();

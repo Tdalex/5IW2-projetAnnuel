@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Avis
+ * Review
  *
- * @ORM\Table(name="avis")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\AvisRepository")
+ * @ORM\Table(name="review")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ReviewRepository")
  */
-class Avis
+class Review
 {
     /**
      * @var int
@@ -108,7 +108,7 @@ class Avis
      *
      * @param integer $note
      *
-     * @return Avis
+     * @return Review
      */
     public function setNote($note)
     {
@@ -132,7 +132,7 @@ class Avis
      *
      * @param string $commentaire
      *
-     * @return Avis
+     * @return Review
      */
     public function setCommentaire($commentaire)
     {

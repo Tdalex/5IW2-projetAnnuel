@@ -2,7 +2,7 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Avis;
+use AppBundle\Entity\Review;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 
-class AvisType extends AbstractType
+class ReviewType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -59,7 +59,7 @@ class AvisType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Avis'
+            'data_class' => 'AppBundle\Entity\Review'
         ));
     }
 
@@ -68,6 +68,6 @@ class AvisType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'avis';
+        return 'review';
     }
 }

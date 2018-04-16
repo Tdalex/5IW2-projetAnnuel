@@ -17,6 +17,7 @@
         "php": ">=5.5.9",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
+        "friendsofsymfony/elastica-bundle": "^4.1",
         "friendsofsymfony/jsrouting-bundle": "^2.1",
         "friendsofsymfony/user-bundle": "^2.0",
         "hybridauth/hybridauth": "~3.0@dev",

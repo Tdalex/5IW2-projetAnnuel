@@ -106,10 +106,10 @@ class Roadtrip
     private $nbStops;
 
     /**
-     * @ORM\OneToMany(targetEntity="Avis", mappedBy="roadtripId", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="avis", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\OneToMany(targetEntity="Review", mappedBy="roadtripId", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="review", referencedColumnName="id", onDelete="CASCADE")
      */
-    protected $avis;
+    protected $review;
 
     /**
      * Get id
@@ -473,13 +473,13 @@ class Roadtrip
     /**
      * Add avi
      *
-     * @param \AppBundle\Entity\Avis $avi
+     * @param \AppBundle\Entity\Review $avi
      *
      * @return Roadtrip
      */
-    public function addAvi(\AppBundle\Entity\Avis $avi)
+    public function addAvi(\AppBundle\Entity\Review $avi)
     {
-        $this->avis[] = $avi;
+        $this->review[] = $avi;
 
         return $this;
     }
@@ -487,20 +487,20 @@ class Roadtrip
     /**
      * Remove avi
      *
-     * @param \AppBundle\Entity\Avis $avi
+     * @param \AppBundle\Entity\Review $avi
      */
-    public function removeAvi(\AppBundle\Entity\Avis $avi)
+    public function removeAvi(\AppBundle\Entity\Review $avi)
     {
-        $this->avis->removeElement($avi);
+        $this->review->removeElement($avi);
     }
 
     /**
-     * Get avis
+     * Get review
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAvis()
+    public function getReview()
     {
-        return $this->avis;
+        return $this->review;
     }
 }

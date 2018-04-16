@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Avis list</h1>
+    <h1>Review list</h1>
 
     <table>
         <thead>
@@ -14,19 +14,19 @@
             </tr>
         </thead>
         <tbody>
-        {% for avi in avis %}
+        {% for avi in review %}
             <tr>
-                <td><a href="{{ path('avis_show', { 'id': avi.id }) }}">{{ avi.id }}</a></td>
+                <td><a href="{{ path('review_show', { 'id': avi.id }) }}">{{ avi.id }}</a></td>
                 <td>{{ avi.note }}</td>
                 <td>{{ avi.commentaire }}</td>
                 <td>{% if avi.createdAt %}{{ avi.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>
                     <ul>
                         <li>
-                            <a href="{{ path('avis_show', { 'id': avi.id }) }}">show</a>
+                            <a href="{{ path('review_show', { 'id': avi.id }) }}">show</a>
                         </li>
                         <li>
-                            <a href="{{ path('avis_edit', { 'id': avi.id }) }}">edit</a>
+                            <a href="{{ path('review_edit', { 'id': avi.id }) }}">edit</a>
                         </li>
                     </ul>
                 </td>
@@ -37,7 +37,7 @@
 
     <ul>
         <li>
-            <a href="{{ path('avis_new') }}">Create a new avi</a>
+            <a href="{{ path('review_new') }}">Create a new avi</a>
         </li>
     </ul>
 {% endblock %}
