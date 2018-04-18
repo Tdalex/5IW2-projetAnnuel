@@ -477,7 +477,7 @@ class Roadtrip
      *
      * @return Roadtrip
      */
-    public function addAvi(\AppBundle\Entity\Review $avi)
+    public function addReview(\AppBundle\Entity\Review $avi)
     {
         $this->review[] = $avi;
 
@@ -489,7 +489,7 @@ class Roadtrip
      *
      * @param \AppBundle\Entity\Review $avi
      */
-    public function removeAvi(\AppBundle\Entity\Review $avi)
+    public function removereview(\AppBundle\Entity\Review $avi)
     {
         $this->review->removeElement($avi);
     }

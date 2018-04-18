@@ -5,9 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
+
 /**
-* @ORM\Entity
-*/
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\WaypointRepository")
+ * @ORM\Table(name="Waypoint")
+ *
+ */
 class Waypoint
 {
 	/**
@@ -34,6 +37,19 @@ class Waypoint
 	*/
     private $theme;
 
+	/**
+	* @var string
+	*
+	* @ORM\Column(type="string")
+	*/
+    private $phone;
+
+	/**
+	* @var string
+	*
+	* @ORM\Column(type="string")
+	*/
+    private $address;
 
 	/**
 	* @var string
@@ -49,7 +65,6 @@ class Waypoint
 	* @ORM\Column(type="string")
 	*/
 	private $title;
-
 
 	/**
 	* @var string
@@ -256,5 +271,51 @@ class Waypoint
     public function getLon()
     {
         return $this->lon;
+    }
+
+    /**
+     * Set address
+     *
+     * @param array $address
+     *
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return array
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param array $phone
+     *
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return array
+     */
+    public function getPhone()
+    {
+        return $this->phone;
     }
 }

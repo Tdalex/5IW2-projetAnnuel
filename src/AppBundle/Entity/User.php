@@ -38,7 +38,7 @@ class User extends BaseUser
      */
     protected $facebookId;
 
-      /**
+    /**
      * Firstname
      *
      * @ORM\Column(type="string", length=255)
@@ -67,6 +67,12 @@ class User extends BaseUser
      * )
      */
     protected $lastName;
+
+	/**
+     * @ORM\OneToMany(targetEntity="Roadtrip", mappedBy="OwnedRoadtrip", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="owned", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $owned;
 
     /**
      * token
@@ -374,5 +380,37 @@ class User extends BaseUser
         $this->setUsername($email);
     }
 
+     /**
+     * Add owned
+     *
+     * @param \AppBundle\Entity\Roadtrip $owned
+     *
+     * @return Roadtrip
+     */
+    public function addOwned(\AppBundle\Entity\Stop $owned)
+    {
+        $this->owned[] = $owned;
 
+        return $this;
+    }
+
+    /**
+     * Remove owned
+     *
+     * @param \AppBundle\Entity\Roadtrip $owned
+     */
+    public function removeStop(\AppBundle\Entity\Roadtrip $owned)
+    {
+        $this->owned->removeElement($owned);
+    }
+
+    /**
+     * Get owned
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getStops()
+    {
+        return $this->owned;
+    }
 }

@@ -101,8 +101,6 @@ class Review
         $this->userId = $userId;
     }
 
-
-
     /**
      * Set note
      *

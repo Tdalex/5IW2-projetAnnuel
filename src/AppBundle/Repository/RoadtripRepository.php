@@ -86,6 +86,7 @@ class RoadtripRepository extends EntityRepository{
                 ->getResult();
 
         return $query;
-    }
+	}
+
 }
 ?>
