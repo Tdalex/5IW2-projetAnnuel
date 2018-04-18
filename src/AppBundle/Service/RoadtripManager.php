@@ -16,11 +16,11 @@ class RoadtripManager
         $durations = $em->getRepository('AppBundle:Roadtrip')->findExtremDuration();
         $nbStops   = $em->getRepository('AppBundle:Roadtrip')->findExtremNbStops();
 
-        $filters['durations'] = array(  'min' => $durations[0]['duration'] ? $durations[0]['duration'] : 0,
-                                        'max' => end($durations)['duration' ? end($durations)['duration'] : 0]);
+        $filters['durations'] = array(  'min' => isset($durations[0]['duration']) ? $durations[0]['duration'] : 0,
+                                        'max' => isset(end($durations)['duration']) ? end($durations)['duration'] : 0);
 
-        $filters['nbStops'] = array(    'min' => $nbStops[0]['nbStops'] ? $nbStops[0]['nbStops'] : 0,
-                                        'max' => end($nbStops)['nbStops'] ? end($nbStops)['nbStops'] : 0);
+        $filters['nbStops'] = array(    'min' => isset($nbStops[0]['nbStops']) ? $nbStops[0]['nbStops'] : 0,
+                                        'max' => isset(end($nbStops)['nbStops']) ? end($nbStops)['nbStops'] : 0);
         return $filters;
     }
 }
