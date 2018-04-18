@@ -152,7 +152,10 @@ class RoadtripController extends Controller
             $compteur ++;
 
         }
-        $moyenne = round($note / $compteur, 1);
+        if($compteur != 0)
+            $moyenne = round($note / $compteur, 1);
+        else
+            $moyenne = "Aucune note n'a été donnée pour le moment.";
 
         //dump($commentaires);
 
