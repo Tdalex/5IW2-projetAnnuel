@@ -64,12 +64,12 @@ function initialize() {
 function searchPlaces(bound) {
     var search = {
         bounds: bound,
+        radius: '100',
         types: ['lodging']
     };
 
     var MARKER_PATH = 'https://developers.google.com/maps/documentation/javascript/images/marker_green';
     var markers = [];
-
 
     places.nearbySearch(search, function(results, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -234,14 +234,18 @@ function getItinerary(pointsMarqueurs, map){
 function createBoxes(response){
     // Direction service for route boxer
     var routeboxer = new RouteBoxer();
-    var distance = 10; // km
+    var distance = 20; // km
 
     // Box around the overview path of the first route
     var path = response.routes[0].overview_path;
     var bounds = routeboxer.box(path, distance);
     drawBoxes(bounds);
     for (var i = 0; i < bounds.length; i++) {
-        searchPlaces(bounds[i]);
+        (function (i) {
+            setTimeout(function () {
+                searchPlaces(bounds[i]);
+            }, 400 * i);
+        }(i));
     }
 }
 
@@ -329,7 +333,7 @@ function geocodeAddress(address){
             var place = results[0];
             map.panTo(place.geometry.location);
             // map.setZoom(15);
-            searchPlaces(map.getBounds());
+            //searchPlaces(map.getBounds());
         } else {
             alert('Geocode n\'a pas abouti car : ' + status);
         }
