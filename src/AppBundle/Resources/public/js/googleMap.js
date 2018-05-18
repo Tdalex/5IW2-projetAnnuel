@@ -87,7 +87,7 @@ function searchPlaces(bound) {
                 // If the user clicks a hotel marker, show the details of that hotel
                 // in an info window.
                 markers[i].placeResult = results[i];
-                google.maps.event.addListener(markers[i], 'click', showInfoWindow);
+                //google.maps.event.addListener(markers[i], 'click', showInfoWindow);
                 setTimeout(dropMarker(i, markers), i * 100);
                 addResult(results[i], i);
             }
@@ -203,8 +203,6 @@ function getItinerary(pointsMarqueurs, map){
             directionsDisplay.setDirections(response);
             directionsDisplay.suppressMarkers = true;
             //créer les boxes sur l'itinéraire
-            console.log(response);
-            searchPlaces(response);
             createBoxes(response);
             //directionsDisplay.setOptions({polylineOptions:{strokeColor: '#008000'}, preserveViewport: true});
             getInfosRoutes(response);
