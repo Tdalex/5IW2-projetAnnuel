@@ -24,6 +24,8 @@ function initialize() {
     }
     map = new google.maps.Map(document.getElementById('googleMap'), mapOptions);
 
+    places = new google.maps.places.PlacesService(map);
+
     // Créer un nouveau style de map
     var styledMapType = new google.maps.StyledMapType(styles, {name: 'Styled Map'});
     //Associer le style a la map et l'afficher.
@@ -56,6 +58,89 @@ function initialize() {
         });
 
     });
+}
+
+function searchPlaces(bound) {
+    var search = {
+        bounds: bound,
+        radius: '100',
+        types: ['lodging']
+    };
+
+    var MARKER_PATH = 'https://developers.google.com/maps/documentation/javascript/images/marker_green';
+    var markers = [];
+
+    places.nearbySearch(search, function(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            clearMarkers(markers);
+            // Create a marker for each hotel found, and
+            // assign a letter of the alphabetic to each marker icon.
+            for (var i = 0; i < results.length; i++) {
+                var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
+                var markerIcon = MARKER_PATH + markerLetter + '.png';
+                // Use marker animation to drop the icons incrementally on the map.
+                markers[i] = new google.maps.Marker({
+                    position: results[i].geometry.location,
+                    animation: google.maps.Animation.DROP,
+                    icon: markerIcon
+                });
+                // If the user clicks a hotel marker, show the details of that hotel
+                // in an info window.
+                markers[i].placeResult = results[i];
+                google.maps.event.addListener(markers[i], 'click', showInfoWindow);
+                setTimeout(dropMarker(i, markers), i * 100);
+                addResult(results[i], i);
+            }
+        }
+    });
+}
+
+function addResult(result, i) {
+    var MARKER_PATH = 'https://developers.google.com/maps/documentation/javascript/images/marker_green';
+    var results = document.getElementById('results');
+    var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
+    var markerIcon = MARKER_PATH + markerLetter + '.png';
+
+    var tr = document.createElement('tr');
+    tr.style.backgroundColor = (i % 2 === 0 ? '#F0F0F0' : '#FFFFFF');
+    tr.onclick = function() {
+        google.maps.event.trigger(markers[i], 'click');
+    };
+
+    var iconTd = document.createElement('td');
+    var nameTd = document.createElement('td');
+    var icon = document.createElement('img');
+    icon.src = markerIcon;
+    icon.setAttribute('class', 'placeIcon');
+    icon.setAttribute('className', 'placeIcon');
+    var name = document.createTextNode(result.name);
+    iconTd.appendChild(icon);
+    nameTd.appendChild(name);
+    tr.appendChild(iconTd);
+    tr.appendChild(nameTd);
+    results.appendChild(tr);
+}
+
+
+function dropMarker(i, markers) {
+    return function() {
+        markers[i].setMap(map);
+    };
+}
+
+function clearMarkers(markers) {
+    for (var i = 0; i < markers.length; i++) {
+        if (markers[i]) {
+            markers[i].setMap(null);
+        }
+    }
+}
+
+function clearResults() {
+    var results = document.getElementById('results');
+    while (results.childNodes[0]) {
+        results.removeChild(results.childNodes[0]);
+    }
 }
 
 function createMarker(event, map){
@@ -117,10 +202,47 @@ function getItinerary(pointsMarqueurs, map){
         if (status == google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(response);
             directionsDisplay.suppressMarkers = true;
+            //créer les boxes sur l'itinéraire
+            console.log(response);
+            searchPlaces(response);
+            createBoxes(response);
             //directionsDisplay.setOptions({polylineOptions:{strokeColor: '#008000'}, preserveViewport: true});
             getInfosRoutes(response);
         }
     });
+}
+
+function createBoxes(response){
+    // Direction service for route boxer
+    var routeboxer = new RouteBoxer();
+    var distance = 20; // km
+
+    // Box around the overview path of the first route
+    var path = response.routes[0].overview_path;
+    var bounds = routeboxer.box(path, distance);
+    drawBoxes(bounds);
+    for (var i = 0; i < bounds.length; i++) {
+        (function (i) {
+            setTimeout(function () {
+                searchPlaces(bounds[i]);
+            }, 400 * i);
+        }(i));
+    }
+}
+
+// Draw the array of boxes as polylines on the map
+function drawBoxes(boxes) {
+    boxpolys = new Array(boxes.length);
+    for (var i = 0; i < boxes.length; i++) {
+        boxpolys[i] = new google.maps.Rectangle({
+            bounds: boxes[i],
+            fillOpacity: 0,
+            strokeOpacity: 1.0,
+            strokeColor: '#000000',
+            strokeWeight: 3,
+            map: map
+        });
+    }
 }
 
 function getInfosRoutes(response){

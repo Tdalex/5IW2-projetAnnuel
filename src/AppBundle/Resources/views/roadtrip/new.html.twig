@@ -122,5 +122,6 @@
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places&callback=initAutocomplete"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places,visualization&callback=initAutocomplete"></script>
+    <script src="https://cdn.rawgit.com/googlemaps/v3-utility-library/master/routeboxer/src/RouteBoxer.js"></script>
 {% endblock %}
