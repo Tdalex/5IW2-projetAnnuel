@@ -61,11 +61,6 @@ function initialize() {
         });
 
     });
-
-    //windows info place
-    infosWindow = new google.maps.InfoWindow({
-        content: document.getElementById('info-content')
-    });
 }
 
 function createMarker(event, map){
@@ -274,8 +269,6 @@ function searchPlaces(bound) {
         radius: '100',
         types: ['lodging']
     };
-
-    var MARKER_PATH = 'https://developers.google.com/maps/documentation/javascript/images/marker_green';
     var markers = [];
 
     places.nearbySearch(search, function(results, status) {
@@ -284,13 +277,14 @@ function searchPlaces(bound) {
             // Create a marker for each hotel found, and
             // assign a letter of the alphabetic to each marker icon.
             for (var i = 0; i < results.length; i++) {
-                var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
-                var markerIcon = MARKER_PATH + markerLetter + '.png';
                 // Use marker animation to drop the icons incrementally on the map.
                 markers[i] = new google.maps.Marker({
                     position: results[i].geometry.location,
                     animation: google.maps.Animation.DROP,
-                    icon: markerIcon
+                    icon: {
+                        url: "/bundles/app/images/markers/svg/Motel_3.svg",
+                        scaledSize: new google.maps.Size(30, 30)
+                    }
                 });
                 // If the user clicks a hotel marker, show the details of that hotel
                 // in an info window.
@@ -306,6 +300,35 @@ function searchPlaces(bound) {
 // anchored on the marker for the hotel that the user selected.
 function showInfoWindow() {
     var marker = this;
+    var htmlcontent = '<div id="info-content">'+
+        '<table>'+
+        '<tr id="iw-url-row" class="iw_table_row">'+
+        '<td id="iw-icon" class="iw_table_icon"></td>'+
+        '<td id="iw-url"></td>'+
+        '</tr>'+
+        '<tr id="iw-address-row" class="iw_table_row">'+
+        '<td class="iw_attribute_name">Address:</td>'+
+        '<td id="iw-address"></td>'+
+        '</tr>'+
+        '<tr id="iw-phone-row" class="iw_table_row">'+
+        '<td class="iw_attribute_name">Telephone:</td>'+
+        '<td id="iw-phone"></td>'+
+        '</tr>'+
+        '<tr id="iw-rating-row" class="iw_table_row">'+
+        '<td class="iw_attribute_name">Rating:</td>'+
+        '<td id="iw-rating"></td>'+
+        '</tr>'+
+        '<tr id="iw-website-row" class="iw_table_row">'+
+        '<td class="iw_attribute_name">Website:</td>'+
+        '<td id="iw-website"></td>'+
+        '</tr>'+
+        '</table>'+
+        '</div>';
+    //windows info place
+    infosWindow = new google.maps.InfoWindow({
+        content: htmlcontent
+    });
+
     places.getDetails({placeId: marker.placeResult.place_id},
         function(place, status) {
             if (status !== google.maps.places.PlacesServiceStatus.OK) {
