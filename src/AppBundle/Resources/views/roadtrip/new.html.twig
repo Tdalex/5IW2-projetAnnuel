@@ -5,6 +5,7 @@
     {% stylesheets
     '@AppBundle/Resources/public/min/plugin-min.css'
     '@AppBundle/Resources/public/min/custom-min.css'
+    '@AppBundle/Resources/public/css/map-icons.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
@@ -16,7 +17,7 @@
     <div class="search-map">
         {{ form_start(form) }}
         <div class="row">
-            <h4 class="center-align">Mon roadtrip</h4>
+            <h4 class="center-align">Mon roadtrip</h4><span class="map-icon map-icon-point-of-interest"></span>
             <div class="col s12">
                 <div>
                     {{ form_label(form.title) }}
@@ -102,11 +103,32 @@
     </div>
 
 
-    {#<ul>
-        <li>
-            <a href="{{ path('roadtrip_index') }}" class="btn btn-info">Retour aux roadtrips</a>
-        </li>
-    </ul>#}
+    <div style="display: none">
+        <div id="info-content">
+            <table>
+                <tr id="iw-url-row" class="iw_table_row">
+                    <td id="iw-icon" class="iw_table_icon"></td>
+                    <td id="iw-url"></td>
+                </tr>
+                <tr id="iw-address-row" class="iw_table_row">
+                    <td class="iw_attribute_name">Address:</td>
+                    <td id="iw-address"></td>
+                </tr>
+                <tr id="iw-phone-row" class="iw_table_row">
+                    <td class="iw_attribute_name">Telephone:</td>
+                    <td id="iw-phone"></td>
+                </tr>
+                <tr id="iw-rating-row" class="iw_table_row">
+                    <td class="iw_attribute_name">Rating:</td>
+                    <td id="iw-rating"></td>
+                </tr>
+                <tr id="iw-website-row" class="iw_table_row">
+                    <td class="iw_attribute_name">Website:</td>
+                    <td id="iw-website"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
     </body>
 {% endblock %}
@@ -119,6 +141,7 @@
     {% javascripts
     '@AppBundle/Resources/public/min/plugin-min.js'
     '@AppBundle/Resources/public/min/custom-min.js'
+    '@AppBundle/Resources/public/js/map-icons.js'
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
