@@ -1,8 +1,10 @@
 var geocoder;
 var map;
-var placeSearch, autocomplete;
+var autocomplete;
 var infosWindow;
 var lat, lng;
+var bounds;
+var markersPlace = [];
 
 function initialize() {
     geocoder = new google.maps.Geocoder();
@@ -133,19 +135,12 @@ function getItinerary(pointsMarqueurs, map){
 function createBoxes(response){
     // Direction service for route boxer
     var routeboxer = new RouteBoxer();
-    var distance = 20; // km
+    var distance = 10; // km
 
     // Box around the overview path of the first route
     var path = response.routes[0].overview_path;
-    var bounds = routeboxer.box(path, distance);
+    bounds = routeboxer.box(path, distance);
     drawBoxes(bounds);
-    for (var i = 0; i < bounds.length; i++) {
-        (function (i) {
-            setTimeout(function () {
-                searchPlaces(bounds[i]);
-            }, 400 * i);
-        }(i));
-    }
 }
 
 // Draw the array of boxes as polylines on the map
@@ -263,36 +258,75 @@ function initAutocomplete() {
     }
 }
 
-function searchPlaces(bound) {
+function hotel(){
+    clearMarkers();
+    var place =  'lodging';
+    var icon = "/bundles/app/images/markers/svg/Motel_3.svg";
+    if (bounds){
+        for (var i = 0; i < bounds.length; i++) {
+            (function (i) {
+                setTimeout(function () {
+                    searchPlaces(bounds[i], place, icon);
+                }, 400 * i);
+            }(i));
+        }
+    } else {
+        alert("Veuillez choisir un itinéraire !")
+    }
+}
+
+function food(){
+    clearMarkers();
+    var place =  'restaurant';
+    var icon = "/bundles/app/images/markers/svg/Food_6.svg";
+    if (bounds){
+        for (var i = 0; i < bounds.length; i++) {
+            (function (i) {
+                setTimeout(function () {
+                        searchPlaces(bounds[i], place, icon);
+                    }
+                    , 400 * i);
+            }(i));
+        }
+    } else {
+        alert("Veuillez choisir un itinéraire !")
+    }
+}
+
+function searchPlaces(bound, place, icon) {
     var search = {
         bounds: bound,
         radius: '100',
-        types: ['lodging']
+        types: [place]
     };
-    var markers = [];
+    var limitDisplayPlacesBox = 2;
 
     places.nearbySearch(search, function(results, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-            clearMarkers(markers);
+            var markers = [];
             // Create a marker for each hotel found, and
             // assign a letter of the alphabetic to each marker icon.
-            for (var i = 0; i < results.length; i++) {
+            for (var i = 0; i < results.length && i < limitDisplayPlacesBox; i++) {
                 // Use marker animation to drop the icons incrementally on the map.
                 markers[i] = new google.maps.Marker({
                     position: results[i].geometry.location,
                     animation: google.maps.Animation.DROP,
                     icon: {
-                        url: "/bundles/app/images/markers/svg/Motel_3.svg",
-                        scaledSize: new google.maps.Size(30, 30)
+                        url: icon,
+                        scaledSize: new google.maps.Size(25, 20)
                     }
                 });
                 // If the user clicks a hotel marker, show the details of that hotel
                 // in an info window.
                 markers[i].placeResult = results[i];
                 google.maps.event.addListener(markers[i], 'click', showInfoWindow);
-                setTimeout(dropMarker(i, markers), i * 100);
+                setTimeout(
+                    dropMarker(i, markers)
+                    , i * 100);
             }
         }
+        //Get all markers place in array
+        markersPlace = markersPlace.concat(markers);
     });
 }
 
@@ -397,10 +431,10 @@ function dropMarker(i, markers) {
     };
 }
 
-function clearMarkers(markers) {
-    for (var i = 0; i < markers.length; i++) {
-        if (markers[i]) {
-            markers[i].setMap(null);
+function clearMarkers() {
+    for (var i = 0; i < markersPlace.length; i++) {
+        if (markersPlace[i]) {
+            markersPlace[i].setMap(null);
         }
     }
 }
