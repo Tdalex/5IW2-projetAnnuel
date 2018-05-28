@@ -5,6 +5,11 @@
         <title>{% block title %}Roadtripeur{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {#<meta property="og:url"           content="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" />
+        <meta property="og:type"          content="article" />
+        <meta property="og:title"         content="Roadtripeur" />
+        <meta property="og:description"   content="Créez, partagez et découvrez des roadtrips avec de nombreux utilisateurs !" />
+        <meta property="og:image"         content="{{ asset('images/map2.png') }}" />#}
     </head>
     <body>
         {% block body %}{% endblock %}
