@@ -1,7 +1,7 @@
 var geocoder;
 var map;
 var autocomplete;
-var infosWindow;
+var infoWindow;
 var lat, lng;
 var bounds;
 var markersPlace = [];
@@ -62,6 +62,11 @@ function initialize() {
             infoWindow.open(map, this);
         });
 
+    });
+
+    //Get html content
+    infoWindow = new google.maps.InfoWindow({
+        content: document.getElementById('info-content')
     });
 }
 
@@ -124,6 +129,8 @@ function getItinerary(pointsMarqueurs, map){
         if (status == google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(response);
             directionsDisplay.suppressMarkers = true;
+            clearResults('directionPanel');
+            directionsDisplay.setPanel(document.getElementById('directionPanel'));
             //créer les boxes sur l'itinéraire
             createBoxes(response);
             //directionsDisplay.setOptions({polylineOptions:{strokeColor: '#008000'}, preserveViewport: true});
@@ -166,7 +173,7 @@ function getInfosRoutes(response){
     for (var i = 0; i < route.legs.length; i++) {
         var routeSegment = i + 1;
         message = 'Infos route ' + routeSegment + ' : ' + route.legs[i].distance.text + '<br>' + route.legs[i].start_address + ' à ' + route.legs[i].end_address;
-        Materialize.toast(message, 30000);
+        Materialize.toast(message, 5000);
         message  = '';
     }
 }
@@ -326,7 +333,7 @@ function searchPlaces(bound, place, icon, tbody) {
                 setTimeout(
                     dropMarker(i, markers)
                     , i * 100);
-                addResult(results[i], i, icon, tbody);
+                addResult(results[i], i, markers, icon, tbody);
             }
         }
         //Get all markers place in array
@@ -334,14 +341,14 @@ function searchPlaces(bound, place, icon, tbody) {
     });
 }
 
-function addResult(result, i, icon, tbody) {
+function addResult(result, i, markers, icon, tbody) {
     var results = document.getElementById(tbody);
     var markerIcon = icon;
 
     var tr = document.createElement('tr');
     tr.style.backgroundColor = (i % 2 === 0 ? '#F0F0F0' : '#FFFFFF');
     tr.onclick = function() {
-        google.maps.event.trigger(markersPlace[i], 'click');
+        google.maps.event.trigger(markers[i], 'click');
     };
 
     var iconTd = document.createElement('td');
@@ -369,41 +376,12 @@ function clearResults(tbody) {
 // anchored on the marker for the hotel that the user selected.
 function showInfoWindow() {
     var marker = this;
-    var htmlcontent = '<div id="info-content">'+
-        '<table>'+
-        '<tr id="iw-url-row" class="iw_table_row">'+
-        '<td id="iw-icon" class="iw_table_icon"></td>'+
-        '<td id="iw-url"></td>'+
-        '</tr>'+
-        '<tr id="iw-address-row" class="iw_table_row">'+
-        '<td class="iw_attribute_name">Address:</td>'+
-        '<td id="iw-address"></td>'+
-        '</tr>'+
-        '<tr id="iw-phone-row" class="iw_table_row">'+
-        '<td class="iw_attribute_name">Telephone:</td>'+
-        '<td id="iw-phone"></td>'+
-        '</tr>'+
-        '<tr id="iw-rating-row" class="iw_table_row">'+
-        '<td class="iw_attribute_name">Rating:</td>'+
-        '<td id="iw-rating"></td>'+
-        '</tr>'+
-        '<tr id="iw-website-row" class="iw_table_row">'+
-        '<td class="iw_attribute_name">Website:</td>'+
-        '<td id="iw-website"></td>'+
-        '</tr>'+
-        '</table>'+
-        '</div>';
-    //windows info place
-    infosWindow = new google.maps.InfoWindow({
-        content: htmlcontent
-    });
-
     places.getDetails({placeId: marker.placeResult.place_id},
         function(place, status) {
             if (status !== google.maps.places.PlacesServiceStatus.OK) {
                 return;
             }
-            infosWindow.open(map, marker);
+            infoWindow.open(map, marker);
             buildIWContent(place);
         });
 }

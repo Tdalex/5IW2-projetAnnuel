@@ -197,6 +197,12 @@ p {
     border-radius: 0;
 }
 
+#directionPanel {
+    margin: 0.5em;
+    background-color: rgb(255, 255, 255);
+    overflow: auto;
+}
+
 /* My account */
 
 .header-profile{
