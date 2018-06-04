@@ -171,7 +171,6 @@ function getInfosRoutes(response){
     }
 }
 
-
 function getInfoMarkerDragend(marqueur){
     //Aficher le coordonnées au deplacement d'un marqueur
     google.maps.event.addListener(marqueur, 'dragend', function(event) {
@@ -259,31 +258,35 @@ function initAutocomplete() {
 }
 
 function hotel(){
-    clearMarkers();
     var place =  'lodging';
     var icon = "/bundles/app/images/markers/svg/Motel_3.svg";
+    var tbody = 'resultsHotels';
+    clearMarkers();
+    clearResults(tbody);
     if (bounds){
         for (var i = 0; i < bounds.length; i++) {
             (function (i) {
                 setTimeout(function () {
-                    searchPlaces(bounds[i], place, icon);
+                    searchPlaces(bounds[i], place, icon, tbody);
                 }, 400 * i);
             }(i));
         }
     } else {
-        alert("Veuillez choisir un itinéraire !")
+        alert("Veuillez choisir un itinéraire !");
     }
 }
 
 function food(){
-    clearMarkers();
     var place =  'restaurant';
     var icon = "/bundles/app/images/markers/svg/Food_6.svg";
+    var tbody = 'resultsFoods';
+    clearMarkers();
+    clearResults(tbody);
     if (bounds){
         for (var i = 0; i < bounds.length; i++) {
             (function (i) {
                 setTimeout(function () {
-                        searchPlaces(bounds[i], place, icon);
+                        searchPlaces(bounds[i], place, icon, tbody);
                     }
                     , 400 * i);
             }(i));
@@ -293,7 +296,7 @@ function food(){
     }
 }
 
-function searchPlaces(bound, place, icon) {
+function searchPlaces(bound, place, icon, tbody) {
     var search = {
         bounds: bound,
         radius: '100',
@@ -306,7 +309,7 @@ function searchPlaces(bound, place, icon) {
             var markers = [];
             // Create a marker for each hotel found, and
             // assign a letter of the alphabetic to each marker icon.
-            for (var i = 0; i < results.length && i < limitDisplayPlacesBox; i++) {
+            for (var i = 0; i < results.length /*&& i < limitDisplayPlacesBox*/; i++) {
                 // Use marker animation to drop the icons incrementally on the map.
                 markers[i] = new google.maps.Marker({
                     position: results[i].geometry.location,
@@ -323,11 +326,43 @@ function searchPlaces(bound, place, icon) {
                 setTimeout(
                     dropMarker(i, markers)
                     , i * 100);
+                addResult(results[i], i, icon, tbody);
             }
         }
         //Get all markers place in array
         markersPlace = markersPlace.concat(markers);
     });
+}
+
+function addResult(result, i, icon, tbody) {
+    var results = document.getElementById(tbody);
+    var markerIcon = icon;
+
+    var tr = document.createElement('tr');
+    tr.style.backgroundColor = (i % 2 === 0 ? '#F0F0F0' : '#FFFFFF');
+    tr.onclick = function() {
+        google.maps.event.trigger(markersPlace[i], 'click');
+    };
+
+    var iconTd = document.createElement('td');
+    var nameTd = document.createElement('td');
+    var icon = document.createElement('img');
+    icon.src = markerIcon;
+    icon.setAttribute('class', 'placeIcon');
+    icon.setAttribute('className', 'placeIcon');
+    var name = document.createTextNode(result.name);
+    iconTd.appendChild(icon);
+    nameTd.appendChild(name);
+    tr.appendChild(iconTd);
+    tr.appendChild(nameTd);
+    results.appendChild(tr);
+}
+
+function clearResults(tbody) {
+    var results = document.getElementById(tbody);
+    while (results.childNodes[0]) {
+        results.removeChild(results.childNodes[0]);
+    }
 }
 
 // Get the place details for a hotel. Show the information in an info window,

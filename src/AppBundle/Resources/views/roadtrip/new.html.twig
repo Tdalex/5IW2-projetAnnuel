@@ -109,9 +109,16 @@
                 {{ form_end(form, {'render_rest': false}) }}
             </div>
         </div>
-        <div id="test-swipe-2" class="col s12 red">Test 2</div>
-        <div id="test-swipe-3" class="col s12 green">Test 3</div>
-        <div id="test-swipe-4" class="col s12 yellow">Test 4</div>
+        <div id="test-swipe-2" class="col s12">
+            <table id="resultsTable">
+                <tbody id="resultsHotels"></tbody>
+            </table>
+        </div>
+        <div id="test-swipe-3" class="col s12">
+            <table id="resultsTable">
+                <tbody id="resultsFoods"></tbody>
+            </table></div>
+        <div id="test-swipe-4" class="col s12">Test 4</div>
     </div>
     </body>
 {% endblock %}
