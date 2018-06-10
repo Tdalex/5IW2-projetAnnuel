@@ -126,13 +126,24 @@ p {
     min-width: 100%;
 }
 
-.search-map{
-    height: 85%;
+.search-tab{
+    height: 3.4em;
     width: 25em;
     background: #2196f399;
     position: absolute;
     z-index: 1;
-    top: 82px;
+    top: 75px;
+    left: 20px;
+    overflow: scroll;
+}
+
+.search-map{
+    height: 79%;
+    width: 25em;
+    background: #2196f399;
+    position: absolute;
+    z-index: 1;
+    top: 135px;
     left: 20px;
     overflow: scroll;
 }.collapsible{
@@ -175,6 +186,21 @@ p {
 
 .toast{
     height: 100px !important;
+}
+
+#test-swipe-2, #test-swipe-3 {
+    margin: 0.5em;
+}
+
+#resultsHotels td, #resultsFoods td{
+    padding: 0;
+    border-radius: 0;
+}
+
+#directionPanel {
+    margin: 0.5em;
+    background-color: rgb(255, 255, 255);
+    overflow: auto;
 }
 
 /* My account */
