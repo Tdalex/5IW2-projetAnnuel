@@ -66,6 +66,8 @@ function initialize() {
     infoWindow = new google.maps.InfoWindow({
         content: document.getElementById('info-content')
     });
+
+    makeGrid();
 }
 
 function createMarker(event, map){
@@ -436,6 +438,51 @@ function clearMarkers() {
     for (var i = 0; i < markersPlace.length; i++) {
         if (markersPlace[i]) {
             markersPlace[i].setMap(null);
+        }
+    }
+}
+
+//Grille de la france
+function makeGrid() {
+    var marker1;
+    var marker2;
+    var rectangleLng = [];
+
+    marker1 = new google.maps.Marker({
+        position: new google.maps.LatLng(42.837042,-4.51328),
+        map: map,
+        title: 'marker1'
+    });
+    marker2 = new google.maps.Marker({
+        position: new google.maps.LatLng(50.73645528205696,7.731628249999978),
+        map: map,
+        title: 'marker2'
+    });
+
+    var leftSideDist = marker2.getPosition().lng() - marker1.getPosition().lng();
+    var belowSideDist = marker2.getPosition().lat() - marker1.getPosition().lat();
+
+    var dividerLat = 25;
+    var dividerLng = 25;
+    var excLat = belowSideDist / dividerLat;
+    var excLng = leftSideDist / dividerLng;
+
+    var m1Lat = marker1.getPosition().lat();
+    var m1Lng = marker1.getPosition().lng();
+
+    for (var i = 0; i < dividerLat; i++) {
+        if (!rectangleLng[i]) rectangleLng[i] = [];
+        for (var j = 0; j < dividerLng; j++) {
+            if (!rectangleLng[i][j]) rectangleLng[i][j] = {};
+            rectangleLng[i][j] = new google.maps.Rectangle({
+                strokeColor: '#180000',
+                strokeWeight: 1,
+                map: map,
+                bounds: new google.maps.LatLngBounds(
+                    new google.maps.LatLng(m1Lat + (excLat * i), m1Lng + (excLng * j)),
+                    new google.maps.LatLng(m1Lat + (excLat * (i + 1)), m1Lng + (excLng * (j + 1))))
+
+            });
         }
     }
 }
