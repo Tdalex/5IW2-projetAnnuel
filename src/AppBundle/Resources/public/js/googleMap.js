@@ -37,9 +37,8 @@ function initialize() {
     map.mapTypes.set('styled_map', styledMapType);
     map.setMapTypeId('styled_map');
 
-
-    var marqueurs = [];
-    //Les evenments  au clique
+   /*var marqueurs = [];
+   //Les evenments  au clique
     google.maps.event.addListener(map, 'click', function(event) {
         //Créer le marqueur
         var marqueur = createMarker(event, map);
@@ -61,8 +60,7 @@ function initialize() {
             var infoWindow = infoWindowMarker(map);
             infoWindow.open(map, this);
         });
-
-    });
+    });*/
 
     //Get html content
     infoWindow = new google.maps.InfoWindow({
@@ -122,7 +120,7 @@ function getItinerary(pointsMarqueurs, map){
         waypoints: waypoints/*[{location: pointsMarqueurs[2], stopover: false}, {location: "lyon, france", stopover: false}]*/,
         optimizeWaypoints: true,
         travelMode : google.maps.DirectionsTravelMode.DRIVING,
-        //unitSystem: google.maps.DirectionsUnitSystem.METRIC
+        unitSystem: google.maps.DirectionsUnitSystem.METRIC
     };
 
     directionsService.route(request, function(response, status) {
@@ -186,17 +184,6 @@ function getInfoMarkerDragend(marqueur){
     });
 }
 
-function infoWindowMarker(map){
-    //Fenetre d'information
-    var infowindow =  new google.maps.InfoWindow({
-         title: "Titre",
-         content: 'Hello World!',
-         map: map,
-         position: new google.maps.LatLng(48.856393, 2.343472)
-     });
-    return infowindow;
-}
-
 //geocoder les adresses saisie
 function codeAddress() {
     //Si onChangeHandler est appelé reinitialise la map
@@ -239,7 +226,8 @@ function geocodeAddress(address, id ){
             map.setCenter(results[0].geometry.location);
             var marker = new google.maps.Marker({
                 map: map,
-                position: results[0].geometry.location
+                position: results[0].geometry.location,
+                /*icon: "/bundles/app/images/markers/svg/Motel_3.svg"*/
             });
             lat = marker.getPosition().lat();
             lng = marker.getPosition().lng();
