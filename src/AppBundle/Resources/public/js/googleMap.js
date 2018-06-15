@@ -3,7 +3,7 @@ var map;
 var autocomplete;
 var infoWindow;
 var lat, lng;
-var bounds;
+var itineraryBounds;
 var markersPlace = [];
 
 function initialize() {
@@ -146,8 +146,8 @@ function createBoxes(response){
 
     // Box around the overview path of the first route
     var path = response.routes[0].overview_path;
-    bounds = routeboxer.box(path, distance);
-    drawBoxes(bounds);
+    itineraryBounds = routeboxer.box(path, distance);
+    drawBoxes(itineraryBounds);
 }
 
 // Draw the array of boxes as polylines on the map
@@ -254,7 +254,14 @@ function initAutocomplete() {
     }
 }
 
-function hotel(){
+function hotel(franceBounds){
+    franceBounds = franceBounds || null;
+    var bounds;
+    if (franceBounds){
+        bounds = franceBounds;
+    }else{
+        bounds = itineraryBounds;
+    }
     var place =  'lodging';
     var icon = "/bundles/app/images/markers/svg/Motel_3.svg";
     var tbody = 'resultsHotels';
@@ -273,7 +280,14 @@ function hotel(){
     }
 }
 
-function food(){
+function food(franceBounds){
+    franceBounds = franceBounds || null;
+    var bounds;
+    if (franceBounds){
+        bounds = franceBounds;
+    }else{
+        bounds = itineraryBounds;
+    }
     var place =  'restaurant';
     var icon = "/bundles/app/images/markers/svg/Food_6.svg";
     var tbody = 'resultsFoods';
@@ -447,6 +461,7 @@ function makeGrid() {
     var marker1;
     var marker2;
     var rectangleLng = [];
+    var franceBounds = [];
 
     marker1 = new google.maps.Marker({
         position: new google.maps.LatLng(42.837042,-4.51328),
@@ -462,8 +477,8 @@ function makeGrid() {
     var leftSideDist = marker2.getPosition().lng() - marker1.getPosition().lng();
     var belowSideDist = marker2.getPosition().lat() - marker1.getPosition().lat();
 
-    var dividerLat = 25;
-    var dividerLng = 25;
+    var dividerLat = 20;
+    var dividerLng = 20;
     var excLat = belowSideDist / dividerLat;
     var excLng = leftSideDist / dividerLng;
 
@@ -474,17 +489,21 @@ function makeGrid() {
         if (!rectangleLng[i]) rectangleLng[i] = [];
         for (var j = 0; j < dividerLng; j++) {
             if (!rectangleLng[i][j]) rectangleLng[i][j] = {};
+            var franceBound = new google.maps.LatLngBounds(
+                new google.maps.LatLng(m1Lat + (excLat * i), m1Lng + (excLng * j)),
+                new google.maps.LatLng(m1Lat + (excLat * (i + 1)), m1Lng + (excLng * (j + 1)))
+            );
             rectangleLng[i][j] = new google.maps.Rectangle({
                 strokeColor: '#180000',
                 strokeWeight: 1,
                 map: map,
-                bounds: new google.maps.LatLngBounds(
-                    new google.maps.LatLng(m1Lat + (excLat * i), m1Lng + (excLng * j)),
-                    new google.maps.LatLng(m1Lat + (excLat * (i + 1)), m1Lng + (excLng * (j + 1))))
-
+                bounds: franceBound
             });
+            franceBounds.push(franceBound);
         }
     }
+    //hotel(franceBounds);
+    //food(franceBounds);
 }
 
 var styles = [
