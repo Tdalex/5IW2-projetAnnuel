@@ -21,6 +21,7 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     AppBundle\:
         resource: '../../src/AppBundle/*'
+
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
         exclude: '../../src/AppBundle/{Entity,Repository,Tests}'
@@ -32,11 +33,13 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
+    #
     # Elastica
+    #
 
+    # user
     transformer.user:
         class: AppBundle\Service\Transformer\TransformUserService
-
 
     transformer.model.user:
         class: AppBundle\Transformer\UserToElasticaTransformer
@@ -45,3 +48,15 @@ services:
 
     transformer.elastica.user:
         class: AppBundle\Transformer\ElasticaToUserTransformer
+
+    # waypoint
+    transformer.waypoint:
+        class: AppBundle\Service\Transformer\TransformWaypointService
+
+    transformer.model.waypoint:
+        class: AppBundle\Transformer\WaypointToElasticaTransformer
+        calls:
+            - [ addService,               [ transformWaypointService, '@transformer.waypoint' ] ]
+
+    transformer.elastica.waypoint:
+        class: AppBundle\Transformer\ElasticaToWaypointTransformer

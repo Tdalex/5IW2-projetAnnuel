@@ -28,7 +28,7 @@ vagrantfile:
                                 vflmnfp_duj4h3snpl2w:
                                     host: '6104'
                                     guest: '22'
-                        memory: '512'
+                        memory: '2048'
                         cpus: '1'
         provision:
             puppet:
@@ -468,7 +468,7 @@ rabbitmq:
 elastic_search:
     install: '0'
     settings:
-        version: 6.1.2
+        version: 5.6.9
         java_install: true
     instances:
         esi_pjbth1mm9cb7:

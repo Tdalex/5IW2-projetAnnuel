@@ -5,14 +5,14 @@ sudo apt-get update
 echo "# Installing OpenJDK"
 sudo apt-get install -y openjdk-8-jre
 
-echo "# Downloading Elasticsearch 6.2.2"
-curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.2.2.deb
+echo "# Downloading Elasticsearch 5.6.9"
+curl -L -O https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.9.deb
 
 echo "# Installing Elasticsearch"
-sudo dpkg -i elasticsearch-6.2.2.deb
+sudo dpkg -i elasticsearch-5.6.9.deb
 
 echo "# Deleting Elasticsearch deb file"
-sudo rm elasticsearch-6.2.2.deb
+sudo rm elasticsearch-5.6.9.deb
 
 echo "# Starting Elasticsearch"
 sudo /etc/init.d/elasticsearch start

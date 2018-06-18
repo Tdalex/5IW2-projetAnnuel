@@ -12,6 +12,7 @@ framework:
     #esi: ~
     #translator: { fallbacks: ['%locale%'] }
     secret: '%secret%'
+    translator: ~
     router:
         resource: '%kernel.project_dir%/app/config/routing.yml'
         strict_requirements: ~
@@ -78,9 +79,6 @@ stof_doctrine_extensions:
         default:
             sluggable: true
 
-framework:
-    translator: ~
-
 fos_user:
     db_driver: orm
     firewall_name: main
@@ -116,3 +114,16 @@ fos_elastica:
                         elastica_to_model_transformer:
                             service: transformer.elastica.user
                         finder: ~
+                waypoint:
+                    serializer:
+                         groups: [elastica]
+                    persistence:
+                        driver: orm
+                        model:  AppBundle\Entity\Waypoint
+                        provider: ~
+                        model_to_elastica_transformer:
+                            service: transformer.model.waypoint
+                        elastica_to_model_transformer:
+                            service: transformer.elastica.waypoint
+                        finder: ~
+

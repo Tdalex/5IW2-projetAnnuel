@@ -33,14 +33,14 @@ class Waypoint
 	/**
 	* @var string
 	*
-	* @ORM\Column(type="string")
+	* @ORM\Column(type="string", nullable=true))
 	*/
     private $theme;
 
 	/**
 	* @var string
 	*
-	* @ORM\Column(type="string")
+	* @ORM\Column(type="string", nullable=true))
 	*/
     private $phone;
 
@@ -55,7 +55,7 @@ class Waypoint
 	* @var string
 	*
 	* @Gedmo\Slug(fields={"theme"})
-	* @ORM\Column(type="string")
+	* @ORM\Column(type="string", nullable=true)
 	*/
 	private $theme_slug;
 
@@ -69,6 +69,13 @@ class Waypoint
 	/**
 	* @var string
 	*
+	* @ORM\Column(type="boolean", nullable=true, options={"default" : false})
+	*/
+    private $sponsor;
+
+	/**
+	* @var string
+	*
 	* @ORM\Column(type="string")
 	*/
 	private $lat;
@@ -78,12 +85,12 @@ class Waypoint
     *
     * @ORM\Column(type="string")
     */
-    private $lon;
+    private $lng;
 
 	/**
 	* @var string
 	*
-	* @ORM\Column(type="string")
+	* @ORM\Column(type="string", nullable=true))
 	*/
     private $description;
 
@@ -250,27 +257,27 @@ class Waypoint
     }
 
     /**
-     * Set lon
+     * Set lng
      *
-     * @param string $lon
+     * @param string $lng
      *
      * @return Waypoint
      */
-    public function setLon($lon)
+    public function setLng($lng)
     {
-        $this->lon = $lon;
+        $this->lng = $lng;
 
         return $this;
     }
 
     /**
-     * Get lon
+     * Get lng
      *
      * @return string
      */
-    public function getLon()
+    public function getLng()
     {
-        return $this->lon;
+        return $this->lng;
     }
 
     /**
@@ -317,5 +324,28 @@ class Waypoint
     public function getPhone()
     {
         return $this->phone;
+    }
+
+     /**
+     * Set sponsor
+     *
+     * @param array $sponsor
+     *
+     */
+    public function setSponsor($sponsor)
+    {
+        $this->sponsor = $sponsor;
+
+        return $this;
+    }
+
+    /**
+     * Get sponsor
+     *
+     * @return array
+     */
+    public function isSponsor()
+    {
+        return $this->sponsor;
     }
 }
