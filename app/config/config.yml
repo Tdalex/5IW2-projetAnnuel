@@ -104,7 +104,7 @@ fos_elastica:
             types:
                 user:
                     serializer:
-                         groups: [elastica]
+                        groups: [elastica]
                     persistence:
                         driver: orm
                         model:  AppBundle\Entity\User
@@ -116,7 +116,7 @@ fos_elastica:
                         finder: ~
                 waypoint:
                     serializer:
-                         groups: [elastica]
+                        groups: [elastica]
                     persistence:
                         driver: orm
                         model:  AppBundle\Entity\Waypoint
