@@ -4,7 +4,7 @@ vagrantfile:
         provider:
             local:
                 box: puphpet/ubuntu1604-x64
-                box_url: puphpet/ubuntu1604-x64
+                box_url: 'false'
                 box_version: '0'
                 chosen_virtualizer: virtualbox
                 virtualizers:
@@ -19,11 +19,15 @@ vagrantfile:
                         check_guest_tools: 0
                         update_guest_tools: 0
                 machines:
-                    vflm_es0grvrshum8:
+                    vflm_a8spz783swdg:
                         id: roadtrip-loc
                         hostname: roadtrip-loc
                         network:
                             private_network: 192.168.56.242
+                            forwarded_port:
+                                vflmnfp_duj4h3snpl2w:
+                                    host: '6104'
+                                    guest: '22'
                         memory: '512'
                         cpus: '1'
         provision:
@@ -36,7 +40,7 @@ vagrantfile:
                     - '--verbose'
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
         synced_folder:
-            vflsf_jw6vwm67wuy8:
+            vflsf_kv3xasddrl19:
                 owner: www-data
                 group: www-data
                 source: ./
@@ -83,13 +87,8 @@ vagrantfile:
 server:
     install: '1'
     packages:
-        - memcached
-        - jpegoptim
-        - optipng
-        - default-jre
-        - python-dev
-        - php5.6-xml
-        - ruby-full
+        - vim
+        - htop
 users_groups:
     install: '1'
     groups: {  }
@@ -101,21 +100,22 @@ locale:
         locales:
             - en_GB.UTF-8
             - en_US.UTF-8
-            - fr_FR.UTF-8
         timezone: UTC
 firewall:
     install: '1'
     rules: {  }
 resolv:
     install: '1'
-    nameservers: {  }
+    nameservers:
+        - 8.8.8.8
+        - 8.8.4.4
     domainname: ''
     searchpath: {  }
 cron:
     install: '1'
     jobs: {  }
 nginx:
-    install: '1'
+    install: '0'
     settings:
         version: present
         default_vhost: 1
@@ -127,35 +127,43 @@ nginx:
         names_hash_bucket_size: 128
     upstreams: {  }
     vhosts:
-        nxv_cd364tnp38o1:
-            server_name: roadtrip.loc
+        nxv_lazwokf2xuwg:
+            server_name: awesome.dev
             server_aliases:
-                - www.roadtrip.loc
-            www_root: /var/www
+                - www.awesome.dev
+            www_root: /var/www/awesome
             listen_port: '80'
             client_max_body_size: 1m
             ssl: '0'
             locations:
-                nxvl_m6h8uzjquf5w:
-                    www_root: /var/www/web
+                nxvl_9bdw3bskgjlg:
+                    www_root: /var/www/awesome/web
                     location: /
                     autoindex: 'off'
                     internal: 'false'
+                    index_files:
+                        - index.html
+                        - index.php
+                        - app.php
                     try_files:
                         - $uri
+                        - $uri/
+                        - /index.php$is_args$args
                         - /app.php$is_args$args
                     fastcgi: ''
                     fastcgi_index: ''
                     fastcgi_split_path: ''
                     proxy: ''
                     proxy_redirect: ''
-                nxvl_xh0106o55zc6:
-                    www_root: /var/www/web
+                nxvl_ie4wddjewkp9:
+                    www_root: /var/www/awesome/web
                     location: '~ ^/(app_dev|config)\.php(/|$)'
                     autoindex: 'off'
                     internal: 'false'
-                    index_files:
-                        - app_dev.php
+                    try_files:
+                        - $uri
+                        - $uri/
+                        - /app_dev.php$is_args$args
                     fastcgi: '127.0.0.1:9000'
                     fastcgi_index: app_dev.php
                     fastcgi_split_path: '^(.+\.php)(/.*)$'
@@ -166,13 +174,33 @@ nginx:
                         - '$path_info $fastcgi_path_info'
                     proxy: ''
                     proxy_redirect: ''
-                nxvl_89pc5ohs7xko:
-                    www_root: /var/www/web
+                nxvl_od4pqv45aiaj:
+                    www_root: /var/www/awesome/web
+                    location: '~ ^/index\.php(/|$)'
+                    autoindex: 'off'
+                    internal: 'false'
+                    try_files:
+                        - $uri
+                        - $uri/
+                        - /index.php$is_args$args
+                    fastcgi: '127.0.0.1:9000'
+                    fastcgi_index: index.php
+                    fastcgi_split_path: '^(.+\.php)(/.*)$'
+                    fast_cgi_params_extra:
+                        - 'SCRIPT_FILENAME $document_root$fastcgi_script_name'
+                    set:
+                        - '$path_info $fastcgi_path_info'
+                    proxy: ''
+                    proxy_redirect: ''
+                nxvl_lpck99hfndmo:
+                    www_root: /var/www/awesome/web
                     location: '~ ^/app\.php(/|$)'
                     autoindex: 'off'
                     internal: 'false'
-                    index_files:
-                        - app.php
+                    try_files:
+                        - $uri
+                        - $uri/
+                        - /app.php$is_args$args
                     fastcgi: '127.0.0.1:9000'
                     fastcgi_index: app.php
                     fastcgi_split_path: '^(.+\.php)(/.*)$'
@@ -185,7 +213,7 @@ nginx:
                     proxy_redirect: ''
     proxies: {  }
 apache:
-    install: '0'
+    install: '1'
     settings:
         version: 2.4
         user: www-data
@@ -197,10 +225,15 @@ apache:
     modules:
         - proxy_fcgi
         - rewrite
+        - expires
+        - headers
+        - deflate
     vhosts:
-        av_vjzrn7cssi3x:
-            servername: mugler-aura-origin.dev
-            docroot: /var/www/htdocs
+        av_jp11uuteyzv8:
+            servername: roadtrip.loc
+            serveraliases:
+                - 'www.roadtrip.loc'
+            docroot: /var/www/web
             port: '80'
             setenvif:
                 - 'Authorization "(.*)" HTTP_AUTHORIZATION=$1'
@@ -213,9 +246,9 @@ apache:
             ssl_protocol: ''
             ssl_cipher: ''
             directories:
-                avd_8unv0w6bdgil:
-                    path: /var/www/htdocs
-                    directoryindex: index.php
+                avd_re39rk10m9r3:
+                    path: /var/www/web
+                    directoryindex: 'index.php app.dev'
                     options:
                         - Indexes
                         - FollowSymlinks
@@ -227,21 +260,21 @@ apache:
                     custom_fragment: ''
                     provider: directory
             files_match:
-                avfm_2lpvgojdud42:
+                avfm_5ldgq8fe88kh:
                     path: (app_dev|config)\.php$
                     sethandler: 'proxy:fcgi://127.0.0.1:9000'
                     setenv:
                         - 'APP_ENV dev'
                     custom_fragment: ''
                     provider: filesmatch
-                avfm_u572q5yjbws0:
+                avfm_yrooizcuv5xt:
                     path: app\.php$
                     sethandler: 'proxy:fcgi://127.0.0.1:9000'
                     setenv:
                         - 'APP_ENV prod'
                     custom_fragment: ''
                     provider: filesmatch
-                avfm_lpahrmv16g8t:
+                avfm_ohlvtxmq7zmk:
                     path: \.php$
                     sethandler: 'proxy:fcgi://127.0.0.1:9000'
                     custom_fragment: ''
@@ -259,13 +292,16 @@ php:
     modules:
         php:
             - cli
+            - intl
+            - xml
             - curl
             - gd
-            - intl
+            - mbstring
             - mcrypt
             - xsl
-            - memcached
-            - mbstring
+            - soap
+            - zip
+            - bcmath
         pear: {  }
         pecl: {  }
     ini:
@@ -276,7 +312,7 @@ php:
     fpm_ini:
         error_log: /var/log/php-fpm.log
     fpm_pools:
-        phpfp_cek1qazm1dnj:
+        phpfp_sxwr5jcvq1xl:
             ini:
                 prefix: www
                 listen: '127.0.0.1:9000'
@@ -289,12 +325,12 @@ xdebug:
     install: '1'
     settings:
         xdebug.default_enable: '1'
-        xdebug.remote_autostart: '1'
+        xdebug.remote_autostart: '0'
         xdebug.remote_connect_back: '1'
         xdebug.remote_enable: '1'
         xdebug.remote_handler: dbgp
         xdebug.remote_port: '9000'
-        xdebug.remote_host: 192.168.56.237
+        xdebug.var_display_max_depth: '6'
 blackfire:
     install: '0'
     settings:
@@ -313,14 +349,14 @@ xhprof:
     install: '0'
 wpcli:
     install: '0'
-    version: v0.24.1
+    version: v1.1.0
 drush:
     install: '0'
     version: 8.0.5
 ruby:
     install: '1'
     versions:
-        rv_qmtn6r8871h8:
+        rv_i3sf3j0rcg9w:
             default: '1'
             bundler: '1'
             version: 2.3.1
@@ -344,15 +380,15 @@ mariadb:
         root_password: '123'
         override_options: {  }
     users:
-        mariadbnu_9o3fefunoniw:
+        mariadbnu_96tljb37xwvw:
             name: dbuser
             password: '123'
     databases:
-        mariadbnd_mt85dxu5nzln:
+        mariadbnd_uf9diu7ku1f5:
             name: dbname
             sql: ''
     grants:
-        mariadbng_32874lbt6lz0:
+        mariadbng_uzd2smoz20d2:
             user: dbuser
             table: '*.*'
             privileges:
@@ -361,17 +397,22 @@ mysql:
     install: '1'
     settings:
         version: '5.7'
-        root_password: root
+        root_password: 'root'
         override_options: {  }
     users:
-        mysqlnu_d2qp45t4egra:
+        mysqlnu_qgiywzhd5vzo:
             name: user
             password: ''
     databases:
-        mysqlnd_c48mk3t7x29z:
+        mysqlnd_s40piwztfhzb:
             name: roadtrip
             sql: ''
-    grants: {  }
+    grants:
+        mysqlng_xk9usgl7kklp:
+            user: user
+            table: 'roadtrip.*'
+            privileges:
+                - ALL
 postgresql:
     install: '0'
     settings:
@@ -427,11 +468,11 @@ rabbitmq:
 elastic_search:
     install: '0'
     settings:
-        version: 1.7.2
+        version: 6.1.2
         java_install: true
     instances:
-        esi_dtm2mrwyzltw:
-            name: es-cardayz-api
+        esi_pjbth1mm9cb7:
+            name: es-01
 solr:
     install: '0'
     settings:
