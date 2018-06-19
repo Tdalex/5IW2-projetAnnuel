@@ -55,4 +55,24 @@ class ApiController extends Controller
         return new JsonResponse($result);
     }
 
+     /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/waypoint/nearest", name="api_waypoint")
+     * @Method("GET")
+     */
+    public function apiWaypointNearesAction(Request $request, WaypointManager $waypointManager)
+    {
+        $data = $waypointManager->findNearest($request->query->get('coordinates', null), $request->query->get('limit', 1));
+
+        foreach($data as $key => $d){
+            $data[$key] = $d->getData();
+        }
+        $result['count'] = count($data);
+        $result['data']  = $data;
+
+        return new JsonResponse($result);
+    }
+
 }

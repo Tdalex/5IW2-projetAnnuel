@@ -142,7 +142,7 @@ class WaypointManager
      * @param $coordinates
      * @return array
      */
-    public function findByNearestWaypoint($coordinates, $limit = 1)
+    public function findNearest($data, $limit = 1)
     {
         $q     = new Query();
         $query = new MatchAll();
@@ -155,8 +155,8 @@ class WaypointManager
 
         $q->addSort(["_geo_distance" => [
             "coordinates" => [
-                'lat' => $coordinates['lat'],
-                'lon' => $coordinates['lon']
+                'lat' => $data['lat'],
+                'lon' => $data['lon']
             ],
             "order"       => "desc",
             "unit"        => "km"

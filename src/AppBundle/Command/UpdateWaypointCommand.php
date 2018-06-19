@@ -59,22 +59,26 @@ class UpdateWaypointCommand extends ContainerAwareCommand
 
         $end = array(
                     'lat' => 50.73645528205696,
-                    'lon' => -7.731628249999978
+                    'lon' => 7.731628249999978
                 );
+
+        $count = array( 'total' => 0,
+                        'update'=> 0
+            );
 
         $leftSideDist = $end['lon'] - $start['lon'];
         $belowSideDist = $end['lat'] - $start['lat'];
 
-        $lonCut = 10;
-        $latCut = 10;
-        $excLat = $belowSideDist / $latCut;
-        $excLng = $leftSideDist / $lonCut;
+        $cut = 15;
+        $excLat = $belowSideDist / $cut;
+        $excLng = $leftSideDist / $cut;
 
-        for($i = 0; $i < $latCut; $i++){
-            for($a = 0; $a < $lonCut; $a++){
+        for($i = 0; $i < $cut; $i++){
+            for($a = 0; $a < $cut; $a++){
                 $search = $googlePlaces->nearbySearch(($start['lat'] + ($excLat * $i)) ."," . ($start['lon'] + ($excLng * $a)), 50000, array("type" => "lodging", "language" => "fr"));
 
                 foreach($search['results'] as $s){
+                    $count['total']++;
                     $waypoint = $em->getRepository('AppBundle:Waypoint')->findOneByAddress($s['vicinity']);
                     $new = false;
 
@@ -90,6 +94,8 @@ class UpdateWaypointCommand extends ContainerAwareCommand
                         $output->writeln('');
                     }
                     if($new || $force){
+                        $count['update']++;
+
                         $output->writeln('<info>updating...</info>');
                         $output->writeln('');
                         $waypoint->setTitle($s['name']);
@@ -107,7 +113,8 @@ class UpdateWaypointCommand extends ContainerAwareCommand
                 }
             }
         }
-
+        $output->writeln('<info>total: '.  $count['total']  .'</info>');
+        $output->writeln('<info>update: '. $count['update'] .'</info>');
         $output->writeln('');
         $output->writeln('<info>===============</info>');
         $output->writeln('<info>GENERATION DONE</info>');
