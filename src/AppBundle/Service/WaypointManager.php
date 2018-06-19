@@ -65,44 +65,37 @@ class WaypointManager
     public function findByCoordinates($data, $limit = 10000)
 	{
         $q     = new Query();
-        $query = new MatchAll();
-
-        $filters = new BoolQuery();
+        $filters  = new BoolQuery();
 		$subQuery = new BoolQuery();
-		$subMatch = new BoolQuery();
 
 		foreach($data['coordinates'] as $c){
-				$match = new BoolQuery();
-				$match = new Range('coordinates.lat', [
-					'lte' => $c['max']['lat'],
-					'gte' => $c['min']['lat']
-				]);
-				$subMatch->addMust($match);
+            $subMatch = new BoolQuery();
 
-				$match = new BoolQuery();
-				$match = new Range('coordinates.lng', [
-					'lte' => $c['max']['lon'],
-					'gte' => $c['min']['lon']
-				]);
-				$subMatch->addMust($match);
+            $range = new Range('lat', [
+                'lte' => $c['max']['lat'],
+                'gte' => $c['min']['lat']
+            ]);
+            $subMatch->addMust($range);
 
-				$subQuery->addShould($subMatch);
+            $range = new Range('lon', [
+                'lte' => $c['max']['lon'],
+                'gte' => $c['min']['lon']
+            ]);
+            $subMatch->addMust($range);
+
+            $subQuery->addShould($subMatch);
 		}
 		$filters->addMust($subQuery);
-
-
-		$query = new BoolQuery($query, $filters);
-
-        $q->setQuery($query);
+        $q->setQuery($subQuery);
 
 		if(isset($data['start'])){
 			$q->addSort(["_geo_distance" => [
 				"coordinates" => [
-					'lat' => $start['lat'],
-					'lon' => $start['lon']
+					'lat' => $data['start']['lat'],
+					'lon' => $data['start']['lon']
 				],
-				"order"       => "asc",
-				"unit"        => "km"
+				"order" => "asc",
+				"unit"  => "km"
 			]]);
 		}
 
@@ -114,30 +107,32 @@ class WaypointManager
 	public function findByDistance($data, $limit = 10000)
 	{
         $q     = new Query();
-        $query = new MatchAll();
+        $boolQuery = new BoolQuery();
 
-		$boolQuery = new BoolQuery();
-		$boolQuery->addFilter(
-			new GeoDistance('coordinates', [
-				'lat' => $data['coordinates']['lat'],
-				'lon' => $data['coordinates']['lon'],
-			], $data['distance'] . 'km'
-			)
-		);
+        if(!array_key_exists('lat', $data['coordinates'])){
+            foreach ($data['coordinates'] as $c) {
+                $subQuery = new BoolQuery();
 
-		$query = new BoolQuery($query, $boolQuery);
+                $subQuery->addFilter(
+                    new GeoDistance('coordinates', [
+                        'lat' => $c['lat'],
+                        'lon' => $c['lon'],
+                    ], $data['distance'] . 'km'
+                    )
+                );
+                $boolQuery->addShould($subQuery);
+            }
+        } else {
+            $boolQuery->addFilter(
+                new GeoDistance('coordinates', [
+                    'lat' => $data['coordinates']['lat'],
+                    'lon' => $data['coordinates']['lon'],
+                ], $data['distance'] . 'km'
+                )
+            );
+        }
 
-        $q->setQuery($query);
-
-		$q->addSort(["_geo_distance" => [
-			"coordinates" => [
-				'lat' => $data['coordinates']['lat'],
-				'lon' => $data['coordinates']['lon'],
-			],
-			"order"       => "asc",
-			"unit"        => "km"
-		]]);
-
+        $q->setQuery($boolQuery);
         $q->setSize($limit);
 
         return $this->finder->find($q);
@@ -163,7 +158,7 @@ class WaypointManager
                 'lat' => $coordinates['lat'],
                 'lon' => $coordinates['lon']
             ],
-            "order"       => "asc",
+            "order"       => "desc",
             "unit"        => "km"
         ]]);
 

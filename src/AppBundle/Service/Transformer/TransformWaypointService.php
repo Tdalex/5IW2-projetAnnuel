@@ -32,6 +32,8 @@ class TransformWaypointService extends BaseService
                 'lat' => $waypoint->getLat(),
                 'lon' => $waypoint->getLon()
             ],
+            'lat' => $waypoint->getLat(),
+            'lon' => $waypoint->getLon()
         ];
 
         return $data;
