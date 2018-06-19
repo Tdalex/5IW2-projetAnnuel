@@ -69,7 +69,7 @@ class UpdateWaypointCommand extends ContainerAwareCommand
         $leftSideDist = $end['lon'] - $start['lon'];
         $belowSideDist = $end['lat'] - $start['lat'];
 
-        $cut = 15;
+        $cut = 20;
         $excLat = $belowSideDist / $cut;
         $excLng = $leftSideDist / $cut;
 
@@ -95,10 +95,10 @@ class UpdateWaypointCommand extends ContainerAwareCommand
                     }
                     if($new || $force){
                         $count['update']++;
-
+                        $name = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $s['name']);
                         $output->writeln('<info>updating...</info>');
                         $output->writeln('');
-                        $waypoint->setTitle($s['name']);
+                        $waypoint->setTitle($name);
                         $waypoint->setAddress($s['vicinity']);
                         $waypoint->setLat($s['geometry']['location']['lat']);
                         $waypoint->setLon($s['geometry']['location']['lng']);
