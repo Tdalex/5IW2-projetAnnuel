@@ -117,7 +117,7 @@ class WaypointManager
                     new GeoDistance('coordinates', [
                         'lat' => $c['lat'],
                         'lon' => $c['lon'],
-                    ], $data['distance'] . 'km'
+                    ], $data['radius'] . 'km'
                     )
                 );
                 $boolQuery->addShould($subQuery);
@@ -127,7 +127,7 @@ class WaypointManager
                 new GeoDistance('coordinates', [
                     'lat' => $data['coordinates']['lat'],
                     'lon' => $data['coordinates']['lon'],
-                ], $data['distance'] . 'km'
+                ], $data['radius'] . 'km'
                 )
             );
         }

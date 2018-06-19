@@ -58,18 +58,20 @@ class UpdateWaypointCommand extends ContainerAwareCommand
                 );
 
         $end = array(
-            'lat' => 50.73645528205696,
-            'lon' => -7.731628249999978
-        );
+                    'lat' => 50.73645528205696,
+                    'lon' => -7.731628249999978
+                );
 
         $leftSideDist = $end['lon'] - $start['lon'];
         $belowSideDist = $end['lat'] - $start['lat'];
 
-        $excLat = $belowSideDist / 20;
-        $excLng = $leftSideDist / 20;
+        $lonCut = 10;
+        $latCut = 10;
+        $excLat = $belowSideDist / $latCut;
+        $excLng = $leftSideDist / $lonCut;
 
-        for($i = 0; $i < 20; $i++){
-            for($a = 0; $a < 20; $a++){
+        for($i = 0; $i < $latCut; $i++){
+            for($a = 0; $a < $lonCut; $a++){
                 $search = $googlePlaces->nearbySearch(($start['lat'] + ($excLat * $i)) ."," . ($start['lon'] + ($excLng * $a)), 50000, array("type" => "lodging", "language" => "fr"));
 
                 foreach($search['results'] as $s){
