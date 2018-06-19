@@ -26,17 +26,37 @@ class ApiController extends Controller
 
     /**
      * @param Request $request
-     * @param $ref
      * @return \Symfony\Component\HttpFoundation\Response
      *
-     * @Route("/waypoint/by_distance", name="front_ajax_waypoint")
-     * @Method("POST")
+     * @Route("/waypoint/by_distance", name="api_waypoint_distance")
+     * @Method("GET")
      */
-    public function fundingAction(Request $request, WaypointManager $waypointManager)
+    public function waypointByDistanceAction(Request $request, WaypointManager $waypointManager)
     {
-        $datapush = $request->request->all();
+        $datapush = $request->query->all();
+        $data = $waypointManager->findByDistance($datapush);
+
+        foreach($data as $key => $d){
+            $data[$key] = $d->getData();
+        }
+
+        return new JsonResponse($data);
+    }
+
+     /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/waypoint/all", name="app_api_waypoint_all")
+     * @Method("GET")
+     */
+    public function allWaypointsAction(Request $request, WaypointManager $waypointManager)
+    {
         $data = $waypointManager->findAll();
-        // $data = $waypointManager->findByDistance($datapush);
+
+        foreach($data as $key => $d){
+            $data[$key] = $d->getData();
+        }
 
         return new JsonResponse($data);
     }

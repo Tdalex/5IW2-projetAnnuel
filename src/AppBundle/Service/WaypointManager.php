@@ -81,8 +81,8 @@ class WaypointManager
 
 				$match = new BoolQuery();
 				$match = new Range('coordinates.lng', [
-					'lte' => $c['max']['lng'],
-					'gte' => $c['min']['lng']
+					'lte' => $c['max']['lon'],
+					'gte' => $c['min']['lon']
 				]);
 				$subMatch->addMust($match);
 
@@ -99,7 +99,7 @@ class WaypointManager
 			$q->addSort(["_geo_distance" => [
 				"coordinates" => [
 					'lat' => $start['lat'],
-					'lon' => $start['lng']
+					'lon' => $start['lon']
 				],
 				"order"       => "asc",
 				"unit"        => "km"
@@ -120,7 +120,7 @@ class WaypointManager
 		$boolQuery->addFilter(
 			new GeoDistance('coordinates', [
 				'lat' => $data['coordinates']['lat'],
-				'lon' => $data['coordinates']['lng'],
+				'lon' => $data['coordinates']['lon'],
 			], $data['distance'] . 'km'
 			)
 		);
@@ -132,7 +132,7 @@ class WaypointManager
 		$q->addSort(["_geo_distance" => [
 			"coordinates" => [
 				'lat' => $data['coordinates']['lat'],
-				'lon' => $data['coordinates']['lng'],
+				'lon' => $data['coordinates']['lon'],
 			],
 			"order"       => "asc",
 			"unit"        => "km"
@@ -161,7 +161,7 @@ class WaypointManager
         $q->addSort(["_geo_distance" => [
             "coordinates" => [
                 'lat' => $coordinates['lat'],
-                'lon' => $coordinates['lng']
+                'lon' => $coordinates['lon']
             ],
             "order"       => "asc",
             "unit"        => "km"

@@ -85,7 +85,7 @@ class Waypoint
     *
     * @ORM\Column(type="string")
     */
-    private $lng;
+    private $lon;
 
 	/**
 	* @var string
@@ -257,27 +257,27 @@ class Waypoint
     }
 
     /**
-     * Set lng
+     * Set lon
      *
-     * @param string $lng
+     * @param string $lon
      *
      * @return Waypoint
      */
-    public function setLng($lng)
+    public function setLon($lon)
     {
-        $this->lng = $lng;
+        $this->lon = $lon;
 
         return $this;
     }
 
     /**
-     * Get lng
+     * Get lon
      *
      * @return string
      */
-    public function getLng()
+    public function getLon()
     {
-        return $this->lng;
+        return $this->lon;
     }
 
     /**

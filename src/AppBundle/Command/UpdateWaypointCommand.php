@@ -54,15 +54,15 @@ class UpdateWaypointCommand extends ContainerAwareCommand
 
         $start = array(
                     'lat' => 42.837042,
-                    'lng' => -4.51328
+                    'lon' => -4.51328
                 );
 
         $end = array(
             'lat' => 50.73645528205696,
-            'lng' => -7.731628249999978
+            'lon' => -7.731628249999978
         );
 
-        $leftSideDist = $end['lng'] - $start['lng'];
+        $leftSideDist = $end['lon'] - $start['lon'];
         $belowSideDist = $end['lat'] - $start['lat'];
 
         $excLat = $belowSideDist / 20;
@@ -70,7 +70,7 @@ class UpdateWaypointCommand extends ContainerAwareCommand
 
         for($i = 0; $i < 20; $i++){
             for($a = 0; $a < 20; $a++){
-                $search = $googlePlaces->nearbySearch(($start['lat'] + ($excLat * $i)) ."," . ($start['lng'] + ($excLng * $a)), 50000, array("type" => "lodging", "language" => "fr"));
+                $search = $googlePlaces->nearbySearch(($start['lat'] + ($excLat * $i)) ."," . ($start['lon'] + ($excLng * $a)), 50000, array("type" => "lodging", "language" => "fr"));
 
                 foreach($search['results'] as $s){
                     $waypoint = $em->getRepository('AppBundle:Waypoint')->findOneByAddress($s['vicinity']);
@@ -93,7 +93,7 @@ class UpdateWaypointCommand extends ContainerAwareCommand
                         $waypoint->setTitle($s['name']);
                         $waypoint->setAddress($s['vicinity']);
                         $waypoint->setLat($s['geometry']['location']['lat']);
-                        $waypoint->setLng($s['geometry']['location']['lng']);
+                        $waypoint->setLng($s['geometry']['location']['lon']);
 
                         $em->persist($waypoint);
                         $em->flush();

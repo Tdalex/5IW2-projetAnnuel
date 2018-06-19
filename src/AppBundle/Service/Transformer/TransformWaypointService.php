@@ -27,10 +27,10 @@ class TransformWaypointService extends BaseService
             // 'themes'      => $waypoint->getThemes(),
             'phone'       => $waypoint->getPhone(),
             'slug'        => $waypoint->getSlug(),
-            'is_sponsor'  => $waypoint->isSponsor(),
+            'is_sponsor'  => $waypoint->isSponsor() ? true : false,
             'coordinates' => [
                 'lat' => $waypoint->getLat(),
-                'lng' => $waypoint->getLng()
+                'lon' => $waypoint->getLon()
             ],
         ];
 
