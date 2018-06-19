@@ -158,7 +158,7 @@ class WaypointManager
                 'lat' => $data['lat'],
                 'lon' => $data['lon']
             ],
-            "order"       => "desc",
+            "order"       => "asc",
             "unit"        => "km"
         ]]);
 
