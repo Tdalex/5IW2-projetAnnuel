@@ -95,7 +95,7 @@ class UpdateWaypointCommand extends ContainerAwareCommand
                         $waypoint->setTitle($s['name']);
                         $waypoint->setAddress($s['vicinity']);
                         $waypoint->setLat($s['geometry']['location']['lat']);
-                        $waypoint->setLng($s['geometry']['location']['lon']);
+                        $waypoint->setLon($s['geometry']['location']['lng']);
 
                         $em->persist($waypoint);
                         $em->flush();
