@@ -144,26 +144,24 @@ class WaypointManager
      */
     public function findNearest($data, $limit = 1)
     {
-        $q     = new Query();
-        $query = new MatchAll();
+        $q = new Query();
+        $boolQuery = new BoolQuery();
 
-        $filters = new BoolQuery();
-
-        $query = new BoolQuery($query, $filters);
-
-        $q->setQuery($query);
+        $q->setQuery($boolQuery);
 
         $q->addSort(["_geo_distance" => [
             "coordinates" => [
-                'lat' => $data['lat'],
-                'lon' => $data['lon']
+                'lat' => $data['coordinates']['lat'],
+                'lon' => $data['coordinates']['lon']
             ],
             "order"       => "asc",
             "unit"        => "km"
         ]]);
 
+
         $q->setSize($limit);
 
         return $this->finder->find($q);
     }
+
 }

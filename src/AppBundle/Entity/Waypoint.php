@@ -69,9 +69,9 @@ class Waypoint
 	/**
 	* @var string
 	*
-	* @ORM\Column(type="boolean", nullable=true, options={"default" : false})
+	* @ORM\Column(type="boolean",)
 	*/
-    private $sponsor;
+    private $sponsor = false;
 
 	/**
 	* @var string

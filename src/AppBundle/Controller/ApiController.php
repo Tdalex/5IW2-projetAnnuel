@@ -64,7 +64,7 @@ class ApiController extends Controller
      */
     public function apiWaypointNearesAction(Request $request, WaypointManager $waypointManager)
     {
-        $data = $waypointManager->findNearest($request->query->get('coordinates', null), $request->query->get('limit', 1));
+        $data = $waypointManager->findNearest($request->query->all(), $request->query->get('limit', 1));
 
         foreach($data as $key => $d){
             $data[$key] = $d->getData();
