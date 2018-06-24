@@ -34,8 +34,8 @@ class TransformUserService extends BaseService
                 'nbStops'     => $r->getNbStops(),
                 'reviews'     => $r->getReview(),
                 'stops'       => $r->getStops(),
-                'stopStart'   => $r->getStopsStart(),
-                'stopEnd'     => $r->getStopsEnd(),
+                'stopStart'   => $r->getStopStart(),
+                'stopEnd'     => $r->getStopEnd(),
             );
         }
 

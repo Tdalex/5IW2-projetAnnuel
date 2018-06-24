@@ -69,7 +69,7 @@ class User extends BaseUser
     protected $lastName;
 
 	/**
-     * @ORM\OneToMany(targetEntity="Roadtrip", mappedBy="OwnedRoadtrip", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Roadtrip", mappedBy="owner", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="owned", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $owned;
@@ -379,6 +379,24 @@ class User extends BaseUser
         parent::setEmail($email);
         $this->setUsername($email);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getOwned()
+    {
+        return $this->owned;
+    }
+
+    /**
+     * @param mixed $owned
+     */
+    public function setOwned($owned)
+    {
+        $this->owned = $owned;
+    }
+
+
 
      /**
      * Add owned

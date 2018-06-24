@@ -59,7 +59,7 @@ class ApiController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      *
-     * @Route("/waypoint/nearest", name="api_waypoint")
+     * @Route("/waypoint/nearest", name="api_waypoint_nears")
      * @Method("GET")
      */
     public function apiWaypointNearesAction(Request $request, WaypointManager $waypointManager)
