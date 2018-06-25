@@ -13,6 +13,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Waypoint
 {
+
+    const STATUS_DISABLED   = 'disabled';
+    const STATUS_ENABLED    = 'enabled';
+    const STATUS_DELETED    = 'deleted';
+
 	/**
 	* @var integer
 	*
@@ -69,9 +74,16 @@ class Waypoint
 	/**
 	* @var string
 	*
-	* @ORM\Column(type="boolean",)
+	* @ORM\Column(type="boolean")
 	*/
     private $sponsor = false;
+
+    /**
+     * Status
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $status = Waypoint::STATUS_ENABLED;
 
 	/**
 	* @var string
@@ -348,4 +360,29 @@ class Waypoint
     {
         return $this->sponsor;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+   /**
+    * Get active
+    *
+    * @return array
+    */
+   public function isActive()
+   {
+        return $this->status == Waypoint::STATUS_ENABLED ? true : false;
+   }
 }

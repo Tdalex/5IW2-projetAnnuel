@@ -61,53 +61,34 @@ class WaypointManager
         return $this->finder->find($q);
     }
 
+    /**
+     * @return array
+     */
+    public function findAllActive()
+    {
+        $q       = new Query();
+        $filters = new BoolQuery();
 
-    public function findByCoordinates($data, $limit = 10000)
-	{
-        $q     = new Query();
-        $filters  = new BoolQuery();
-		$subQuery = new BoolQuery();
+        $match = new Match();
+        $match->setFieldQuery('status', Waypoint::STATUS_ENABLED);
+        $match->setFieldMinimumShouldMatch('status', '100%');
+        $filters->addMust($match);
 
-		foreach($data['coordinates'] as $c){
-            $subMatch = new BoolQuery();
-
-            $range = new Range('lat', [
-                'lte' => $c['max']['lat'],
-                'gte' => $c['min']['lat']
-            ]);
-            $subMatch->addMust($range);
-
-            $range = new Range('lon', [
-                'lte' => $c['max']['lon'],
-                'gte' => $c['min']['lon']
-            ]);
-            $subMatch->addMust($range);
-
-            $subQuery->addShould($subMatch);
-		}
-		$filters->addMust($subQuery);
-        $q->setQuery($subQuery);
-
-		if(isset($data['start'])){
-			$q->addSort(["_geo_distance" => [
-				"coordinates" => [
-					'lat' => $data['start']['lat'],
-					'lon' => $data['start']['lon']
-				],
-				"order" => "asc",
-				"unit"  => "km"
-			]]);
-		}
-
-        $q->setSize($limit);
+        $q->setQuery($filters);
+        $q->setSize(10000);
 
         return $this->finder->find($q);
-	}
+    }
 
 	public function findByDistance($data, $limit = 10000)
 	{
         $q     = new Query();
         $boolQuery = new BoolQuery();
+
+        $match = new Match();
+        $match->setFieldQuery('status', Waypoint::STATUS_ENABLED);
+        $match->setFieldMinimumShouldMatch('status', '100%');
+        $boolQuery->addMust($match);
 
         if(!array_key_exists('lat', $data['coordinates'])){
             foreach ($data['coordinates'] as $c) {
@@ -146,6 +127,11 @@ class WaypointManager
     {
         $q = new Query();
         $boolQuery = new BoolQuery();
+
+        $match = new Match();
+        $match->setFieldQuery('status', Waypoint::STATUS_ENABLED);
+        $match->setFieldMinimumShouldMatch('status', '100%');
+        $boolQuery->addMust($match);
 
         $q->setQuery($boolQuery);
 

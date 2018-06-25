@@ -28,12 +28,12 @@ class TransformWaypointService extends BaseService
             'phone'       => $waypoint->getPhone(),
             'slug'        => $waypoint->getSlug(),
             'is_sponsor'  => $waypoint->isSponsor() ? true : false,
+            'is_active'   => $waypoint->isActive(),
+            'status'      => $waypoint->getStatus(),
             'coordinates' => [
                 'lat' => $waypoint->getLat(),
                 'lon' => $waypoint->getLon()
             ],
-            'lat' => $waypoint->getLat(),
-            'lon' => $waypoint->getLon()
         ];
 
         return $data;

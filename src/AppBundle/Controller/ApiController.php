@@ -40,8 +40,6 @@ class ApiController extends Controller
             $data = $waypointManager->findAll();
         } else if ($type == 'by_distance') {
             $data = $waypointManager->findByDistance($datapush);
-        } else if ($type == 'by_coordinates') {
-            $data = $waypointManager->findByCoordinates($datapush);
         } else {
             throw new NotFoundHttpException('Sorry not existing!');
         }
