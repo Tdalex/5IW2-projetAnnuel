@@ -167,12 +167,14 @@ function drawBoxes(boxes) {
 }
 
 function centerBoxes(boxes){
+    var centerBounds =  [];
     for (var i = 0; i < boxes.length; i++) {
-        var marker = new google.maps.Marker({
+        /*var marker = new google.maps.Marker({
             position: boxes[i].getCenter(),
             map: map,
             title: 'Hello World!'
-        });
+        });*/
+        centerBounds.push(boxes[i].getCenter());
     }
 }
 
