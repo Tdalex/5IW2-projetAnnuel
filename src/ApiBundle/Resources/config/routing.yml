@@ -1,0 +1,8 @@
+api_homepage:
+    path:     /
+    defaults: { _controller: ApiBundle:Default:index }
+
+api_roadtrip:
+    type: rest
+    resource: ApiBundle:Roadtrip
+    name_prefix: api_   #prefix for all action of the controller
