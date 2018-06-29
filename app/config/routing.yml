@@ -26,3 +26,8 @@ fos_user_change_password:
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+api:
+    resource: '@ApiBundle/Resources/config/routing.yml'
+    type:     rest
+    prefix: /v1/api

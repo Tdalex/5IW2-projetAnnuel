@@ -129,3 +129,32 @@ fos_elastica:
                     mappings:
                         coordinates:
                             type: "geo_point"
+
+fos_rest:
+    routing_loader:
+        include_format: false
+        default_format: json
+    view:
+        view_response_listener: true
+        formats:
+            json: true
+            xml:  false
+        mime_types:
+            json: ['application/json']
+    format_listener:
+        rules:
+            - { path: '^/v1/api', priorities: ['json'], fallback_format: 'json' }
+            - { path: '^/', stop: true }
+    serializer:
+        serialize_null: true
+    param_fetcher_listener: true
+    body_listener:
+        enabled: true
+    access_denied_listener:
+        json: true
+    body_converter:
+        enabled: true
+
+jms_serializer: ~
+
+
