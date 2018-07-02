@@ -76,6 +76,13 @@ class Stop
     protected $roadTripStop;
 
     /**
+     * @var DateTime
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
      * Get id
      *
      * @return integer
@@ -181,29 +188,29 @@ class Stop
         return $this->createdAt;
     }
 
-    /**
-     * Set isRemoved
-     *
-     * @param boolean $isRemoved
-     *
-     * @return Roadtrip
-     */
-    public function setIsRemoved($isRemoved)
-    {
-        $this->isRemoved = $isRemoved;
-
-        return $this;
-    }
-
-    /**
-     * Get isRemoved
-     *
-     * @return boolean
-     */
-    public function getIsRemoved()
-    {
-        return $this->isRemoved;
-    }
+//    /**
+//     * Set isRemoved
+//     *
+//     * @param boolean $isRemoved
+//     *
+//     * @return Roadtrip
+//     */
+//    public function setIsRemoved($isRemoved)
+//    {
+//        $this->isRemoved = $isRemoved;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Get isRemoved
+//     *
+//     * @return boolean
+//     */
+//    public function getIsRemoved()
+//    {
+//        return $this->isRemoved;
+//    }
 
     /**
      * Set lat
@@ -253,29 +260,29 @@ class Stop
         return $this->lon;
     }
 
-    /**
-     * Set owner
-     *
-     * @param \AppBundle\Entity\User $owner
-     *
-     * @return Roadtrip
-     */
-    public function setOwner(\AppBundle\Entity\User $owner = null)
-    {
-        $this->owner = $owner;
-
-        return $this;
-    }
-
-    /**
-     * Get owner
-     *
-     * @return \AppBundle\Entity\User
-     */
-    public function getOwner()
-    {
-        return $this->owner;
-    }
+//    /**
+//     * Set owner
+//     *
+//     * @param \AppBundle\Entity\User $owner
+//     *
+//     * @return Roadtrip
+//     */
+//    public function setOwner(\AppBundle\Entity\User $owner = null)
+//    {
+//        $this->owner = $owner;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Get owner
+//     *
+//     * @return \AppBundle\Entity\User
+//     */
+//    public function getOwner()
+//    {
+//        return $this->owner;
+//    }
 
     /**
      * Set address
