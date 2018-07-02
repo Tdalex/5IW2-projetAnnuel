@@ -261,7 +261,7 @@ class UserController extends Controller
             $encoded = $encoder->encodePassword($dataPush['user']['plainPassword'], $user->getSalt());
             $user->setPassword($encoded);
 
-            $user->setEnabled(false);
+            $user->setEnabled(true);
             $user->setFacebookId($facebookId);
 
             $token = bin2hex(random_bytes(20));
@@ -270,7 +270,21 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            $register = true;
+
+            if($user->getBirthDate() !== null)
+                $birthdate = $user->getBirthDate()->format('d-m-Y');
+
+            $currentUser = array(
+                'id'        => $user->getId(),
+                'firstname' => $user->getFirstName(),
+                'lastname'  => $user->getLastName(),
+                'email'     => $user->getEmail(),
+                'gender'    => $user->getGender(),
+                'birthdate' => $birthdate
+            );
+
+            $session = $this->get('session');
+            $session->set('currentUser', $currentUser);
 
         }else{
             //account activated
