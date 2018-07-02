@@ -60,7 +60,7 @@ class ReviewController extends Controller
             $em->persist($avi);
             $em->flush();
 
-            return $this->redirectToRoute('roadtrip_show', array('id' => $roadtripId));
+            return $this->redirectToRoute('roadtrip_show', array('slug' => $roadtrip->getSlug()));
         }
 
         return $this->render('AppBundle:review:new.html.twig', array(
