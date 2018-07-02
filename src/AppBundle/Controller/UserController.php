@@ -206,6 +206,8 @@ class UserController extends Controller
             ]
         ];
 
+        $register = false;
+
         try {
             $adapter = new \Hybridauth\Provider\Facebook($config);
             $adapter->authenticate();
