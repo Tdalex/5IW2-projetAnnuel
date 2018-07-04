@@ -1,0 +1,35 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    '@AppBundle/Resources/public/min/plugin-min.css'
+    '@AppBundle/Resources/public/min/custom-min.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+
+<!--Form roadtrip-->
+
+
+<div id="partner_page" class="row">
+    <div class="col s5 content_partner_page">
+        <h3>Mise en relation avec nos service de partenariats</h3>
+        <strong>Laissez nous votre numéro de téléphone ainsi que votre adresse mail</strong>
+        <p>Nous vous contactons très prochainement</p>
+    </div>
+    <div class="col s7 form_partner_page">
+        <div class="row">
+            <div class="col s12 m5 bloc">
+                <div class="card-panel  ">
+                        efer
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

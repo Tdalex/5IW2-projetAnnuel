@@ -287,6 +287,42 @@ p {
     margin-bottom: 4%;
 }
 
+#partner_page{
+    margin-bottom: 0 !important;
+    width: 100%;
+    height: 100%;
+    font-weight: 200;
+}
+
+#partner_page .content_partner_page{
+    background-color: #51bcff;
+    color: white;
+    height: 100%;
+    padding: 170px 60px;
+}
+
+#partner_page h3{
+    font-weight: 200;
+    margin-bottom: 4%;
+ }
+
+.form_partner_page{
+    background-image: url("/bundles/app/images/partener.jpg");
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.bloc{
+    margin: 170px 60px;
+    width: 100% !important;
+}
+
+.card-panel{
+    background-color: #ececec !important;
+}
+
+
 
 /* fin my account
 

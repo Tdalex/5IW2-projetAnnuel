@@ -48,7 +48,6 @@ class DefaultController extends Controller
 	 */
     public function helloAction(Request $request, $firstname)
     {
-		dump($request);
         return $this->render('default/hello.html.twig', [
 			'firstname' => $firstname
         ]);
@@ -110,5 +109,13 @@ class DefaultController extends Controller
         );
 
         return $this->redirectToRoute('homepage');
+    }
+
+    /**
+     * @Route ("/partner", name="partner")
+     * @Method ({"GET", "POST"})
+     */
+    public function partnerAction(Request $request) {
+        return $this->render('AppBundle:default:partner.html.twig');
     }
 }
