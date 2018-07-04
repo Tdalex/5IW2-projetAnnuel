@@ -3,7 +3,7 @@
     <form id="myForm" method="POST" action="{{ path('roadtrip_index') }}">
         <div class="col s4">
             <div class="input-field">
-                <i class="material-icons prefix">search</i>
+                {#<i class="material-icons prefix">search</i>#}
                 <input name="filters[address]" value="{{ choices.address|default('') }}" id="search" type="text" class="validate">
                 <label for="search">Mot clé</label>
             </div>

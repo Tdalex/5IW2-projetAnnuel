@@ -47,12 +47,47 @@
         </div>
     </div>
 
-    <!--Parallax-->
-    <div class="parallax-container">
-        <div class="parallax"><img src="{{ asset('bundles/app/images/parallax.jpeg') }}" style="width: 100%"></div>
+    <!--Etapes-->
+    <div id="steps">
+        <div class="steps-content">
+            <div class="row">
+                <h3>Votre plateforme de planification de voyage</h3>
+            </div>
+            <div class="row">
+                <div class="col s4">
+                    <i class="col s2 material-icons medium yellow-text text-darken-1">looks_one</i>
+                </div>
+                <div class="col s4">
+                    <i class="col s2 material-icons medium yellow-text text-darken-1">looks_two</i>
+                </div>
+                <div class="col s4">
+                    <i class="col s2 material-icons medium yellow-text text-darken-1">looks_3</i>
+                </div>
+            </div>
+            <div class="row">
+                <div class="steps-blocs col s4">
+                    <h5> Planifiez votre trip</h5>
+                    <p>Route d'un point A à un point B et découvrez ce qui à entre les deux.</p>
+                </div>
+                <div class="steps-blocs col s4">
+                    <h5>Trouvez vos Hôtels</h5>
+                    <p>Choisissez où passer votre temps pendant votre trajet.</p>
+                </div>
+                <div class="steps-blocs col s4">
+                    <h5>Explorez et sauvegardez</h5>
+                    <p>Enregistrez votre trip pour pouvoir le retrouver facilement.</p>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
-    <!--Form contact-->
+    <!--Parallax-->
+    <div class="parallax-container">
+        <div class="parallax"><img src="{{ asset('bundles/app/images/banner_home.jpg') }}" style="width: 100%"></div>
+    </div>
+
+    {#<!--Form contact-->
     <div class="section scrollspy" id="contact">
         <div class="container">
             <h2 class="header text_b">Contactez-nous</h2>
@@ -90,6 +125,28 @@
                 </div>
             </form>
         </div>
+    </div>#}
+
+    <!--Partenary-->
+    <div id="partener">
+            <div class="partener-content">
+                <div class="row">
+                    <i class="col s2 material-icons large yellow-text text-darken-1">star</i>
+                    <div class="col s8">
+                        <h3>Vous êtes un établissement ?</h3>
+                        <p>Nous avons pensé à vous ! RoadMonTrip vous propose de mettre votre établiessement en avant sur toutes nos recherches.</p>
+                        <a class="waves-effect red accent-2 btn">Découvrir</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Video-->
+    <div class="play">
+        <video autoplay muted loop id="myVideo">
+            <source src="{{ asset('bundles/app/video/show.mp4') }}" type="video/mp4">
+        </video>
     </div>
 
 {% endblock %}

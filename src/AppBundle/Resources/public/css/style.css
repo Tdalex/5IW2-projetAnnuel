@@ -2,6 +2,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 #googleMap {
@@ -18,12 +19,12 @@ html, body {
 }
 
 #index-banner{
-    background-image: url("/bundles/app/images/map2.png") !important;
+    background-image: url("/bundles/app/images/map_home.jpg") !important;
 }
 
 #index-banner .opacity{
     background-color: rgba(34, 150, 243, 0.55);
-    min-height: 632px;
+    min-height: 670px;
 }
 
 #roadtrip-header {
@@ -246,6 +247,46 @@ p {
 .button-retour{
     margin: 20px;
 }
+
+#partener{
+    background-color: #d2edff;
+}.partener-content{
+     padding: 80px 150px;
+ }
+#partener h3{
+    color: #353a5e;
+    font-weight: 400;
+    margin-bottom: 4%;
+}
+
+#partener p{
+    color: #353a5e;
+   }
+
+.play{
+    height: 450px;
+    overflow: hidden;
+}
+
+#myVideo {
+    right: 0;
+    bottom: 0;
+    max-height: 160%;
+}
+
+#steps{
+    background-color: #353a5e;
+}.steps-content{
+     padding: 80px 100px;
+ }.steps-blocs{
+       color: white;
+   }
+#steps h3{
+    color: white;
+    font-weight: 400;
+    margin-bottom: 4%;
+}
+
 
 /* fin my account
 

@@ -70,5 +70,4 @@ class RoadtripController extends Controller
         return $user;
     }
 
-
 }
