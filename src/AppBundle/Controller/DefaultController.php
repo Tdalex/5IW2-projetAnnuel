@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Waypoint;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -116,7 +117,8 @@ class DefaultController extends Controller
      * @Method ({"GET", "POST"})
      */
     public function partnerAction(Request $request) {
-        $form = $this->createForm('AppBundle\Form\ContactType',null,array(
+        $waypoint = new Waypoint();
+        $form = $this->createForm('AppBundle\Form\WaypointType',$waypoint,array(
             // To set the action use $this->generateUrl('route_identifier')
             'action' => $this->generateUrl('partner'),
             'method' => 'POST'
@@ -125,15 +127,23 @@ class DefaultController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if($form->isValid()){
+                $waypoint->setStatus('disabled');
+                //generate token
+                $token = bin2hex(random_bytes(20));
+                $waypoint->setToken($token);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($waypoint);
+                $em->flush();
+
                 // Send mail
-                if($this->sendEmail($form->getData())){
+                $view = $this->container->get('templating')->render('AppBundle:mails:mail_partner_subscribe.html.twig', [
+                    'token'    => $token
+                ]);
 
-                    // Everything OK, redirect to wherever you want ! :
-
-                    $this->addFlash("success", "Votre demande a bien été prise en compte :)");
+                if($this->sendEmailToAdmin($form->getData()) && $this->sendEmailToUser($form->getData(), $view)){
+                    $this->addFlash("success", "Votre demande a bien été envoyée :)");
                     return $this->redirectToRoute('partner');
                 }else{
-                    // An error ocurred, handle
                     $this->addFlash("error", "Une erreure est survenue. Veuillez ressayer plus tard");
                 }
             }
@@ -144,7 +154,7 @@ class DefaultController extends Controller
         ));
     }
 
-    private function sendEmail($data){
+    private function sendEmailToAdmin($data){
         $myappContactMail = $this->container->getParameter('mailer_user');
         $myappContactPassword = $this->container->getParameter('mailer_password');
 
@@ -155,12 +165,73 @@ class DefaultController extends Controller
         $mailer = \Swift_Mailer::newInstance($transport);
 
         $message = \Swift_Message::newInstance("Nouvelle demande de souscription d'établissement ")
-            ->setFrom(array($myappContactMail => "Message by ".$data["phone"]))
+            ->setFrom(array($myappContactMail => "Message by ".$data["contact"]))
             ->setTo(array(
                 $myappContactMail => $myappContactMail
             ))
-            ->setBody("ContactPhone: ".$data["phone"]."<br>ContactMail :".$data["email"]);
+            ->setBody("Un établissement souhaite devenir partenair : <br> Contact: ".$data["contact"]."<br> ContactPhone: ".$data["phone"]."<br>ContactMail :".$data["email"]."<br>Addresse :".$data["address"]);
 
         return $mailer->send($message);
+    }
+
+    private function sendEmailToUser($data, $view){
+        $myappContactMail = $this->container->getParameter('mailer_user');
+        $myappContactPassword = $this->container->getParameter('mailer_password');
+
+        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465,'ssl')
+            ->setUsername($myappContactMail)
+            ->setPassword($myappContactPassword);
+
+        $mailer = \Swift_Mailer::newInstance($transport);
+
+        $message = \Swift_Message::newInstance("Nouvelle demande de souscription d'établissement ")
+            ->setFrom("RoadMonTrip | noreply@roadmontrip.loc")
+            ->setTo($data["email"])
+            ->setBody($view, 'text/html');
+
+        return $mailer->send($message);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @Route("partner/activate/{token}", name="partner_activate")
+     * @Method("GET")
+     */
+    public function activatePartnerAction(Waypoint $waypoint, $token,  Request $request)
+    {
+        if ($waypoint->getToken() == $token && $waypoint->getStatus() != 'enabled') {
+            $waypoint->setStatus('enabled');
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($waypoint);
+            $em->flush();
+
+            //send email
+            $view = $this->container->get('templating')->render('AppBundle:mails:mail_partner_register.html.twig', [
+                'waypoint'     => $waypoint
+            ]);
+
+            $myappContactMail = $this->container->getParameter('mailer_user');
+            $myappContactPassword = $this->container->getParameter('mailer_password');
+
+            $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465,'ssl')
+                ->setUsername($myappContactMail)
+                ->setPassword($myappContactPassword);
+
+            $mailer = \Swift_Mailer::newInstance($transport);
+
+            $message = \Swift_Message::newInstance("Nouvelle demande de souscription d'établissement ")
+                ->setFrom("RoadMonTrip | noreply@roadmontrip.loc")
+                ->setTo($waypoint->getEmail())
+                ->setBody($view, 'text/html');
+
+            $mailer->send($message);
+
+
+            return $this->redirectToRoute('homepage');
+        }
+        $this->addFlash("error", "Une erreure est survenue. Veuillez ressayer plus tard");
+        return $this->redirectToRoute('partner');
     }
 }

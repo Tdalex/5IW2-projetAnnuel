@@ -17,8 +17,8 @@
 
 <div id="partner_page" class="row">
     <div class="col s5 content_partner_page">
-        <h3>Mise en relation avec nos service de partenariats</h3>
-        <p>Laissez nous votre numéro de téléphone ainsi que votre adresse mail. Nous vous contactons très prochainement.</p>
+        <h3>Vous êtes un établissement ?</h3>
+        <p>Nos services de partenariat vous assurent une bonne visibilité sur toutes les recherches effectuées</p>
     </div>
     <div class="col s7 form_partner_page center">
         <div class="row">
@@ -32,27 +32,18 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="row">
+        <div class="row" onload="initialize()">
             <div class="col s12 m5 bloc">
                 <div class="card-panel  ">
                     <i class="large material-icons">headset_mic</i>
-                    <h3>Un conseil sur nos offres ?</h3>
-                    {#<form role="form" class="form-horizontal">
-                        <div id="contactez-nous">
-                            <div class="row">
-                                <div class="input-field col s6">
-                                    <input id="contact_phone" type="text" class="validate" placeholder="Ex : 06 23 34 45 56">
-                                </div>
-                                <div class="input-field col s6">
-                                    <input id="contact_meil" type="text" class="validate" placeholder="Ex : contact@roadmontrip.fr">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-field right-align">
-                            <a class="waves-effect blue lighten-1 btn" id="contact_send" data-url="{{ path('contact_us') }}">Contactez-moi</a>
-                        </div>
-                    </form>#}
+                    <h3>Devenez partenaire !</h3>
                     {{ form_start(form) }}
+                    <div class="row">
+                        <div class="col s12 center-block">
+                            {{ form_widget(form.title) }}
+                            {{ form_errors(form.title) }}
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col s6">
                             {{ form_widget(form.phone) }}
@@ -63,19 +54,45 @@
                             {{ form_errors(form.email) }}
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col s6">
+                            {{ form_widget(form.description) }}
+                            {{ form_errors(form.description) }}
+                        </div>
+                        <body onload="initAutocomplete()">
+                            <div class="col s6">
+                                {{ form_widget(form.address) }}
+                                {{ form_errors(form.address) }}
+                            </div>
+                        </body>
+                    </div>
                     {# Render CSRF token etc .#}
                     <div style="display:none">
                         {{ form_rest(form) }}
                     </div>
 
                     <div class="input-field right-align">
-                        <input class="waves-effect blue lighten-1 btn" type="submit" value="Contactez-moi">
+                        <input class="waves-effect blue lighten-1 btn" type="submit" value="J'envois ma demande">
                     </div>
                     {{ form_end(form) }}
+
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@AppBundle/Resources/public/js/waypoint.js'
+    %}
+    <script src="{{ asset_url }}"></script>  {#Ajouter pour prendre en compte le child#}
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+
+    {% endjavascripts %}
 
 {% endblock %}

@@ -314,12 +314,12 @@ p {
 }
 
 .bloc{
-    margin: 60px 60px;
     width: 100% !important;
 }
 
 .flash{
     width: 100% !important;
+    margin-top: 20px;
 }
 
 .card-panel{
