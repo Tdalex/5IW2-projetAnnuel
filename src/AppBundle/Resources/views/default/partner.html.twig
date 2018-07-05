@@ -18,14 +18,60 @@
 <div id="partner_page" class="row">
     <div class="col s5 content_partner_page">
         <h3>Mise en relation avec nos service de partenariats</h3>
-        <strong>Laissez nous votre numéro de téléphone ainsi que votre adresse mail</strong>
-        <p>Nous vous contactons très prochainement</p>
+        <p>Laissez nous votre numéro de téléphone ainsi que votre adresse mail. Nous vous contactons très prochainement.</p>
     </div>
-    <div class="col s7 form_partner_page">
+    <div class="col s7 form_partner_page center">
+        <div class="row">
+            <div class="col s12 m5 flash">
+                {% for label, flashes in app.session.flashbag.all %}
+                    {% for flash in flashes %}
+                        <div class="alert alert-{{ label }}">
+                            {{ flash }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
         <div class="row">
             <div class="col s12 m5 bloc">
                 <div class="card-panel  ">
-                        efer
+                    <i class="large material-icons">headset_mic</i>
+                    <h3>Un conseil sur nos offres ?</h3>
+                    {#<form role="form" class="form-horizontal">
+                        <div id="contactez-nous">
+                            <div class="row">
+                                <div class="input-field col s6">
+                                    <input id="contact_phone" type="text" class="validate" placeholder="Ex : 06 23 34 45 56">
+                                </div>
+                                <div class="input-field col s6">
+                                    <input id="contact_meil" type="text" class="validate" placeholder="Ex : contact@roadmontrip.fr">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-field right-align">
+                            <a class="waves-effect blue lighten-1 btn" id="contact_send" data-url="{{ path('contact_us') }}">Contactez-moi</a>
+                        </div>
+                    </form>#}
+                    {{ form_start(form) }}
+                    <div class="row">
+                        <div class="col s6">
+                            {{ form_widget(form.phone) }}
+                            {{ form_errors(form.phone) }}
+                        </div>
+                        <div class="col s6">
+                            {{ form_widget(form.email) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+                    </div>
+                    {# Render CSRF token etc .#}
+                    <div style="display:none">
+                        {{ form_rest(form) }}
+                    </div>
+
+                    <div class="input-field right-align">
+                        <input class="waves-effect blue lighten-1 btn" type="submit" value="Contactez-moi">
+                    </div>
+                    {{ form_end(form) }}
                 </div>
             </div>
         </div>

@@ -116,6 +116,51 @@ class DefaultController extends Controller
      * @Method ({"GET", "POST"})
      */
     public function partnerAction(Request $request) {
-        return $this->render('AppBundle:default:partner.html.twig');
+        $form = $this->createForm('AppBundle\Form\ContactType',null,array(
+            // To set the action use $this->generateUrl('route_identifier')
+            'action' => $this->generateUrl('partner'),
+            'method' => 'POST'
+        ));
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if($form->isValid()){
+                // Send mail
+                if($this->sendEmail($form->getData())){
+
+                    // Everything OK, redirect to wherever you want ! :
+
+                    $this->addFlash("success", "Votre demande a bien été prise en compte :)");
+                    return $this->redirectToRoute('partner');
+                }else{
+                    // An error ocurred, handle
+                    $this->addFlash("error", "Une erreure est survenue. Veuillez ressayer plus tard");
+                }
+            }
+        }
+
+        return $this->render('AppBundle:default:partner.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+
+    private function sendEmail($data){
+        $myappContactMail = $this->container->getParameter('mailer_user');
+        $myappContactPassword = $this->container->getParameter('mailer_password');
+
+        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465,'ssl')
+            ->setUsername($myappContactMail)
+            ->setPassword($myappContactPassword);
+
+        $mailer = \Swift_Mailer::newInstance($transport);
+
+        $message = \Swift_Message::newInstance("Nouvelle demande de souscription d'établissement ")
+            ->setFrom(array($myappContactMail => "Message by ".$data["phone"]))
+            ->setTo(array(
+                $myappContactMail => $myappContactMail
+            ))
+            ->setBody("ContactPhone: ".$data["phone"]."<br>ContactMail :".$data["email"]);
+
+        return $mailer->send($message);
     }
 }
