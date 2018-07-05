@@ -509,38 +509,4 @@ class Roadtrip
     {
         return $this->review;
     }
-
-    /**
-     * Add likedBy
-     *
-     * @param \AppBundle\Entity\IsLiked $likedBy
-     *
-     * @return Roadtrip
-     */
-    public function addLikedBy(\AppBundle\Entity\IsLiked $likedBy)
-    {
-        $this->likedBy[] = $likedBy;
-
-        return $this;
-    }
-
-    /**
-     * Remove likedBy
-     *
-     * @param \AppBundle\Entity\IsLiked $likedBy
-     */
-    public function removeLikedBy(\AppBundle\Entity\IsLiked $likedBy)
-    {
-        $this->likedBy->removeElement($likedBy);
-    }
-
-    /**
-     * Get likedBy
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getLikedBy()
-    {
-        return $this->likedBy;
-    }
 }

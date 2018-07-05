@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Roadtrip;
 use AppBundle\Entity\Stop;
+use AppBundle\Service\IsLikedManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -138,8 +139,12 @@ class RoadtripController extends Controller
      * @Route("/{slug}", name="roadtrip_show")
      * @Method("GET")
      */
-    public function showAction(Roadtrip $roadtrip)
+    public function showAction(Roadtrip $roadtrip, IsLikedManager $isLikedManager)
     {
+        $em = $this->getDoctrine()->getManager();
+        $session = $this->get('session');
+        $currentUser = $session->get('currentUser');
+
         $deleteForm = $this->createDeleteForm($roadtrip);
         $review = $roadtrip->getReview();
         $note = 0;
@@ -159,13 +164,15 @@ class RoadtripController extends Controller
         } else {
             $moyenne = "Aucune note";
         }
-        //dump($commentaires);
+        $likes = $em->getRepository('AppBundle:IsLiked')->isLike($roadtrip->getId(), $currentUser['id']);
+        $like = $likes ? 1 : 0;
 
         return $this->render('AppBundle:roadtrip:show.html.twig', array(
             'roadtrip' => $roadtrip,
             'delete_form' => $deleteForm->createView(),
             'moyenne' => $moyenne,
             'commentaires' => $commentaires,
+            'like' => $like
         ));
     }
 

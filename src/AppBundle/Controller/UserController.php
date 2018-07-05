@@ -27,8 +27,10 @@ class UserController extends Controller
         $session = $this->get('session');
         $currentUser = $session->get('currentUser');
         if(!empty($currentUser)){
-            $user = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findOneById($currentUser['id']);
-            $roadtrips = $this->getDoctrine()->getManager()->getRepository('AppBundle:Roadtrip')->findBy(array('owner' => $currentUser['id']));
+            $em = $this->getDoctrine()->getManager();
+            $user = $em->getRepository('AppBundle:User')->findOneById($currentUser['id']);
+            $roadtrips = $em->getRepository('AppBundle:Roadtrip')->findBy(array('owner' => $currentUser['id']));
+
             return $this->render('AppBundle:user:my_account.html.twig', array(
                 'user' => $user,
                 'roadtrips' => $roadtrips
