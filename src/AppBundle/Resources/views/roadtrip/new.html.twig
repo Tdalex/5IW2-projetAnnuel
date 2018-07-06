@@ -13,9 +13,19 @@
 {% block body %}
     <body onload="initialize()">
     <div id="googleMap"></div>
+
+    <div class="search-tab">
+        <ul id="tabs-swipe-demo" class="tabs">
+            <li class="tab col s3"><a class="active" href="#test-swipe-1" onclick="clearMarkers()"><i class="material-icons blue-text text-darken-1">confirmation_number</i></a></li>
+            <li class="tab col s3"><a href="#test-swipe-2" onclick="hotel()"><i class="material-icons indigo-text text-darken-4">hotel</i></a></li>
+            <li class="tab col s3"><a href="#test-swipe-3" onclick="food()"><i class="material-icons green-text text-lighten-2">local_dining</i></a></li>
+            <li class="tab col s3"><a href="#test-swipe-4" onclick="clearMarkers()"><i class="material-icons orange-text lighten-2-text">info</i></a></li>
+        </ul>
+    </div>
+
     <div class="search-map">
         {{ form_start(form) }}
-        <div class="row">
+        <div id="test-swipe-1" class="row">
             <h4 class="center-align">Mon roadtrip</h4>
             <div class="col s12">
                 <div>
@@ -99,15 +109,49 @@
                 {{ form_end(form, {'render_rest': false}) }}
             </div>
         </div>
+        <div id="test-swipe-2" class="col s12">
+            <div class="row white-text text-center"><h5>Hotels</h5></div>
+            <table id="resultsTable">
+                <tbody id="resultsHotels"></tbody>
+            </table>
+        </div>
+        <div id="test-swipe-3" class="col s12">
+            <div class="row white-text text-center"><h5>Restaurants</h5></div>
+            <table id="resultsTable">
+                <tbody id="resultsFoods"></tbody>
+            </table></div>
+        <div id="test-swipe-4" class="col s12">
+            <div class="row white-text text-center"><h5>Détails trip</h5></div>
+            <div id="directionPanel"></div>
+        </div>
     </div>
 
-
-    {#<ul>
-        <li>
-            <a href="{{ path('roadtrip_index') }}" class="btn btn-info">Retour aux roadtrips</a>
-        </li>
-    </ul>#}
-
+    <div style="display: none">
+        <div id="info-content">
+            <table>
+                <tr id="iw-url-row" class="iw_table_row">
+                    <td id="iw-icon" class="iw_table_icon"></td>
+                    <td id="iw-url"></td>
+                </tr>
+                <tr id="iw-address-row" class="iw_table_row">
+                    <td class="iw_attribute_name">Address:</td>
+                    <td id="iw-address"></td>
+                </tr>
+                <tr id="iw-phone-row" class="iw_table_row">
+                    <td class="iw_attribute_name">Telephone:</td>
+                    <td id="iw-phone"></td>
+                </tr>
+                <tr id="iw-rating-row" class="iw_table_row">
+                    <td class="iw_attribute_name">Rating:</td>
+                    <td id="iw-rating"></td>
+                </tr>
+                <tr id="iw-website-row" class="iw_table_row">
+                    <td class="iw_attribute_name">Website:</td>
+                    <td id="iw-website"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
     </body>
 {% endblock %}
 
@@ -122,5 +166,6 @@
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places&callback=initAutocomplete"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places,visualization&callback=initAutocomplete"></script>
+    <script src="https://cdn.rawgit.com/googlemaps/v3-utility-library/master/routeboxer/src/RouteBoxer.js"></script>
 {% endblock %}

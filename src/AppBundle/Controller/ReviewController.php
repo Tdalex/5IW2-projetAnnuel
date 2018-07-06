@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -52,6 +53,10 @@ class ReviewController extends Controller
         // récupérer le user courant
         $u = $request->getSession()->get('currentUser')['id'];
         $user = $em->getRepository('AppBundle:User')->findOneBy(array('id' => $u));
+        $compteur = 0;
+        $commentaires = [];
+        $note = 0;
+
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -60,7 +65,32 @@ class ReviewController extends Controller
             $em->persist($avi);
             $em->flush();
 
-            return $this->redirectToRoute('roadtrip_show', array('id' => $roadtripId));
+            $reviews = $roadtrip->getReview();
+            foreach ($reviews as $a) {
+                $note += $a->getNote();
+                $commentaires [$compteur]['date'] = $a->getCreatedAt();
+                $commentaires [$compteur]['user'] = $a->getUserId()->getFirstName().' '.$a->getUserId()->getLastName();
+                $commentaires [$compteur]['commentaire'] = $a->getCommentaire();
+                $compteur ++;
+
+            }
+
+            if($compteur !== 0) {
+                $moyenne = round($note / $compteur, 1);
+            } else {
+                $moyenne = "Aucune note";
+            }
+
+            return new JsonResponse(
+                array(
+                    'view' => $this->renderView(
+                        'AppBundle:partials:commentaires.html.twig', array(
+                            'commentaires' => $commentaires
+                        )
+                    ),
+                    'average' => $moyenne
+                )
+            );
         }
 
         return $this->render('AppBundle:review:new.html.twig', array(

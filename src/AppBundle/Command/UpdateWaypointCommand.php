@@ -17,19 +17,28 @@ class UpdateWaypointCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('roadtrip:waypoint:update')
-            ->setDescription('Update waypoint from Gmap');
+            ->setDescription('Update waypoint from Gmap')
+            ->addOption(
+                'forceUpdate',
+                'f',
+                InputOption::VALUE_OPTIONAL,
+                'force update all waypoint',
+                false
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         ini_set('max_execution_time', 3600);
-        $this->generate($output);
+
+        $force = $input->getOption('forceUpdate');
+        $this->generate($output, $force);
     }
 
     /**
      * @param OutputInterface $output
      */
-    public function generate(OutputInterface $output)
+    public function generate(OutputInterface $output, $force)
     {
         $output->writeln('<info>================</info>');
         $output->writeln('<info>UPDATE WAYPOINT</info>');
@@ -37,33 +46,76 @@ class UpdateWaypointCommand extends ContainerAwareCommand
         $output->writeln('');
         $output->writeln('');
 
-        $container = $this->getContainer();
+        $container  = $this->getContainer();
+        $em         = $container->get('doctrine')->getManager();
 
         $googlePlaces = new PlacesApi($container->getParameter('google_api_key'));
         $googlePlaces->verifySSL(false);
-        $search = $googlePlaces->nearbySearch("46.227638,2.213749000000007", 50000, array("type" =>"lodging"));
-var_dump($search);die();
 
+        $start = array(
+                    'lat' => 42.837042,
+                    'lon' => -4.51328
+                );
 
-        foreach($search as $s){
-            $waypoint = $container->get('AppBundle:Waypoint')->findOneByRef();
+        $end = array(
+                    'lat' => 50.73645528205696,
+                    'lon' => 7.731628249999978
+                );
 
-            if (!$waypoint) {
-                $waypoint = new waypoint();
-                // $waypoint->setTitle();
-                // $waypoint->setTheme();
-                $container->get('AppBundle:Waypoint')->save($waypoint);
+        $count = array( 'total' => 0,
+                        'update'=> 0
+            );
 
-                $output->writeln('<error>updated</error>');
-                $output->writeln('');
-                $output->writeln('');
-            }else{
-                $output->writeln('<error>Already exists !</error>');
-                $output->writeln('');
-                $output->writeln('');
+        $leftSideDist = $end['lon'] - $start['lon'];
+        $belowSideDist = $end['lat'] - $start['lat'];
+
+        $cut = 20;
+        $excLat = $belowSideDist / $cut;
+        $excLng = $leftSideDist / $cut;
+
+        for($i = 0; $i < $cut; $i++){
+            for($a = 0; $a < $cut; $a++){
+                $search = $googlePlaces->nearbySearch(($start['lat'] + ($excLat * $i)) ."," . ($start['lon'] + ($excLng * $a)), 50000, array("type" => "lodging", "language" => "fr"));
+
+                foreach($search['results'] as $s){
+                    $count['total']++;
+                    $waypoint = $em->getRepository('AppBundle:Waypoint')->findOneByAddress($s['vicinity']);
+                    $new = false;
+
+                    if (!$waypoint) {
+                        $output->writeln('<info>Not found, creating a new waypoint</info>');
+                        $output->writeln('');
+                        $output->writeln('');
+                        $waypoint = new waypoint();
+                        $new = true;
+                    }else{
+                        $output->writeln('<info>Already exists</info>');
+                        $output->writeln('');
+                        $output->writeln('');
+                    }
+                    if($new || $force){
+                        $count['update']++;
+                        $name = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $s['name']);
+                        $output->writeln('<info>updating...</info>');
+                        $output->writeln('');
+                        $waypoint->setTitle($name);
+                        $waypoint->setStatus(Waypoint::STATUS_ENABLED);
+                        $waypoint->setAddress($s['vicinity']);
+                        $waypoint->setLat($s['geometry']['location']['lat']);
+                        $waypoint->setLon($s['geometry']['location']['lng']);
+
+                        $em->persist($waypoint);
+                        $em->flush();
+
+                        $output->writeln('<info>updated</info>');
+                        $output->writeln('');
+                        $output->writeln('');
+                    }
+                }
             }
         }
-
+        $output->writeln('<info>total: '.  $count['total']  .'</info>');
+        $output->writeln('<info>update: '. $count['update'] .'</info>');
         $output->writeln('');
         $output->writeln('<info>===============</info>');
         $output->writeln('<info>GENERATION DONE</info>');

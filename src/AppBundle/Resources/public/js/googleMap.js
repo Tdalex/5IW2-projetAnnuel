@@ -1,7 +1,11 @@
 var geocoder;
 var map;
-var placeSearch, autocomplete;
+var autocomplete;
+var infoWindow;
 var lat, lng;
+var itineraryBounds;
+var markersPlace = [];
+
 function initialize() {
     geocoder = new google.maps.Geocoder();
 
@@ -24,15 +28,17 @@ function initialize() {
     }
     map = new google.maps.Map(document.getElementById('googleMap'), mapOptions);
 
+    //Service Place
+    places = new google.maps.places.PlacesService(map);
+
     // Créer un nouveau style de map
     var styledMapType = new google.maps.StyledMapType(styles, {name: 'Styled Map'});
     //Associer le style a la map et l'afficher.
     map.mapTypes.set('styled_map', styledMapType);
     map.setMapTypeId('styled_map');
 
-
-    var marqueurs = [];
-    //Les evenments  au clique
+   /*var marqueurs = [];
+   //Les evenments  au clique
     google.maps.event.addListener(map, 'click', function(event) {
         //Créer le marqueur
         var marqueur = createMarker(event, map);
@@ -54,8 +60,14 @@ function initialize() {
             var infoWindow = infoWindowMarker(map);
             infoWindow.open(map, this);
         });
+    });*/
 
+    //Get html content
+    infoWindow = new google.maps.InfoWindow({
+        content: document.getElementById('info-content')
     });
+
+    makeGrid();
 }
 
 function createMarker(event, map){
@@ -110,17 +122,60 @@ function getItinerary(pointsMarqueurs, map){
         waypoints: waypoints/*[{location: pointsMarqueurs[2], stopover: false}, {location: "lyon, france", stopover: false}]*/,
         optimizeWaypoints: true,
         travelMode : google.maps.DirectionsTravelMode.DRIVING,
-        //unitSystem: google.maps.DirectionsUnitSystem.METRIC
+        unitSystem: google.maps.DirectionsUnitSystem.METRIC
     };
 
     directionsService.route(request, function(response, status) {
         if (status == google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(response);
             directionsDisplay.suppressMarkers = true;
+            clearResults('directionPanel');
+            directionsDisplay.setPanel(document.getElementById('directionPanel'));
+            //créer les boxes sur l'itinéraire
+            createBoxes(response);
             //directionsDisplay.setOptions({polylineOptions:{strokeColor: '#008000'}, preserveViewport: true});
             getInfosRoutes(response);
         }
     });
+}
+
+function createBoxes(response){
+    // Direction service for route boxer
+    var routeboxer = new RouteBoxer();
+    var distance = 10; // km
+
+    // Box around the overview path of the first route
+    var path = response.routes[0].overview_path;
+    itineraryBounds = routeboxer.box(path, distance);
+    drawBoxes(itineraryBounds);
+    centerBoxes(itineraryBounds);
+}
+
+// Draw the array of boxes as polylines on the map
+function drawBoxes(boxes) {
+    boxpolys = new Array(boxes.length);
+    for (var i = 0; i < boxes.length; i++) {
+        boxpolys[i] = new google.maps.Rectangle({
+            bounds: boxes[i],
+            fillOpacity: 0,
+            strokeOpacity: 1.0,
+            strokeColor: '#000000',
+            strokeWeight: 3,
+            map: map
+        });
+    }
+}
+
+function centerBoxes(boxes){
+    var centerBounds =  [];
+    for (var i = 0; i < boxes.length; i++) {
+        /*var marker = new google.maps.Marker({
+            position: boxes[i].getCenter(),
+            map: map,
+            title: 'Hello World!'
+        });*/
+        centerBounds.push(boxes[i].getCenter());
+    }
 }
 
 function getInfosRoutes(response){
@@ -131,19 +186,10 @@ function getInfosRoutes(response){
     for (var i = 0; i < route.legs.length; i++) {
         var routeSegment = i + 1;
         message = 'Infos route ' + routeSegment + ' : ' + route.legs[i].distance.text + '<br>' + route.legs[i].start_address + ' à ' + route.legs[i].end_address;
-        Materialize.toast(message, 30000);
+        Materialize.toast(message, 5000);
         message  = '';
     }
-    /*//Pour chaque route afficher informations
-    for (var i = 0; i < route.legs.length; i++) {
-        var routeSegment = i + 1;
-        summaryPanel.innerHTML += '<b>Infos route: ' + routeSegment + '</b><br>';
-        summaryPanel.innerHTML += route.legs[i].start_address + ' à ';
-        summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-        summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-    }*/
 }
-
 
 function getInfoMarkerDragend(marqueur){
     //Aficher le coordonnées au deplacement d'un marqueur
@@ -151,17 +197,6 @@ function getInfoMarkerDragend(marqueur){
         //message d'alerte affichant la nouvelle position du marqueur
         alert("La nouvelle coordonnée du marqueur est : "+event.latLng);
     });
-}
-
-function infoWindowMarker(map){
-    //Fenetre d'information
-    var infowindow =  new google.maps.InfoWindow({
-         title: "Titre",
-         content: 'Hello World!',
-         map: map,
-         position: new google.maps.LatLng(48.856393, 2.343472)
-     });
-    return infowindow;
 }
 
 //geocoder les adresses saisie
@@ -206,7 +241,8 @@ function geocodeAddress(address, id ){
             map.setCenter(results[0].geometry.location);
             var marker = new google.maps.Marker({
                 map: map,
-                position: results[0].geometry.location
+                position: results[0].geometry.location,
+                /*icon: "/bundles/app/images/markers/svg/Motel_3.svg"*/
             });
             lat = marker.getPosition().lat();
             lng = marker.getPosition().lng();
@@ -229,6 +265,258 @@ function initAutocomplete() {
         var autocomplete = new google.maps.places.Autocomplete(acInputs[i], options);
         autocomplete.inputId = acInputs[i].id;
     }
+}
+
+function hotel(franceBounds){
+    franceBounds = franceBounds || null;
+    var bounds;
+    if (franceBounds){
+        bounds = franceBounds;
+    }else{
+        bounds = itineraryBounds;
+    }
+    var place =  'lodging';
+    var icon = "/bundles/app/images/markers/svg/Motel_3.svg";
+    var tbody = 'resultsHotels';
+    clearMarkers();
+    clearResults(tbody);
+    if (bounds){
+        for (var i = 0; i < bounds.length; i++) {
+            (function (i) {
+                setTimeout(function () {
+                    searchPlaces(bounds[i], place, icon, tbody);
+                }, 400 * i);
+            }(i));
+        }
+    } else {
+        alert("Veuillez choisir un itinéraire !");
+    }
+}
+
+function food(franceBounds){
+    franceBounds = franceBounds || null;
+    var bounds;
+    if (franceBounds){
+        bounds = franceBounds;
+    }else{
+        bounds = itineraryBounds;
+    }
+    var place =  'restaurant';
+    var icon = "/bundles/app/images/markers/svg/Food_6.svg";
+    var tbody = 'resultsFoods';
+    clearMarkers();
+    clearResults(tbody);
+    if (bounds){
+        for (var i = 0; i < bounds.length; i++) {
+            (function (i) {
+                setTimeout(function () {
+                        searchPlaces(bounds[i], place, icon, tbody);
+                    }
+                    , 400 * i);
+            }(i));
+        }
+    } else {
+        alert("Veuillez choisir un itinéraire !")
+    }
+}
+
+function searchPlaces(bound, place, icon, tbody) {
+    var search = {
+        bounds: bound,
+        radius: '100',
+        types: [place]
+    };
+    var limitDisplayPlacesBox = 2;
+
+    places.nearbySearch(search, function(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            var markers = [];
+            // Create a marker for each hotel found, and
+            // assign a letter of the alphabetic to each marker icon.
+            for (var i = 0; i < results.length /*&& i < limitDisplayPlacesBox*/; i++) {
+                // Use marker animation to drop the icons incrementally on the map.
+                markers[i] = new google.maps.Marker({
+                    position: results[i].geometry.location,
+                    animation: google.maps.Animation.DROP,
+                    icon: {
+                        url: icon,
+                        scaledSize: new google.maps.Size(25, 20)
+                    }
+                });
+                // If the user clicks a hotel marker, show the details of that hotel
+                // in an info window.
+                markers[i].placeResult = results[i];
+                google.maps.event.addListener(markers[i], 'click', showInfoWindow);
+                setTimeout(
+                    dropMarker(i, markers)
+                    , i * 100);
+                addResult(results[i], i, markers, icon, tbody);
+            }
+        }
+        //Get all markers place in array
+        markersPlace = markersPlace.concat(markers);
+    });
+}
+
+function addResult(result, i, markers, icon, tbody) {
+    var results = document.getElementById(tbody);
+    var markerIcon = icon;
+
+    var tr = document.createElement('tr');
+    tr.style.backgroundColor = (i % 2 === 0 ? '#F0F0F0' : '#FFFFFF');
+    tr.onclick = function() {
+        google.maps.event.trigger(markers[i], 'click');
+    };
+
+    var iconTd = document.createElement('td');
+    var nameTd = document.createElement('td');
+    var icon = document.createElement('img');
+    icon.src = markerIcon;
+    icon.setAttribute('class', 'placeIcon');
+    icon.setAttribute('className', 'placeIcon');
+    var name = document.createTextNode(result.name);
+    iconTd.appendChild(icon);
+    nameTd.appendChild(name);
+    tr.appendChild(iconTd);
+    tr.appendChild(nameTd);
+    results.appendChild(tr);
+}
+
+function clearResults(tbody) {
+    var results = document.getElementById(tbody);
+    while (results.childNodes[0]) {
+        results.removeChild(results.childNodes[0]);
+    }
+}
+
+// Get the place details for a hotel. Show the information in an info window,
+// anchored on the marker for the hotel that the user selected.
+function showInfoWindow() {
+    var marker = this;
+    places.getDetails({placeId: marker.placeResult.place_id},
+        function(place, status) {
+            if (status !== google.maps.places.PlacesServiceStatus.OK) {
+                return;
+            }
+            infoWindow.open(map, marker);
+            buildIWContent(place);
+        });
+}
+
+// Load the place information into the HTML elements used by the info window.
+function buildIWContent(place) {
+    document.getElementById('iw-icon').innerHTML = '<img class="hotelIcon" ' +
+        'src="' + place.icon + '"/>';
+    document.getElementById('iw-url').innerHTML = '<b><a href="' + place.url +
+        '">' + place.name + '</a></b>';
+    document.getElementById('iw-address').textContent = place.vicinity;
+
+    if (place.formatted_phone_number) {
+        document.getElementById('iw-phone-row').style.display = '';
+        document.getElementById('iw-phone').textContent =
+            place.formatted_phone_number;
+    } else {
+        document.getElementById('iw-phone-row').style.display = 'none';
+    }
+
+    // Assign a five-star rating to the hotel, using a black star ('&#10029;')
+    // to indicate the rating the hotel has earned, and a white star ('&#10025;')
+    // for the rating points not achieved.
+    if (place.rating) {
+        var ratingHtml = '';
+        for (var i = 0; i < 5; i++) {
+            if (place.rating < (i + 0.5)) {
+                ratingHtml += '&#10025;';
+            } else {
+                ratingHtml += '&#10029;';
+            }
+            document.getElementById('iw-rating-row').style.display = '';
+            document.getElementById('iw-rating').innerHTML = ratingHtml;
+        }
+    } else {
+        document.getElementById('iw-rating-row').style.display = 'none';
+    }
+
+    // The regexp isolates the first part of the URL (domain plus subdomain)
+    // to give a short URL for displaying in the info window.
+    if (place.website) {
+        var hostnameRegexp = new RegExp('^https?://.+?/');
+        var fullUrl = place.website;
+        var website = hostnameRegexp.exec(place.website);
+        if (website === null) {
+            website = 'http://' + place.website + '/';
+            fullUrl = website;
+        }
+        document.getElementById('iw-website-row').style.display = '';
+        document.getElementById('iw-website').textContent = website;
+    } else {
+        document.getElementById('iw-website-row').style.display = 'none';
+    }
+}
+
+
+function dropMarker(i, markers) {
+    return function() {
+        markers[i].setMap(map);
+    };
+}
+
+function clearMarkers() {
+    for (var i = 0; i < markersPlace.length; i++) {
+        if (markersPlace[i]) {
+            markersPlace[i].setMap(null);
+        }
+    }
+}
+
+//Grille de la france
+function makeGrid() {
+    var marker1;
+    var marker2;
+    var rectangleLng = [];
+    var franceBounds = [];
+
+    marker1 = new google.maps.Marker({
+        position: new google.maps.LatLng(42.837042,-4.51328),
+        map: map,
+        title: 'marker1'
+    });
+    marker2 = new google.maps.Marker({
+        position: new google.maps.LatLng(50.73645528205696,7.731628249999978),
+        map: map,
+        title: 'marker2'
+    });
+
+    var leftSideDist = marker2.getPosition().lng() - marker1.getPosition().lng();
+    var belowSideDist = marker2.getPosition().lat() - marker1.getPosition().lat();
+
+    var dividerLat = 20;
+    var dividerLng = 20;
+    var excLat = belowSideDist / dividerLat;
+    var excLng = leftSideDist / dividerLng;
+
+    var m1Lat = marker1.getPosition().lat();
+    var m1Lng = marker1.getPosition().lng();
+
+    for (var i = 0; i < dividerLat; i++) {
+        if (!rectangleLng[i]) rectangleLng[i] = [];
+        for (var j = 0; j < dividerLng; j++) {
+            if (!rectangleLng[i][j]) rectangleLng[i][j] = {};
+            var franceBound = new google.maps.LatLngBounds(
+                new google.maps.LatLng(m1Lat + (excLat * i), m1Lng + (excLng * j)),
+                new google.maps.LatLng(m1Lat + (excLat * (i + 1)), m1Lng + (excLng * (j + 1)))
+            );
+            rectangleLng[i][j] = new google.maps.Rectangle({
+                strokeColor: '#180000',
+                strokeWeight: 1,
+                map: map,
+                bounds: franceBound
+            });
+            franceBounds.push(franceBound);
+        }
+    }
+    //hotel(franceBounds);
+    //food(franceBounds);
 }
 
 var styles = [

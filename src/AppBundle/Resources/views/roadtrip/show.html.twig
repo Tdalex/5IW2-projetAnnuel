@@ -17,10 +17,10 @@
             <div class="header">
                 <h1 class="left-align">{{ roadtrip.title }}</h1>
                 <h4 class="left-align">Durée : {{ roadtrip.duration }}{% if roadtrip.duration == 1 %} jour{% else %} jours{% endif %}</h4>
-                <h4 class="left-align">Moyenne : {{ moyenne }}</h4>
+                <h4 class="left-align">Moyenne : <span id="average">{{ moyenne }}</span></h4>
                 <div class="left-align">
                 </div>
-                {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
+                {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) and (app.session.get('currentUser').id == roadtrip.owner.id)%}
                     <div class="actions">
                         <div class="row">
                             <div class="col s12 left-align">
@@ -32,7 +32,18 @@
                         </div>
                     </div>
                 {% endif %}
-                <h4 class="left-align">Propriétaire : {{ roadtrip.owner.firstName }} {{ roadtrip.owner.lastName }}</h4>
+                <h4 class="left-align">Créateur : {{ roadtrip.owner.firstName }} {{ roadtrip.owner.lastName }}</h4>
+                {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) and (app.session.get('currentUser').id != roadtrip.owner.id)%}
+                    <div class="favorites" id="buttons_favorites">
+                        <div class="row">
+                            {% if like == 0 %}
+                                <a class="waves-effect waves-light btn-large blue lighten-1" id="like_add"><i class="material-icons left">stars</i>Ajouter aux favoris</a>
+                            {% else %}
+                                <a class="waves-effect waves-light btn-large red darken-2" id="like_remove"><i class="material-icons left">remove_circle</i>Retirer des favoris</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -65,7 +76,7 @@
                     </div>
                 </div>
             </div>
-            <div class="commentaires">
+            <div class="commentaires" id="reviews">
                 <div class="row">
                     <div class="col s8">
                         <h2>Commentaires</h2>
@@ -112,6 +123,53 @@
         $('#review').click(function (e) {
             e.preventDefault();
             $('#form_review').show();
-        })
+        });
+
+        $('#review_submit').click(function (e){
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "{{ path('review_new', { 'roadtripId': roadtrip.id }) }}",
+                data: $('form[name="review"]').serialize(),
+                success: function(response) {
+                    $('#average').html(response.average);
+                    $('#reviews').html(response.view);
+                    $('input:radio').prop("checked", false);
+                    $('#review_commentaire').val("");
+                    $('#form_review').hide();
+                }
+            });
+        });
+
+        function likeButton() {
+            $('#like_add').click(function (e){
+                e.preventDefault();
+                $.ajax({
+                    type: "GET",
+                    url: "{{ path('isliked_add', { 'roadtripId': roadtrip.id, 'userId': app.session.get('currentUser').id }) }}",
+                    success: function(response) {
+                        $('#buttons_favorites').html(response.view);
+                        likeButton();
+                    }
+                });
+            });
+
+            $('#like_remove').click(function (e){
+                e.preventDefault();
+                $.ajax({
+                    type: "GET",
+                    url: "{{ path('isliked_remove', { 'roadtripId': roadtrip.id, 'userId': app.session.get('currentUser').id }) }}",
+                    success: function(response) {
+                        $('#buttons_favorites').html(response.view);
+                        likeButton();
+                    }
+                });
+            });
+        }
+
+
+        $(document).ready(function () {
+            likeButton();
+        });
     </script>
 {% endblock %}

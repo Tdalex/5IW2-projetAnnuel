@@ -61,6 +61,12 @@
                     {% endif %}
             </div>
         </div>
+        <div class="roadtrip-favorites content-profile">
+            <div class="row">
+                <h4>Mes roadtrips favoris</h4>
+                {{ render(controller("AppBundle:IsLiked:index")) }}
+            </div>
+        </div>
     </div>
 
 {% endblock %}

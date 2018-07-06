@@ -13,7 +13,11 @@ class WaypointRepository extends EntityRepository{
 				->setParameter('address', $address)
 				->getQuery();
 
-				return $query->getResult();
+		$result = $query->getResult();
+		if(!empty($result)){
+			return $result[0];
+		}
+		return null;
 	}
 }
 ?>

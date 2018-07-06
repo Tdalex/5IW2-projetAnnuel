@@ -13,6 +13,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Waypoint
 {
+
+    const STATUS_DISABLED   = 'disabled';
+    const STATUS_ENABLED    = 'enabled';
+    const STATUS_DELETED    = 'deleted';
+
 	/**
 	* @var integer
 	*
@@ -33,14 +38,14 @@ class Waypoint
 	/**
 	* @var string
 	*
-	* @ORM\Column(type="string")
+	* @ORM\Column(type="string", nullable=true))
 	*/
     private $theme;
 
 	/**
 	* @var string
 	*
-	* @ORM\Column(type="string")
+	* @ORM\Column(type="string", nullable=true))
 	*/
     private $phone;
 
@@ -55,7 +60,7 @@ class Waypoint
 	* @var string
 	*
 	* @Gedmo\Slug(fields={"theme"})
-	* @ORM\Column(type="string")
+	* @ORM\Column(type="string", nullable=true)
 	*/
 	private $theme_slug;
 
@@ -65,6 +70,20 @@ class Waypoint
 	* @ORM\Column(type="string")
 	*/
 	private $title;
+
+	/**
+	* @var string
+	*
+	* @ORM\Column(type="boolean")
+	*/
+    private $sponsor = false;
+
+    /**
+     * Status
+     *
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $status = Waypoint::STATUS_ENABLED;
 
 	/**
 	* @var string
@@ -83,7 +102,7 @@ class Waypoint
 	/**
 	* @var string
 	*
-	* @ORM\Column(type="string")
+	* @ORM\Column(type="string", nullable=true))
 	*/
     private $description;
 
@@ -318,4 +337,52 @@ class Waypoint
     {
         return $this->phone;
     }
+
+     /**
+     * Set sponsor
+     *
+     * @param array $sponsor
+     *
+     */
+    public function setSponsor($sponsor)
+    {
+        $this->sponsor = $sponsor;
+
+        return $this;
+    }
+
+    /**
+     * Get sponsor
+     *
+     * @return array
+     */
+    public function isSponsor()
+    {
+        return $this->sponsor;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+   /**
+    * Get active
+    *
+    * @return array
+    */
+   public function isActive()
+   {
+        return $this->status == Waypoint::STATUS_ENABLED ? true : false;
+   }
 }
