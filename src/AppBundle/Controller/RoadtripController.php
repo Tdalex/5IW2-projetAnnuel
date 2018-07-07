@@ -73,7 +73,7 @@ class RoadtripController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $roadtrip = new Roadtrip();
-        $user = $request->getSession()->get('currentUser')['email'];
+        $user = $request->getSession()->get('currentUser');
         $owner = $em->getRepository('AppBundle:User')->findOneBy(array('email' => $user));
         $form = $this->createForm('AppBundle\Form\RoadtripType', $roadtrip, array('action' => $this->generateUrl('roadtrip_new')));
         $form->handleRequest($request);
