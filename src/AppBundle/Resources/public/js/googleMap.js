@@ -10,6 +10,11 @@ var lat, lng;
 var itineraryBounds;
 var markersPlace = [];
 
+//Get global variable from service
+//https://openclassrooms.com/courses/2763916-passez-des-variables-a-javascript-depuis-symfony2
+var JsVars = jQuery('#js-var-env').data('vars');
+var myGlobalEnvironnementVariable =JsVars.myGlobalEnvironnementVariable;
+
 function initialize() {
     geocoder = new google.maps.Geocoder();
 
@@ -71,7 +76,7 @@ function initialize() {
         content: document.getElementById('info-content')
     });
 
-    makeGrid();
+    if (myGlobalEnvironnementVariable == "dev") makeGrid();
 }
 
 function createMarker(event, map){
@@ -144,6 +149,7 @@ function getItinerary(pointsMarqueurs, map){
 }
 
 function createBoxes(response){
+
     // Direction service for route boxer
     var routeboxer = new RouteBoxer();
     var distance = 10; // km
@@ -151,7 +157,8 @@ function createBoxes(response){
     // Box around the overview path of the first route
     var path = response.routes[0].overview_path;
     itineraryBounds = routeboxer.box(path, distance);
-    drawBoxes(itineraryBounds);
+
+    if (myGlobalEnvironnementVariable == "dev") drawBoxes(itineraryBounds);
     centerBoxes(itineraryBounds);
 }
 
