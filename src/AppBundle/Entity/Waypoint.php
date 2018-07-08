@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use Misd\PhoneNumberBundle\Validator\Constraints as MisdAssert;
 
 
 /**
@@ -47,6 +48,7 @@ class Waypoint
 	* @var string
 	*
 	* @ORM\Column(type="string", nullable=true))
+     * @MisdAssert\PhoneNumber()
 	*/
     private $phone;
 
@@ -380,7 +382,7 @@ class Waypoint
      /**
      * Set sponsor
      *
-     * @param array $sponsor
+     * @param boolean $sponsor
      *
      */
     public function setSponsor($sponsor)
@@ -393,7 +395,7 @@ class Waypoint
     /**
      * Get sponsor
      *
-     * @return array
+     * @return boolean
      */
     public function isSponsor()
     {

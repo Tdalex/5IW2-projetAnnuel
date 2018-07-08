@@ -21,11 +21,46 @@ function geocodeAddress(){
     geocoder = new google.maps.Geocoder();
     geocoder.geocode( { 'address': address}, function(results, status) {
         if (status == 'OK') {
-            alert(results[0].geometry.location);
-            var lat = results[0].geometry.location.lat;
-            var lng = results[0].geometry.location.lng;
+            //alert(results[0].geometry.location);
+            lat = results[0].geometry.location.lat;
+            lng = results[0].geometry.location.lng;
+            //sendLatLng(lat, lng);
         } else {
             alert('Geocode n\'a pas abouti car : ' + status);
         }
     });
 }
+
+/*$('#send_partner').click(function (e) {
+    $.ajax({
+        method: 'POST',
+        url: "/partner",
+        data: {nom : 'erf'},
+        success: function(){
+            console.log('ok');
+            alert('okb');
+        },
+        error: function (request, error) {
+            alert(error);
+            console.log(error);
+        }
+    });
+
+});*/
+
+$('#waypoint_address').change(function (e) {
+    $.ajax({
+        type: 'POST',
+        url: "/partner",
+        data: {'nom' : 'erf'},
+        success: function(){
+            console.log('ok');
+            alert('okb');
+        },
+        error: function (request, error) {
+            alert(error);
+            console.log(error);
+        }
+    });
+
+});

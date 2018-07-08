@@ -127,7 +127,14 @@ class DefaultController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if($form->isValid()){
+//                dump($request->request->get('data'));
+//                dump($request->query->get('data'));
+//                dump($_POST);die;
+                $waypoint->setPhone($waypoint->getPhone()->getnationalNumber());
+                $waypoint->setLat(48.9902807);
+                $waypoint->setLon(2.055868700000019);
                 $waypoint->setStatus('disabled');
+                //$waypoint->setSponsor(true);
                 //generate token
                 $token = bin2hex(random_bytes(20));
                 $waypoint->setToken($token);
@@ -155,6 +162,10 @@ class DefaultController extends Controller
     }
 
     private function sendEmailToAdmin($data){
+        $view = $this->container->get('templating')->render('AppBundle:mails:mail_partner_information.html.twig', [
+            'data' => $data
+        ]);
+
         $myappContactMail = $this->container->getParameter('mailer_user');
         $myappContactPassword = $this->container->getParameter('mailer_password');
 
@@ -164,12 +175,11 @@ class DefaultController extends Controller
 
         $mailer = \Swift_Mailer::newInstance($transport);
 
-        $message = \Swift_Message::newInstance("Nouvelle demande de souscription d'établissement ")
-            ->setFrom(array($myappContactMail => "Message by ".$data["contact"]))
-            ->setTo(array(
-                $myappContactMail => $myappContactMail
-            ))
-            ->setBody("Un établissement souhaite devenir partenair : <br> Contact: ".$data["contact"]."<br> ContactPhone: ".$data["phone"]."<br>ContactMail :".$data["email"]."<br>Addresse :".$data["address"]);
+        $message = \Swift_Message::newInstance("Nouvelle demande de sponsor")
+            ->setFrom(array($myappContactMail => "Message by ".$data->getEmail()))
+            ->setTo( $myappContactMail)
+            ->setBody($view, 'text/html');
+
 
         return $mailer->send($message);
     }
@@ -184,9 +194,9 @@ class DefaultController extends Controller
 
         $mailer = \Swift_Mailer::newInstance($transport);
 
-        $message = \Swift_Message::newInstance("Nouvelle demande de souscription d'établissement ")
-            ->setFrom("RoadMonTrip | noreply@roadmontrip.loc")
-            ->setTo($data["email"])
+        $message = \Swift_Message::newInstance("RoadMonTrip | Demande de partenariat")
+            ->setFrom("noreply@roadmontrip.loc")
+            ->setTo($data->getEmail())
             ->setBody($view, 'text/html');
 
         return $mailer->send($message);
@@ -221,8 +231,8 @@ class DefaultController extends Controller
 
             $mailer = \Swift_Mailer::newInstance($transport);
 
-            $message = \Swift_Message::newInstance("Nouvelle demande de souscription d'établissement ")
-                ->setFrom("RoadMonTrip | noreply@roadmontrip.loc")
+            $message = \Swift_Message::newInstance("RoadMonTrip | Partenariat validé")
+                ->setFrom("noreply@roadmontrip.loc")
                 ->setTo($waypoint->getEmail())
                 ->setBody($view, 'text/html');
 

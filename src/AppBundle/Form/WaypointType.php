@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
+use libphonenumber\PhoneNumberFormat;
 
 class WaypointType extends AbstractType
 {
@@ -22,7 +24,7 @@ class WaypointType extends AbstractType
                     new NotBlank(array("message" => "Ce champ est requis")),
                 )
             ))
-            ->add('phone', TextType::class, array('attr' => array('placeholder' => 'Numéro de telephone'),
+            ->add('phone', PhoneNumberType::class, array('attr' => array('placeholder' => 'Numéro de telephone'),
                 'constraints' => array(
                     new NotBlank(array("message" => "Ce champ est requis")),
                 )
