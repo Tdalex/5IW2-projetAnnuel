@@ -1,0 +1,13 @@
+<div class="commentaires" id="reviews">
+    <div class="row">
+        <div class="col s8">
+            <h2>Commentaires</h2>
+            {% for comm in commentaires %}
+                <div class="card-panel grey lighten-3">
+                    {{ comm.commentaire }}
+                    <em><a href="">{{ comm.user }}</a>, {{ comm.date|date('d/m/Y H:i:s') }}</em>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

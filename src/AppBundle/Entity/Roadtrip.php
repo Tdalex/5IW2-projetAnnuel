@@ -106,10 +106,16 @@ class Roadtrip
     private $nbStops;
 
     /**
-     * @ORM\OneToMany(targetEntity="Review", mappedBy="roadtripId", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Review", mappedBy="roadtripId", cascade={"persist"})
      * @ORM\JoinColumn(name="review", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $review;
+
+    /**
+     * @ORM\OneToMany(targetEntity="IsLiked", mappedBy="roadtripId", cascade={"persist"})
+     * @ORM\JoinColumn(name="likedBy", referencedColumnName="id")
+     */
+    protected $likedBy;
 
     /**
      * Get id
@@ -241,53 +247,53 @@ class Roadtrip
         return $this->isRemoved;
     }
 
-    /**
-     * Set lat
-     *
-     * @param array $lat
-     *
-     * @return Roadtrip
-     */
-    public function setLat($lat)
-    {
-        $this->lat = $lat;
-
-        return $this;
-    }
-
-    /**
-     * Get lat
-     *
-     * @return array
-     */
-    public function getLat()
-    {
-        return $this->lat;
-    }
-
-    /**
-     * Set lon
-     *
-     * @param array $lon
-     *
-     * @return Roadtrip
-     */
-    public function setlon($lon)
-    {
-        $this->lon = $lon;
-
-        return $this;
-    }
-
-    /**
-     * Get lon
-     *
-     * @return array
-     */
-    public function getlon()
-    {
-        return $this->lon;
-    }
+//    /**
+//     * Set lat
+//     *
+//     * @param array $lat
+//     *
+//     * @return Roadtrip
+//     */
+//    public function setLat($lat)
+//    {
+//        $this->lat = $lat;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Get lat
+//     *
+//     * @return array
+//     */
+//    public function getLat()
+//    {
+//        return $this->lat;
+//    }
+//
+//    /**
+//     * Set lon
+//     *
+//     * @param array $lon
+//     *
+//     * @return Roadtrip
+//     */
+//    public function setlon($lon)
+//    {
+//        $this->lon = $lon;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Get lon
+//     *
+//     * @return array
+//     */
+//    public function getlon()
+//    {
+//        return $this->lon;
+//    }
 
     /**
      * Set owner
@@ -313,29 +319,29 @@ class Roadtrip
         return $this->owner;
     }
 
-    /**
-     * Set address
-     *
-     * @param array $address
-     *
-     * @return Roadtrip
-     */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return array
-     */
-    public function getAddress()
-    {
-        return $this->address;
-    }
+//    /**
+//     * Set address
+//     *
+//     * @param array $address
+//     *
+//     * @return Roadtrip
+//     */
+//    public function setAddress($address)
+//    {
+//        $this->address = $address;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Get address
+//     *
+//     * @return array
+//     */
+//    public function getAddress()
+//    {
+//        return $this->address;
+//    }
 
     /**
      * Add stop
@@ -502,5 +508,39 @@ class Roadtrip
     public function getReview()
     {
         return $this->review;
+    }
+
+    /**
+     * Add likedBy
+     *
+     * @param \AppBundle\Entity\IsLiked $likedBy
+     *
+     * @return Roadtrip
+     */
+    public function addLikedBy(\AppBundle\Entity\IsLiked $likedBy)
+    {
+        $this->likedBy[] = $likedBy;
+
+        return $this;
+    }
+
+    /**
+     * Remove likedBy
+     *
+     * @param \AppBundle\Entity\IsLiked $likedBy
+     */
+    public function removeLikedBy(\AppBundle\Entity\IsLiked $likedBy)
+    {
+        $this->likedBy->removeElement($likedBy);
+    }
+
+    /**
+     * Get likedBy
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLikedBy()
+    {
+        return $this->likedBy;
     }
 }

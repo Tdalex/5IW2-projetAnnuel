@@ -148,6 +148,7 @@ function createBoxes(response){
     var path = response.routes[0].overview_path;
     itineraryBounds = routeboxer.box(path, distance);
     drawBoxes(itineraryBounds);
+    centerBoxes(itineraryBounds);
 }
 
 // Draw the array of boxes as polylines on the map
@@ -162,6 +163,18 @@ function drawBoxes(boxes) {
             strokeWeight: 3,
             map: map
         });
+    }
+}
+
+function centerBoxes(boxes){
+    var centerBounds =  [];
+    for (var i = 0; i < boxes.length; i++) {
+        /*var marker = new google.maps.Marker({
+            position: boxes[i].getCenter(),
+            map: map,
+            title: 'Hello World!'
+        });*/
+        centerBounds.push(boxes[i].getCenter());
     }
 }
 

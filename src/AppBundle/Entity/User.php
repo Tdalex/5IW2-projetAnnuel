@@ -26,10 +26,6 @@ class User extends BaseUser
      */
     protected $id;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Roadtrip")
-     */
-    protected $favorite;
 
     /**
      * FacebookId
@@ -69,7 +65,7 @@ class User extends BaseUser
     protected $lastName;
 
 	/**
-     * @ORM\OneToMany(targetEntity="Roadtrip", mappedBy="OwnedRoadtrip", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Roadtrip", mappedBy="owner", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="owned", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $owned;
@@ -151,6 +147,12 @@ class User extends BaseUser
      * @ORM\JoinColumn(name="review", referencedColumnName="id")
      */
     protected $review;
+
+    /**
+     * @ORM\OneToMany(targetEntity="IsLiked", mappedBy="userId" ,cascade={"persist"})
+     * @ORM\JoinColumn(name="liked", referencedColumnName="id")
+     */
+    protected $liked;
 
     public function __construct(){
 		$this->created = new \DateTime();
@@ -380,6 +382,24 @@ class User extends BaseUser
         $this->setUsername($email);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getOwned()
+    {
+        return $this->owned;
+    }
+
+    /**
+     * @param mixed $owned
+     */
+    public function setOwned($owned)
+    {
+        $this->owned = $owned;
+    }
+
+
+
      /**
      * Add owned
      *
@@ -412,5 +432,83 @@ class User extends BaseUser
     public function getStops()
     {
         return $this->owned;
+    }
+
+    /**
+     * Remove owned
+     *
+     * @param \AppBundle\Entity\Roadtrip $owned
+     */
+    public function removeOwned(\AppBundle\Entity\Roadtrip $owned)
+    {
+        $this->owned->removeElement($owned);
+    }
+
+    /**
+     * Add review
+     *
+     * @param \AppBundle\Entity\Review $review
+     *
+     * @return User
+     */
+    public function addReview(\AppBundle\Entity\Review $review)
+    {
+        $this->review[] = $review;
+
+        return $this;
+    }
+
+    /**
+     * Remove review
+     *
+     * @param \AppBundle\Entity\Review $review
+     */
+    public function removeReview(\AppBundle\Entity\Review $review)
+    {
+        $this->review->removeElement($review);
+    }
+
+    /**
+     * Get review
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReview()
+    {
+        return $this->review;
+    }
+
+    /**
+     * Add liked
+     *
+     * @param \AppBundle\Entity\IsLiked $liked
+     *
+     * @return User
+     */
+    public function addLiked(\AppBundle\Entity\IsLiked $liked)
+    {
+        $this->liked[] = $liked;
+
+        return $this;
+    }
+
+    /**
+     * Remove liked
+     *
+     * @param \AppBundle\Entity\IsLiked $liked
+     */
+    public function removeLiked(\AppBundle\Entity\IsLiked $liked)
+    {
+        $this->liked->removeElement($liked);
+    }
+
+    /**
+     * Get liked
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLiked()
+    {
+        return $this->liked;
     }
 }
