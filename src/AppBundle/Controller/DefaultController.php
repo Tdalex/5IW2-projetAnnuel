@@ -127,12 +127,7 @@ class DefaultController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if($form->isValid()){
-//                dump($request->request->get('data'));
-//                dump($request->query->get('data'));
-//                dump($_POST);die;
                 $waypoint->setPhone($waypoint->getPhone()->getnationalNumber());
-                $waypoint->setLat(48.9902807);
-                $waypoint->setLon(2.055868700000019);
                 $waypoint->setStatus('disabled');
                 //$waypoint->setSponsor(true);
                 //generate token

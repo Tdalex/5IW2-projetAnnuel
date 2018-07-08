@@ -4,6 +4,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -24,7 +25,7 @@ class WaypointType extends AbstractType
                     new NotBlank(array("message" => "Ce champ est requis")),
                 )
             ))
-            ->add('phone', PhoneNumberType::class, array('attr' => array('placeholder' => 'Numéro de telephone'),
+            ->add('phone', PhoneNumberType::class, array('attr' => array('placeholder' => 'Téléphone Ex : +33601234567'),
                 'constraints' => array(
                     new NotBlank(array("message" => "Ce champ est requis")),
                 )
@@ -45,6 +46,8 @@ class WaypointType extends AbstractType
                     new NotBlank(array("message" => "Ce champ est requis")),
                 )
             ))
+            ->add('lat', TextType::class)
+            ->add('lon', TextType::class)
         ;
     }
 
