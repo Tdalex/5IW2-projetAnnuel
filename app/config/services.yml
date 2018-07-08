@@ -65,3 +65,12 @@ services:
 
     transformer.elastica.waypoint:
         class: AppBundle\Transformer\ElasticaToWaypointTransformer
+
+    app.js_var_env:
+        class: stdClass
+
+    app.listener.js_vars_initialize:
+        class: AppBundle\Listener\JsVarsInitializeListener
+        arguments: [ "@app.js_var_env",'@service_container', %kernel.debug% ]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

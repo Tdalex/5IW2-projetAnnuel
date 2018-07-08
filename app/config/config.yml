@@ -40,6 +40,7 @@ twig:
         facebook_app_id: '%facebook_app_id%'
         facebook_app_secret: '%facebook_app_secret%'
         google_api_key: '%google_api_key%'
+        js_var_env: "@app.js_var_env"
     form_themes:
       - 'materialize_form_theme.html.twig'
 
