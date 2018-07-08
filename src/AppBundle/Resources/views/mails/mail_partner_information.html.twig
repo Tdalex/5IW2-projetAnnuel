@@ -4,3 +4,6 @@
     ContactPhone: {{ data.phone }}<br>
     ContactMail : {{ data.email }}<br>
     Addresse : {{ data.address }}</p>
+
+<p>Afin de valider le sponsor veuillez suivre le lien suivant :</p>
+<a href="{{ app.request.getSchemeAndHttpHost() ~ path('sponsor_activate', {'id': id}) }}">{{ app.request.getSchemeAndHttpHost() ~ path('sponsor_activate', {'id': id}) }}</a>

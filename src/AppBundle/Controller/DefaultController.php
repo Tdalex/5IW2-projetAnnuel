@@ -129,7 +129,6 @@ class DefaultController extends Controller
             if($form->isValid()){
                 $waypoint->setPhone($waypoint->getPhone()->getnationalNumber());
                 $waypoint->setStatus('disabled');
-                //$waypoint->setSponsor(true);
                 //generate token
                 $token = bin2hex(random_bytes(20));
                 $waypoint->setToken($token);
@@ -142,7 +141,7 @@ class DefaultController extends Controller
                     'token'    => $token
                 ]);
 
-                if($this->sendEmailToAdmin($form->getData()) && $this->sendEmailToUser($form->getData(), $view)){
+                if($this->sendEmailToAdmin($form->getData(), $waypoint->getId()) && $this->sendEmailToUser($form->getData(), $view)){
                     $this->addFlash("success", "Votre demande a bien été envoyée :)");
                     return $this->redirectToRoute('partner');
                 }else{
@@ -156,9 +155,10 @@ class DefaultController extends Controller
         ));
     }
 
-    private function sendEmailToAdmin($data){
+    private function sendEmailToAdmin($data, $waypointId){
         $view = $this->container->get('templating')->render('AppBundle:mails:mail_partner_information.html.twig', [
-            'data' => $data
+            'data' => $data,
+            'id' => $waypointId,
         ]);
 
         $myappContactMail = $this->container->getParameter('mailer_user');
@@ -226,7 +226,7 @@ class DefaultController extends Controller
 
             $mailer = \Swift_Mailer::newInstance($transport);
 
-            $message = \Swift_Message::newInstance("RoadMonTrip | Partenariat validé")
+            $message = \Swift_Message::newInstance("RoadMonTrip | Partenariat activé")
                 ->setFrom("noreply@roadmontrip.loc")
                 ->setTo($waypoint->getEmail())
                 ->setBody($view, 'text/html');
@@ -238,5 +238,47 @@ class DefaultController extends Controller
         }
         $this->addFlash("error", "Une erreure est survenue. Veuillez ressayer plus tard");
         return $this->redirectToRoute('partner');
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @Route("sponsor/{id}/valide", name="sponsor_activate")
+     * @Method("GET")
+     */
+    public function activateSponsorAction($id, Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository("AppBundle:Waypoint");
+        $waypoint = $repository->find($request->get('id'));
+
+        if ($waypoint->getSponsor() != true){
+            $waypoint->setSponsor(true);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($waypoint);
+            $em->flush();
+
+            //send email
+            $view = $this->container->get('templating')->render('AppBundle:mails:mail_partner_success.html.twig');
+
+            $myappContactMail = $this->container->getParameter('mailer_user');
+            $myappContactPassword = $this->container->getParameter('mailer_password');
+
+            $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465,'ssl')
+                ->setUsername($myappContactMail)
+                ->setPassword($myappContactPassword);
+
+            $mailer = \Swift_Mailer::newInstance($transport);
+
+            $message = \Swift_Message::newInstance("RoadMonTrip | Partenariat validé")
+                ->setFrom("noreply@roadmontrip.loc")
+                ->setTo($waypoint->getEmail())
+                ->setBody($view, 'text/html');
+
+            $mailer->send($message);
+
+
+            return $this->redirectToRoute('homepage');
+        }
     }
 }

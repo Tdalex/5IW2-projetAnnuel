@@ -378,6 +378,13 @@ class Waypoint
         $this->email = $email;
     }
 
+    /**
+     * @return boolean
+     */
+    public function getSponsor()
+    {
+        return $this->sponsor;
+    }
 
      /**
      * Set sponsor
