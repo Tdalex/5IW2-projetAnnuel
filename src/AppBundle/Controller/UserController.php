@@ -126,7 +126,7 @@ class UserController extends Controller
                 ]);
 
                 $message = (new \Swift_Message('Roadtrip: activation de compte'))
-                    ->setFrom('noreply@roadtrip.loc')
+                    ->setFrom('noreply@roadmontrip.loc')
                     ->setTo($user->getEmail())
                     ->setBody($view, 'text/html');
 

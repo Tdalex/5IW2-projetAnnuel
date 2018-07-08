@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Misd\PhoneNumberBundle\Validator\Constraints as MisdAssert;
 
 
 /**
@@ -46,8 +48,16 @@ class Waypoint
 	* @var string
 	*
 	* @ORM\Column(type="string", nullable=true))
+     * @MisdAssert\PhoneNumber()
 	*/
     private $phone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true))
+     */
+    protected $email;
 
 	/**
 	* @var string
@@ -105,6 +115,20 @@ class Waypoint
 	* @ORM\Column(type="string", nullable=true))
 	*/
     private $description;
+
+    /**
+     * token
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 255,
+     *      minMessage = "Trop court",
+     *      maxMessage = "Trop long"
+     * )
+     */
+    protected $token;
 
     /**
      * Constructor
@@ -338,10 +362,27 @@ class Waypoint
         return $this->phone;
     }
 
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+
      /**
      * Set sponsor
      *
-     * @param array $sponsor
+     * @param boolean $sponsor
      *
      */
     public function setSponsor($sponsor)
@@ -354,7 +395,7 @@ class Waypoint
     /**
      * Get sponsor
      *
-     * @return array
+     * @return boolean
      */
     public function isSponsor()
     {
@@ -385,4 +426,24 @@ class Waypoint
    {
         return $this->status == Waypoint::STATUS_ENABLED ? true : false;
    }
+
+    /**
+     * Set token
+     *
+     * @param mixed $token
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+    }
+
+    /**
+     * Get token
+     *
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
 }

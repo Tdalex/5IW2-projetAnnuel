@@ -1,0 +1,100 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets
+    '@AppBundle/Resources/public/min/plugin-min.css'
+    '@AppBundle/Resources/public/min/custom-min.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+
+<!--Form roadtrip-->
+
+
+<div id="partner_page" class="row">
+    <div class="col s5 content_partner_page">
+        <h3>Vous êtes un établissement ?</h3>
+        <p>Notre service de partenariat vous assure une bonne visibilité sur toutes les recherches effectuées</p>
+    </div>
+    <div class="col s7 form_partner_page center">
+        <div class="row">
+            <div class="col s12 m5 flash">
+                {% for label, flashes in app.session.flashbag.all %}
+                    {% for flash in flashes %}
+                        <div class="alert alert-{{ label }}">
+                            {{ flash }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row" onload="initialize()">
+            <div class="col s12 m5 bloc">
+                <div class="card-panel  ">
+                    <i class="large material-icons">headset_mic</i>
+                    <h3>Devenez partenaire !</h3>
+                    {{ form_start(form) }}
+                    <div class="row">
+                        <div class="col s12 center-block">
+                            {{ form_widget(form.title) }}
+                            {{ form_errors(form.title) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            {{ form_widget(form.phone) }}
+                            {{ form_errors(form.phone) }}
+                        </div>
+                        <div class="col s6">
+                            {{ form_widget(form.email) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            {{ form_widget(form.description) }}
+                            {{ form_errors(form.description) }}
+                        </div>
+                        <body onload="initAutocomplete()">
+                            <div class="col s6">
+                                {{ form_widget(form.address) }}
+                                {{ form_errors(form.address) }}
+                            </div>
+                        </body>
+                    </div>
+                    {# Render CSRF token etc .#}
+                    <div style="display:none">
+                        {{ form_rest(form) }}
+                    </div>
+
+                    <div class="input-field right-align">
+                        <input id="send_partner" class="waves-effect blue lighten-1 btn" type="submit" onclick="geocodeAddress()" value="J'envois ma demande">
+                    </div>
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+    '@AppBundle/Resources/public/js/waypoint.js'
+    %}
+    <script src="{{ asset_url }}"></script>  {#Ajouter pour prendre en compte le child#}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&v=3.exp&sensor=false&libraries=places"></script>
+    {#<script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places"></script>#}
+
+
+    {% endjavascripts %}
+
+{% endblock %}

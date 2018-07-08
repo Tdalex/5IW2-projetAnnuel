@@ -1,0 +1,4 @@
+<p>Bonjour,<br>Afin de valider votre addresse d'établissement et devenir partenaire, veuillez suivre le lien suivant:<p>
+    <a href="{{ app.request.getSchemeAndHttpHost() ~ path('partner_activate', {'token': token}) }}">{{ app.request.getSchemeAndHttpHost() ~ path('partner_activate', {'token': token}) }}</a>
+    <br>
+<p>Merci pour votre confiance.</p>

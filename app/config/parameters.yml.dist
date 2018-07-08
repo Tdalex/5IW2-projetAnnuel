@@ -11,3 +11,10 @@ parameters:
     facebook_app_id: '153461931962515'
     facebook_app_secret: 62c350339d7642ab58194a02cd8deba4
     google_api_key: AIzaSyD-I7_9giJEZ6ilQ-21tnFvo5KCcgShXIM
+
+
+    #parameters JWT
+    jwt_private_key_path: '%kernel.root_dir%/../var/jwt/private.pem'
+    jwt_public_key_path:  '%kernel.root_dir%/../var/jwt/public.pem'
+    jwt_key_pass_phrase:  'jwt_key_pass_phrase'
+    jwt_token_ttl:        3600

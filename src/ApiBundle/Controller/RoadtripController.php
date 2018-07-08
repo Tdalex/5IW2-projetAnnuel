@@ -2,6 +2,8 @@
 
 namespace ApiBundle\Controller;
 
+use AppBundle\Entity\User;
+use AppBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -68,6 +70,30 @@ class RoadtripController extends Controller
         }
 
         return $user;
+    }
+
+    /**
+     * @Rest\View(statusCode=Response::HTTP_CREATED)
+     * @Rest\Post("/user/register")
+     */
+    public function postUserAction(Request $request)
+    {
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user, array(
+            'csrf_protection' => false,
+//            'allow_extra_fields' => true
+        ));
+        $form->submit($request->request->all());
+
+        if ($form->isValid()) {
+            $user->setEnabled(true);
+            $em = $this->get('doctrine.orm.entity_manager');
+            $em->persist($user);
+            $em->flush();
+            return $user;
+        } else {
+            return $form;
+        }
     }
 
 
