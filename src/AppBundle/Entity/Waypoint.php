@@ -27,7 +27,14 @@ class Waypoint
 	* @ORM\Id
 	* @ORM\GeneratedValue(strategy="AUTO")
 	*/
-	private $id;
+    private $id;
+
+	/**
+	* @var integer
+	*
+	* @ORM\Column(name="googleId", type="string")
+	*/
+	private $googleId;
 
 	/**
 	* @var string
@@ -109,12 +116,25 @@ class Waypoint
     */
     private $lon;
 
+    /**
+    * @var string
+    *
+    * @ORM\Column(type="array")
+    */
+    private $type;
+
 	/**
 	* @var string
 	*
 	* @ORM\Column(type="string", nullable=true))
 	*/
     private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Stop", mappedBy="waypointStop", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="stops", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $stops;
 
     /**
      * token
@@ -211,6 +231,31 @@ class Waypoint
     }
 
     /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return Waypoint
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
      * Get description
      *
      * @return string
@@ -219,6 +264,7 @@ class Waypoint
     {
         return $this->description;
     }
+
 
 //    /**
 //     * Set theme
@@ -452,5 +498,60 @@ class Waypoint
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * Set googleId
+     *
+     * @param mixed $googleId
+     */
+    public function setGoogleId($googleId)
+    {
+        $this->googleId = $googleId;
+    }
+
+    /**
+     * Get googleId
+     *
+     * @return mixed
+     */
+    public function getGoogleId()
+    {
+        return $this->googleId;
+    }
+
+
+    /**
+     * Add stop
+     *
+     * @param \AppBundle\Entity\Stop $stop
+     *
+     * @return Waypoint
+     */
+    public function addStop(\AppBundle\Entity\Stop $stop)
+    {
+        $this->stops[] = $stop;
+
+        return $this;
+    }
+
+    /**
+     * Remove stop
+     *
+     * @param \AppBundle\Entity\Stop $stop
+     */
+    public function removeStop(\AppBundle\Entity\Stop $stop)
+    {
+        $this->stops->removeElement($stop);
+    }
+
+    /**
+     * Get stops
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getStops()
+    {
+        return $this->stops;
     }
 }

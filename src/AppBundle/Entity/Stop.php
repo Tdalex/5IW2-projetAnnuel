@@ -65,7 +65,8 @@ class Stop
 	private $address;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Waypoint", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="Waypoint", inversedBy="stops")
+     * @ORM\JoinColumn(name="waypointStop", referencedColumnName="id")
      */
     protected $waypoint;
 
@@ -74,13 +75,6 @@ class Stop
      * @ORM\JoinColumn(name="roadTripStop", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $roadTripStop;
-
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
 
     /**
      * Get id
@@ -165,54 +159,6 @@ class Stop
     }
 
     /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Roadtrip
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-//    /**
-//     * Set isRemoved
-//     *
-//     * @param boolean $isRemoved
-//     *
-//     * @return Roadtrip
-//     */
-//    public function setIsRemoved($isRemoved)
-//    {
-//        $this->isRemoved = $isRemoved;
-//
-//        return $this;
-//    }
-//
-//    /**
-//     * Get isRemoved
-//     *
-//     * @return boolean
-//     */
-//    public function getIsRemoved()
-//    {
-//        return $this->isRemoved;
-//    }
-
-    /**
      * Set lat
      *
      * @param array $lat
@@ -260,30 +206,6 @@ class Stop
         return $this->lon;
     }
 
-//    /**
-//     * Set owner
-//     *
-//     * @param \AppBundle\Entity\User $owner
-//     *
-//     * @return Roadtrip
-//     */
-//    public function setOwner(\AppBundle\Entity\User $owner = null)
-//    {
-//        $this->owner = $owner;
-//
-//        return $this;
-//    }
-//
-//    /**
-//     * Get owner
-//     *
-//     * @return \AppBundle\Entity\User
-//     */
-//    public function getOwner()
-//    {
-//        return $this->owner;
-//    }
-
     /**
      * Set address
      *
@@ -309,45 +231,27 @@ class Stop
     }
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->waypoint = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add waypoint
+     * Set waypointStop
      *
-     * @param \AppBundle\Entity\Waypoint $waypoint
+     * @param \AppBundle\Entity\Waypoint $waypointStop
      *
      * @return Stop
      */
-    public function addWaypoint(\AppBundle\Entity\Waypoint $waypoint)
+    public function setWaypointStop(\AppBundle\Entity\Roadtrip $waypointStop = null)
     {
-        $this->waypoint[] = $waypoint;
+        $this->waypointStop = $waypointStop;
 
         return $this;
     }
 
     /**
-     * Remove waypoint
+     * Get waypointStop
      *
-     * @param \AppBundle\Entity\Waypoint $waypoint
+     * @return \AppBundle\Entity\Waypoint
      */
-    public function removeWaypoint(\AppBundle\Entity\Waypoint $waypoint)
+    public function getWaypointStop()
     {
-        $this->waypoint->removeElement($waypoint);
-    }
-
-    /**
-     * Get waypoint
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getWaypoint()
-    {
-        return $this->waypoint;
+        return $this->waypointStop;
     }
 
     /**

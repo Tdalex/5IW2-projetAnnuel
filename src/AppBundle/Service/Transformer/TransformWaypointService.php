@@ -21,9 +21,11 @@ class TransformWaypointService extends BaseService
     {
         $data = [
             'id'          => $waypoint->getId(),
+            'googleId'    => $waypoint->getGoogleId(),
             'address'     => $waypoint->getAddress(),
             'name'        => $waypoint->getTitle(),
             'description' => $waypoint->getDescription(),
+            'type'        => $waypoint->getType(),
             // 'themes'      => $waypoint->getThemes(),
             'phone'       => $waypoint->getPhone(),
             'slug'        => $waypoint->getSlug(),

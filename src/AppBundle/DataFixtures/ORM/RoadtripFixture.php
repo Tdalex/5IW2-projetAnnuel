@@ -40,7 +40,6 @@ class RoadtripFixture extends Fixture
                 $st->setLat($faker->latitude);
                 $st->setlon($faker->longitude);
                 $st->setRoadTripStop($rt);
-                $st->setCreatedAt($faker->dateTime);
                 $roadtrip->addStop($st);
                 $manager->persist($st);
             }
@@ -53,7 +52,6 @@ class RoadtripFixture extends Fixture
             $start->setLat($faker->latitude);
             $start->setlon($faker->longitude);
             $start->setRoadTripStop($rt);
-            $start->setCreatedAt($faker->dateTime);
 
             $roadtrip->setStopStart($start);
 
@@ -65,7 +63,6 @@ class RoadtripFixture extends Fixture
             $end->setLat($faker->latitude);
             $end->setlon($faker->longitude);
             $end->setRoadTripStop($rt);
-            $end->setCreatedAt($faker->dateTime);
             $roadtrip->setStopEnd($end);
 
             $roadtrip->getStopStart()->setRoadTripStop($rt);

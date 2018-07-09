@@ -63,8 +63,11 @@ class UpdateWaypointCommand extends ContainerAwareCommand
                 );
 
         $count = array( 'total' => 0,
-                        'update'=> 0
+                        'update'=> 0,
+                        'new'   => 0
             );
+
+        $done = [];
 
         $leftSideDist = $end['lon'] - $start['lon'];
         $belowSideDist = $end['lat'] - $start['lat'];
@@ -73,13 +76,35 @@ class UpdateWaypointCommand extends ContainerAwareCommand
         $excLat = $belowSideDist / $cut;
         $excLng = $leftSideDist / $cut;
 
+        $output->writeln('<info>Cleaning waypoints, this may take a while</info>');
+        $output->writeln('');
+
+        foreach($em->getRepository('AppBundle:Waypoint')->findAllActive() as $w){
+            if(!$w->isSponsor()){
+                $w->setStatus(Waypoint::STATUS_DISABLED);
+                $em->persist($w);
+                $em->flush();
+            }
+        }
+
+        $output->writeln('<info>Getting Waypoints</info>');
+        $output->writeln('');
         for($i = 0; $i < $cut; $i++){
             for($a = 0; $a < $cut; $a++){
                 $search = $googlePlaces->nearbySearch(($start['lat'] + ($excLat * $i)) ."," . ($start['lon'] + ($excLng * $a)), 50000, array("type" => "lodging", "language" => "fr"));
 
                 foreach($search['results'] as $s){
+
+                    $name = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $s['name']);
+
+                    if(in_array($s['id'], $done)){
+                        continue;
+                    }
+
+                    $done[] = $s['id'];
                     $count['total']++;
-                    $waypoint = $em->getRepository('AppBundle:Waypoint')->findOneByAddress($s['vicinity']);
+
+                    $waypoint = $em->getRepository('AppBundle:Waypoint')->findOneByGoogleId($s['id']);
                     $new = false;
 
                     if (!$waypoint) {
@@ -87,35 +112,36 @@ class UpdateWaypointCommand extends ContainerAwareCommand
                         $output->writeln('');
                         $output->writeln('');
                         $waypoint = new waypoint();
-                        $new = true;
-                    }else{
-                        $output->writeln('<info>Already exists</info>');
+                        $count['new']++;
+                    } else {
+                        $output->writeln('<info>Updating data</info>');
                         $output->writeln('');
                         $output->writeln('');
-                    }
-                    if($new || $force){
                         $count['update']++;
-                        $name = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $s['name']);
-                        $output->writeln('<info>updating...</info>');
-                        $output->writeln('');
-                        $waypoint->setTitle($name);
-                        $waypoint->setStatus(Waypoint::STATUS_ENABLED);
-                        $waypoint->setAddress($s['vicinity']);
-                        $waypoint->setLat($s['geometry']['location']['lat']);
-                        $waypoint->setLon($s['geometry']['location']['lng']);
-
-                        $em->persist($waypoint);
-                        $em->flush();
-
-                        $output->writeln('<info>updated</info>');
-                        $output->writeln('');
-                        $output->writeln('');
                     }
+
+                    $output->writeln('<info>updating...</info>');
+                    $output->writeln('');
+                    $waypoint->setTitle($name);
+                    $waypoint->setType($s['types']);
+                    $waypoint->setGoogleId($s['id']);
+                    $waypoint->setStatus(Waypoint::STATUS_ENABLED);
+                    $waypoint->setAddress($s['vicinity']);
+                    $waypoint->setLat($s['geometry']['location']['lat']);
+                    $waypoint->setLon($s['geometry']['location']['lng']);
+
+                    $em->persist($waypoint);
+                    $em->flush();
+
+                    $output->writeln('<info>updated</info>');
+                    $output->writeln('');
+                    $output->writeln('');
                 }
             }
         }
-        $output->writeln('<info>total: '.  $count['total']  .'</info>');
+        $output->writeln('<info>new: '.    $count['new'] .'</info>');
         $output->writeln('<info>update: '. $count['update'] .'</info>');
+        $output->writeln('<info>total: '.  $count['total']  .'</info>');
         $output->writeln('');
         $output->writeln('<info>===============</info>');
         $output->writeln('<info>GENERATION DONE</info>');
