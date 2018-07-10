@@ -120,7 +120,7 @@ class RoadtripController extends Controller
                         $stop->setRoadTripStop($rt);
                     }
                 }
-                $owner->addRoadtrip($roadtrip);
+                $owner->addOwned($roadtrip);
                 $em->flush();
 
                 return $this->redirectToRoute('roadtrip_show', array('slug' => $roadtrip->getSlug()));

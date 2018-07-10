@@ -390,16 +390,6 @@ class User extends BaseUser
         return $this->owned;
     }
 
-    /**
-     * @param mixed $owned
-     */
-    public function setOwned($owned)
-    {
-        $this->owned = $owned;
-    }
-
-
-
      /**
      * Add owned
      *
@@ -407,7 +397,7 @@ class User extends BaseUser
      *
      * @return Roadtrip
      */
-    public function addOwned(\AppBundle\Entity\Stop $owned)
+    public function addOwned(\AppBundle\Entity\Roadtrip $owned)
     {
         $this->owned[] = $owned;
 
