@@ -36,6 +36,7 @@ class ApiController extends Controller
     public function apiWaypointAction(Request $request, WaypointManager $waypointManager, $type = null)
     {
         $datapush = $request->query->all();
+
         if ($type == 'all') {
             $data = $waypointManager->findAll();
         } else if ($type == 'by_distance') {

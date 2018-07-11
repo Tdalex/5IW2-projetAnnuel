@@ -32,7 +32,7 @@ class Waypoint
 	/**
 	* @var integer
 	*
-	* @ORM\Column(name="googleId", type="string")
+	* @ORM\Column(name="googleId", type="string", nullable=true)
 	*/
 	private $googleId;
 

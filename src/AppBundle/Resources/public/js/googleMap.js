@@ -180,13 +180,9 @@ function drawBoxes(boxes) {
 function centerBoxes(boxes){
     var centerBounds =  [];
     for (var i = 0; i < boxes.length; i++) {
-        /*var marker = new google.maps.Marker({
-            position: boxes[i].getCenter(),
-            map: map,
-            title: 'Hello World!'
-        });*/
         centerBounds.push(boxes[i].getCenter());
     }
+    return centerBounds;
 }
 
 function getInfosRoutes(response){
@@ -329,6 +325,50 @@ function food(franceBounds){
     } else {
         alert("Veuillez choisir un itinéraire !")
     }
+}
+
+function foodApi(franceBounds){
+    franceBounds = franceBounds || null;
+    var bounds;
+    if (franceBounds){
+        bounds = franceBounds;
+    }else{
+        bounds = itineraryBounds;
+    }
+    bounds = centerBoxes(bounds);
+
+    var place =  'restaurant';
+    var icon = "/bundles/app/images/markers/svg/Food_6.svg";
+    var tbody = 'resultsFoods';
+    clearMarkers();
+    clearResults(tbody);
+    if (bounds){
+        apiPlaces(bounds);
+    } else {
+        alert("Veuillez choisir un itinéraire !")
+    }
+}
+
+function apiPlaces(bounds) {
+    var icon  = "/bundles/app/images/markers/svg/Food_6.svg";
+    var tbody = 'resultsFoods';
+
+    var data = {};
+        data.coordinates = {};
+
+    for (var i = 0; i < bounds.length; i++) {
+        data.coordinates[i] = {'lat': bounds[i].lat(), 'lon': bounds[i].lng()};
+    }
+
+    data.radius = 20;
+    var params = $.param(data);
+
+    $.ajax({
+        url:  window.location.origin + "/api/waypoint/by_distance?" + params,
+    }).done(function( response ) {
+        console.log(response);
+    });
+
 }
 
 function searchPlaces(bound, place, icon, tbody) {

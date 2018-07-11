@@ -2,6 +2,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 #googleMap {
@@ -18,12 +19,12 @@ html, body {
 }
 
 #index-banner{
-    background-image: url("/bundles/app/images/map2.png") !important;
+    background-image: url("/bundles/app/images/map_home.jpg") !important;
 }
 
 #index-banner .opacity{
     background-color: rgba(34, 150, 243, 0.55);
-    min-height: 632px;
+    min-height: 670px;
 }
 
 #roadtrip-header {
@@ -126,13 +127,24 @@ p {
     min-width: 100%;
 }
 
-.search-map{
-    height: 85%;
+.search-tab{
+    height: 3.4em;
     width: 25em;
     background: #2196f399;
     position: absolute;
     z-index: 1;
-    top: 82px;
+    top: 75px;
+    left: 20px;
+    overflow: scroll;
+}
+
+.search-map{
+    height: 79%;
+    width: 25em;
+    background: #2196f399;
+    position: absolute;
+    z-index: 1;
+    top: 135px;
     left: 20px;
     overflow: scroll;
 }.collapsible{
@@ -175,6 +187,21 @@ p {
 
 .toast{
     height: 100px !important;
+}
+
+#test-swipe-2, #test-swipe-3 {
+    margin: 0.5em;
+}
+
+#resultsHotels td, #resultsFoods td{
+    padding: 0;
+    border-radius: 0;
+}
+
+#directionPanel {
+    margin: 0.5em;
+    background-color: rgb(255, 255, 255);
+    overflow: auto;
 }
 
 /* My account */
@@ -220,6 +247,86 @@ p {
 .button-retour{
     margin: 20px;
 }
+
+#partener{
+    background-color: #d2edff;
+}.partener-content{
+     padding: 80px 150px;
+ }
+#partener h3{
+    color: #353a5e;
+    font-weight: 400;
+    margin-bottom: 4%;
+}
+
+#partener p{
+    color: #353a5e;
+   }
+
+.play{
+    height: 450px;
+    overflow: hidden;
+}
+
+#myVideo {
+    right: 0;
+    bottom: 0;
+    max-height: 160%;
+}
+
+#steps{
+    background-color: #353a5e;
+}.steps-content{
+     padding: 80px 100px;
+ }.steps-blocs{
+       color: white;
+   }
+#steps h3{
+    color: white;
+    font-weight: 400;
+    margin-bottom: 4%;
+}
+
+#partner_page{
+    margin-bottom: 0 !important;
+    width: 100%;
+    height: 100%;
+    font-weight: 200;
+}
+
+#partner_page .content_partner_page{
+    background-color: #51bcff;
+    color: white;
+    height: 100%;
+    padding: 170px 60px;
+}
+
+#partner_page h3{
+    font-weight: 200;
+    margin-bottom: 4%;
+ }
+
+.form_partner_page{
+    background-image: url("/bundles/app/images/partener.jpg");
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.bloc{
+    width: 100% !important;
+}
+
+.flash{
+    width: 100% !important;
+    margin-top: 20px;
+}
+
+.card-panel{
+    background-color: #ececec !important;
+}
+
+
 
 /* fin my account
 
