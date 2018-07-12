@@ -62,17 +62,21 @@
                 <div class="row">
                     <div class="col s8">
                         <h2>Etapes</h2>
-                        {% set i = 1 %}
-                        {% for stop in roadtrip.stops %}
-                            {% if roadtrip.stopStart == stop %}
-                                <div id="depart"><strong>Départ : </strong>{{ stop.address }}</div>
-                            {% elseif roadtrip.stopEnd == stop %}
-                                <div id="destination"><strong>Destination : </strong>{{ stop.address }}</div>
-                            {% else %}
-                                <div class="etape"><strong>Etape {{ i }} : </strong>{{ stop.address }}</div>
-                                {% set i = i+1 %}
-                            {% endif %}
-                        {% endfor %}
+                        {% if roadtrip.stops is empty %}
+                            <div class="nostop"><p>Aucune étape n'a été définie dans ce roadtrip.</p></div>
+                        {% else %}
+                            {% set i = 1 %}
+                            {% for stop in roadtrip.stops %}
+                                {% if roadtrip.stopStart == stop %}
+                                    <div id="depart"><strong>Départ : </strong>{{ stop.address }}</div>
+                                {% elseif roadtrip.stopEnd == stop %}
+                                    <div id="destination"><strong>Destination : </strong>{{ stop.address }}</div>
+                                {% else %}
+                                    <div class="etape"><strong>Etape {{ i }} : </strong>{{ stop.address }}</div>
+                                    {% set i = i+1 %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -80,12 +84,16 @@
                 <div class="row">
                     <div class="col s8">
                         <h2>Commentaires</h2>
-                        {% for comm in commentaires %}
-                            <div class="card-panel grey lighten-3">
-                                {{ comm.commentaire }}
-                                <em><a href="">{{ comm.user }}</a>, {{ comm.date|date('d/m/Y H:i:s') }}</em>
-                            </div>
-                        {% endfor %}
+                        {% if commentaires is empty %}
+                            <div class="nocomm"><p>Aucun avis n'a encore été laissé sur ce roadtrip.</p></div>
+                        {% else %}
+                            {% for comm in commentaires %}
+                                <div class="card-panel grey lighten-3">
+                                    {{ comm.commentaire }}
+                                    <em><a href="">{{ comm.user }}</a>, {{ comm.date|date('d/m/Y H:i:s') }}</em>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -103,7 +111,7 @@
                     </div>
                 {% endif %}
             {% else %}
-                <em><a href="{{ path('user_connectForm') }}">Connectez-vous</a> ou <a href="{{ path('user_register') }}">inscrivez-vous</a> si vous voulez donner votre review sur ce roadtrip !</em>
+                <em><a href="{{ path('user_connectForm') }}">Connectez-vous</a> ou <a href="{{ path('user_register') }}">inscrivez-vous</a> si vous voulez donner votre avis sur ce roadtrip !</em>
             {% endif %}
         </div>
     </div>
@@ -142,11 +150,16 @@
         });
 
         function likeButton() {
+            {% set userId = 0 %}
+            {% if app.session.get('currentUser').id is defined %}
+                {% set userId = app.session.get('currentUser').id %}
+            {% endif %}
+
             $('#like_add').click(function (e){
                 e.preventDefault();
                 $.ajax({
                     type: "GET",
-                    url: "{{ path('isliked_add', { 'roadtripId': roadtrip.id, 'userId': app.session.get('currentUser').id }) }}",
+                    url: "{{ path('isliked_add', { 'roadtripId': roadtrip.id, 'userId': userId }) }}",
                     success: function(response) {
                         $('#buttons_favorites').html(response.view);
                         likeButton();
@@ -158,7 +171,7 @@
                 e.preventDefault();
                 $.ajax({
                     type: "GET",
-                    url: "{{ path('isliked_remove', { 'roadtripId': roadtrip.id, 'userId': app.session.get('currentUser').id }) }}",
+                    url: "{{ path('isliked_remove', { 'roadtripId': roadtrip.id, 'userId': userId }) }}",
                     success: function(response) {
                         $('#buttons_favorites').html(response.view);
                         likeButton();

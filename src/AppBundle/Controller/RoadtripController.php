@@ -143,7 +143,12 @@ class RoadtripController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $session = $this->get('session');
-        $currentUser = $session->get('currentUser');
+        $likes = [];
+        if($session->get('currentUser')) {
+            $currentUser = $session->get('currentUser');
+            $likes = $em->getRepository('AppBundle:IsLiked')->isLike($roadtrip->getId(), $currentUser['id']);
+        }
+
 
         $deleteForm = $this->createDeleteForm($roadtrip);
         $review = $roadtrip->getReview();
@@ -164,8 +169,7 @@ class RoadtripController extends Controller
         } else {
             $moyenne = "Aucune note";
         }
-        $likes = $em->getRepository('AppBundle:IsLiked')->isLike($roadtrip->getId(), $currentUser['id']);
-        $like = $likes ? 1 : 0;
+        $like = empty($likes) ? 0 : 1;
 
         return $this->render('AppBundle:roadtrip:show.html.twig', array(
             'roadtrip' => $roadtrip,
