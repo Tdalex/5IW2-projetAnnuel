@@ -64,7 +64,8 @@
                     <div class="col s8">
                         <h2>Etapes</h2>
                         {% if roadtrip.stops is empty %}
-                            <div class="nostop"><p>Aucune étape n'a été définie dans ce roadtrip.</p></div>
+                            <div id="depart"><strong>Départ : </strong>{{ roadtrip.stopStart.address }}</div>
+                            <div id="destination"><strong>Destination : </strong>{{ roadtrip.stopEnd.address }}</div>
                         {% else %}
                             {% set i = 1 %}
                             {% for stop in roadtrip.stops %}
