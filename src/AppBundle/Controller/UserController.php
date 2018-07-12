@@ -201,7 +201,7 @@ class UserController extends Controller
     public function loginFacebookAction(Request $request)
     {
         $config = [
-            'callback' => 'http://roadtrip.loc' . $this->generateUrl('user_login_fb'),
+            'callback' => $request->getSchemeAndHttpHost() . $this->generateUrl('user_login_fb'),
             'keys'     => [
                 'id'     => $this->container->getParameter('facebook_app_id'),
                 'secret' => $this->container->getParameter('facebook_app_secret')
