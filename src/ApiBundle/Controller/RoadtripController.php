@@ -73,6 +73,23 @@ class RoadtripController extends Controller
     }
 
     /**
+     * @Rest\View()
+     * @Rest\Get("/user/{id}/roadtrip")
+     */
+    public function getRoadtripsByUserAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')->findOneById($request->get('id'));
+        $roadtrips = $em->getRepository('AppBundle:Roadtrip')->findBy(array('owner' => $request->get('id')));
+
+        if (empty($roadtrips)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'no roadtrips'], Response::HTTP_NOT_FOUND);
+        }
+
+        return $roadtrips;
+    }
+
+    /**
      * @Rest\View(statusCode=Response::HTTP_CREATED)
      * @Rest\Post("/user/register")
      */
