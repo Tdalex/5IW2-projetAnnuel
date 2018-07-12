@@ -170,7 +170,7 @@ class DefaultController extends Controller
 
         $mailer = \Swift_Mailer::newInstance($transport);
 
-        $message = \Swift_Message::newInstance("Nouvelle demande de sponsor")
+        $message = \Swift_Message::newInstance("Nouvelle demande de sponsor : ".$data->getTitle())
             ->setFrom(array($myappContactMail => "Message by ".$data->getEmail()))
             ->setTo( $myappContactMail)
             ->setBody($view, 'text/html');
@@ -226,7 +226,7 @@ class DefaultController extends Controller
 
             $mailer = \Swift_Mailer::newInstance($transport);
 
-            $message = \Swift_Message::newInstance("RoadMonTrip | Partenariat activé")
+            $message = \Swift_Message::newInstance("RoadMonTrip | Établissement activé")
                 ->setFrom("noreply@roadmontrip.loc")
                 ->setTo($waypoint->getEmail())
                 ->setBody($view, 'text/html');

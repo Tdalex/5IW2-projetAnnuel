@@ -84,11 +84,13 @@ class WaypointManager
 	{
         $q     = new Query();
         $boolQuery = new BoolQuery();
+        $coordinatesQuery = new BoolQuery();
 
         $match = new Match();
         $match->setFieldQuery('status', Waypoint::STATUS_ENABLED);
         $match->setFieldMinimumShouldMatch('status', '100%');
         $boolQuery->addMust($match);
+
 
         if(!array_key_exists('lat', $data['coordinates'])){
             foreach ($data['coordinates'] as $c) {
@@ -101,8 +103,10 @@ class WaypointManager
                     ], $data['radius'] . 'km'
                     )
                 );
-                $boolQuery->addShould($subQuery);
+                $coordinatesQuery->addShould($subQuery);
             }
+            $boolQuery->addMust($coordinatesQuery);
+
         } else {
             $boolQuery->addFilter(
                 new GeoDistance('coordinates', [
