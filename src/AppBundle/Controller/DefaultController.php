@@ -130,24 +130,30 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $existWaypoint = $em->getRepository('AppBundle:Waypoint')->findOneByAddressAndTitle($waypointAddress, $waypointTitle);
 
-        if (!empty($existWaypoint){
-            if ($existWaypoint->getStatus() != "disabled"){
+        if (!empty($existWaypoint)){
+            if ($existWaypoint->getStatus() == "disabled"){
                 $existWaypoint->setStatus('enabled');
                 $em->persist($existWaypoint);
                 $em->flush();
+
+                //send email
+                $view = $this->container->get('templating')->render('AppBundle:mails:mail_partner_register.html.twig', [
+                    'waypoint'     => $existWaypoint
+                ]);
+                $subject = "RoadMonTrip | Établissement activé";
+                $from = "noreply@roadmontrip.loc";
+                $to = $existWaypoint->getEmail();
+
+                $this->sendMail($view, $subject, $from, $to);
             }
-
-            //send email
-            $view = $this->container->get('templating')->render('AppBundle:mails:mail_partner_register.html.twig', [
-                'waypoint'     => $existWaypoint
-            ]);
-            $subject = "RoadMonTrip | Établissement activé";
-            $from = "noreply@roadmontrip.loc";
-            $to = $existWaypoint->getEmail();
-
-            $this->sendMail($view, $subject, $from, $to);
-            $this->addFlash("success", "Votre demande a bien été envoyée :)");
-            return $this->redirectToRoute('partner');
+            if($existWaypoint->getSponsor() == false && $existWaypoint->getStatus() == "enabled"){
+                $this->sendEmailToAdmin($existWaypoint, $existWaypoint->getId());
+                $this->addFlash("success", "Votre demande a bien été envoyée :)");
+                return $this->redirectToRoute('partner');
+            }elseif($existWaypoint->getSponsor() == true  && $existWaypoint->getStatus() == "enabled"){
+                $this->addFlash("warning", "Cet établissement existe déjà");
+                return $this->redirectToRoute('partner');
+            }
         }else{
             if ($request->isMethod('POST')) {
                 $form->handleRequest($request);
@@ -170,7 +176,7 @@ class DefaultController extends Controller
                         $this->addFlash("success", "Votre demande a bien été envoyée :)");
                         return $this->redirectToRoute('partner');
                     }else{
-                        $this->addFlash("error", "Une erreure est survenue. Veuillez ressayer plus tard");
+                        $this->addFlash("warning", "Une erreure est survenue. Veuillez ressayer plus tard");
                     }
                 }
             }
@@ -203,23 +209,6 @@ class DefaultController extends Controller
         $to = $data->getEmail();
 
         return $this->sendMail($view, $subject, $from, $to);
-
-
-        /*$myappContactMail = $this->container->getParameter('mailer_user');
-        $myappContactPassword = $this->container->getParameter('mailer_password');
-
-        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465,'ssl')
-            ->setUsername($myappContactMail)
-            ->setPassword($myappContactPassword);
-
-        $mailer = \Swift_Mailer::newInstance($transport);
-
-        $message = \Swift_Message::newInstance("RoadMonTrip | Demande de partenariat")
-            ->setFrom("noreply@roadmontrip.loc")
-            ->setTo($data->getEmail())
-            ->setBody($view, 'text/html');
-
-        return $mailer->send($message);*/
     }
 
     /**
@@ -247,11 +236,9 @@ class DefaultController extends Controller
 
             $this->sendMail($view, $subject, $from, $to);
 
-
-
             return $this->redirectToRoute('homepage');
         }
-        $this->addFlash("error", "Une erreure est survenue. Veuillez ressayer plus tard");
+        $this->addFlash("warning", "Une erreure est survenue. Veuillez ressayer plus tard");
         return $this->redirectToRoute('partner');
     }
 
