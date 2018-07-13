@@ -124,32 +124,57 @@ class DefaultController extends Controller
             'method' => 'POST'
         ));
 
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-            if($form->isValid()){
-                $waypoint->setPhone($waypoint->getPhone()->getnationalNumber());
-                $waypoint->setStatus('disabled');
-                //generate token
-                $token = bin2hex(random_bytes(20));
-                $waypoint->setToken($token);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($waypoint);
+        //verify if etablissement exist
+        $waypointTitle = $request->request->get('waypoint')['title'];
+        $waypointAddress = $request->request->get('waypoint')['address'];
+        $em = $this->getDoctrine()->getManager();
+        $existWaypoint = $em->getRepository('AppBundle:Waypoint')->findOneByAddressAndTitle($waypointAddress, $waypointTitle);
+
+        if (!empty($existWaypoint){
+            if ($existWaypoint->getStatus() != "disabled"){
+                $existWaypoint->setStatus('enabled');
+                $em->persist($existWaypoint);
                 $em->flush();
+            }
 
-                // Send mail
-                $view = $this->container->get('templating')->render('AppBundle:mails:mail_partner_subscribe.html.twig', [
-                    'token'    => $token
-                ]);
+            //send email
+            $view = $this->container->get('templating')->render('AppBundle:mails:mail_partner_register.html.twig', [
+                'waypoint'     => $existWaypoint
+            ]);
+            $subject = "RoadMonTrip | Établissement activé";
+            $from = "noreply@roadmontrip.loc";
+            $to = $existWaypoint->getEmail();
 
-                if($this->sendEmailToAdmin($form->getData(), $waypoint->getId()) && $this->sendEmailToUser($form->getData(), $view)){
-                    $this->addFlash("success", "Votre demande a bien été envoyée :)");
-                    return $this->redirectToRoute('partner');
-                }else{
-                    $this->addFlash("error", "Une erreure est survenue. Veuillez ressayer plus tard");
+            $this->sendMail($view, $subject, $from, $to);
+            $this->addFlash("success", "Votre demande a bien été envoyée :)");
+            return $this->redirectToRoute('partner');
+        }else{
+            if ($request->isMethod('POST')) {
+                $form->handleRequest($request);
+                if($form->isValid()){
+                    $waypoint->setPhone($waypoint->getPhone()->getnationalNumber());
+                    $waypoint->setStatus('disabled');
+                    //generate token
+                    $token = bin2hex(random_bytes(20));
+                    $waypoint->setToken($token);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($waypoint);
+                    $em->flush();
+
+                    // Send mail
+                    $view = $this->container->get('templating')->render('AppBundle:mails:mail_partner_subscribe.html.twig', [
+                        'token'    => $token
+                    ]);
+
+                    if($this->sendEmailToUser($form->getData(), $view) && $this->sendEmailToAdmin($form->getData(), $waypoint->getId()) ){
+                        $this->addFlash("success", "Votre demande a bien été envoyée :)");
+                        return $this->redirectToRoute('partner');
+                    }else{
+                        $this->addFlash("error", "Une erreure est survenue. Veuillez ressayer plus tard");
+                    }
                 }
             }
         }
-
         return $this->render('AppBundle:default:partner.html.twig', array(
             'form' => $form->createView()
         ));
@@ -164,23 +189,23 @@ class DefaultController extends Controller
         $myappContactMail = $this->container->getParameter('mailer_user');
         $myappContactPassword = $this->container->getParameter('mailer_password');
 
-        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465,'ssl')
-            ->setUsername($myappContactMail)
-            ->setPassword($myappContactPassword);
+        $subject = "Nouvelle demande de sponsor : ".$data->getTitle();
+        $from = array($myappContactMail => "Message by ".$data->getEmail());
+        $to = $myappContactMail;
 
-        $mailer = \Swift_Mailer::newInstance($transport);
-
-        $message = \Swift_Message::newInstance("Nouvelle demande de sponsor : ".$data->getTitle())
-            ->setFrom(array($myappContactMail => "Message by ".$data->getEmail()))
-            ->setTo( $myappContactMail)
-            ->setBody($view, 'text/html');
-
-
-        return $mailer->send($message);
+        return $this->sendMail($view, $subject, $from, $to);
     }
 
     private function sendEmailToUser($data, $view){
-        $myappContactMail = $this->container->getParameter('mailer_user');
+
+        $subject = "RoadMonTrip | Demande de partenariat";
+        $from = "noreply@roadmontrip.loc";
+        $to = $data->getEmail();
+
+        return $this->sendMail($view, $subject, $from, $to);
+
+
+        /*$myappContactMail = $this->container->getParameter('mailer_user');
         $myappContactPassword = $this->container->getParameter('mailer_password');
 
         $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465,'ssl')
@@ -194,7 +219,7 @@ class DefaultController extends Controller
             ->setTo($data->getEmail())
             ->setBody($view, 'text/html');
 
-        return $mailer->send($message);
+        return $mailer->send($message);*/
     }
 
     /**
@@ -216,22 +241,12 @@ class DefaultController extends Controller
             $view = $this->container->get('templating')->render('AppBundle:mails:mail_partner_register.html.twig', [
                 'waypoint'     => $waypoint
             ]);
+            $subject = "RoadMonTrip | Établissement activé";
+            $from = "noreply@roadmontrip.loc";
+            $to = $waypoint->getEmail();
 
-            $myappContactMail = $this->container->getParameter('mailer_user');
-            $myappContactPassword = $this->container->getParameter('mailer_password');
+            $this->sendMail($view, $subject, $from, $to);
 
-            $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465,'ssl')
-                ->setUsername($myappContactMail)
-                ->setPassword($myappContactPassword);
-
-            $mailer = \Swift_Mailer::newInstance($transport);
-
-            $message = \Swift_Message::newInstance("RoadMonTrip | Établissement activé")
-                ->setFrom("noreply@roadmontrip.loc")
-                ->setTo($waypoint->getEmail())
-                ->setBody($view, 'text/html');
-
-            $mailer->send($message);
 
 
             return $this->redirectToRoute('homepage');
@@ -260,25 +275,38 @@ class DefaultController extends Controller
 
             //send email
             $view = $this->container->get('templating')->render('AppBundle:mails:mail_partner_success.html.twig');
+            $subject = "RoadMonTrip | Partenariat validé";
+            $from = "noreply@roadmontrip.loc";
+            $to = $waypoint->getEmail();
 
-            $myappContactMail = $this->container->getParameter('mailer_user');
-            $myappContactPassword = $this->container->getParameter('mailer_password');
-
-            $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465,'ssl')
-                ->setUsername($myappContactMail)
-                ->setPassword($myappContactPassword);
-
-            $mailer = \Swift_Mailer::newInstance($transport);
-
-            $message = \Swift_Message::newInstance("RoadMonTrip | Partenariat validé")
-                ->setFrom("noreply@roadmontrip.loc")
-                ->setTo($waypoint->getEmail())
-                ->setBody($view, 'text/html');
-
-            $mailer->send($message);
-
+            $this->sendMail($view, $subject, $from, $to);
 
             return $this->redirectToRoute('homepage');
         }
+    }
+
+    /**
+     * @param $view
+     * @param $subject
+     * @param $from
+     * @param $to
+     * @return int
+     */
+    public function sendMail($view, $subject, $from, $to){
+        $myappContactMail = $this->container->getParameter('mailer_user');
+        $myappContactPassword = $this->container->getParameter('mailer_password');
+
+        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465,'ssl')
+            ->setUsername($myappContactMail)
+            ->setPassword($myappContactPassword);
+
+        $mailer = \Swift_Mailer::newInstance($transport);
+
+        $message = \Swift_Message::newInstance($subject)
+            ->setFrom($from)
+            ->setTo($to)
+            ->setBody($view, 'text/html');
+
+        return $mailer->send($message);
     }
 }

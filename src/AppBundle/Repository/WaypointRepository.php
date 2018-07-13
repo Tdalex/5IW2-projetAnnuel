@@ -26,7 +26,7 @@ class WaypointRepository extends EntityRepository{
 		$query = $this->createQueryBuilder('w')
 				->where('w.address = :address')
 				->setParameter('address', $address)
-				->where('w.title = :title')
+				->andwhere('w.title = :title')
 				->setParameter('title', $title)
 				->getQuery();
 
