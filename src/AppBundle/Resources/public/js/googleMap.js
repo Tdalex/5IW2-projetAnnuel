@@ -327,7 +327,7 @@ function food(franceBounds){
     }
 }
 
-function apiPlaces(bounds, type, icon) {
+function apiPlaces(bounds, type, icon, tbody) {
     var data = {};
         data.coordinates = {};
 
@@ -355,11 +355,11 @@ function apiPlaces(bounds, type, icon) {
             // If the user clicks a hotel marker, show the details of that hotel
             // in an info window.
             markers[i].placeResult = response.data[i];
-            console.log(markers[i].placeResult);
             google.maps.event.addListener(markers[i], 'click', showInfoWindowApi);
             setTimeout(
                 dropMarker(i, markers)
                  , i * 100);
+            addResult(markers[i].placeResult, i, markers, icon, tbody);
         }
         //Get all markers place in array
         markersPlace = markersPlace.concat(markers);
@@ -637,7 +637,7 @@ if (nearbyPlaces) {
                 clearMarkers();
                 clearResults(tbody);
 
-                apiPlaces(bounds, place, icon);
+                apiPlaces(bounds, place, icon, tbody);
             }else {
                 alert("Veuillez choisir un itinéraire !")
             }
