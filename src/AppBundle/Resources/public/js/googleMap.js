@@ -72,11 +72,41 @@ function initialize() {
     });*/
 
     //Get html content
-    infoWindow = new google.maps.InfoWindow({
+    /*infoWindow = new google.maps.InfoWindow({
         content: document.getElementById('info-content')
-    });
+    });*/
 
     if (myGlobalEnvironnementVariable == "dev") makeGrid();
+
+    var htmlcontent = '<div id="info-content">'+
+        '<table>'+
+        '<tr id="iw-url-row" class="iw_table_row">'+
+        '<td id="iw-icon" class="iw_table_icon"></td>'+
+        '<td id="iw-url"></td>'+
+        '</tr>'+
+        '<tr id="iw-address-row" class="iw_table_row">'+
+        '<td class="iw_attribute_name">Address:</td>'+
+        '<td id="iw-address"></td>'+
+        '</tr>'+
+        '<tr id="iw-phone-row" class="iw_table_row">'+
+        '<td class="iw_attribute_name">Telephone:</td>'+
+        '<td id="iw-phone"></td>'+
+        '</tr>'+
+        '<tr id="iw-rating-row" class="iw_table_row">'+
+        '<td class="iw_attribute_name">Rating:</td>'+
+        '<td id="iw-rating"></td>'+
+        '</tr>'+
+        '<tr id="iw-website-row" class="iw_table_row">'+
+        '<td class="iw_attribute_name">Website:</td>'+
+        '<td id="iw-website"></td>'+
+        '</tr>'+
+        '</table>'+
+        '</div>';
+
+    //windows info place
+    infoWindow = new google.maps.InfoWindow({
+        content: htmlcontent
+    });
 }
 
 function createMarker(event, map){
