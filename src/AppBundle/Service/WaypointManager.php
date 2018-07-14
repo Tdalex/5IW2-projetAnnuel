@@ -117,6 +117,13 @@ class WaypointManager
             );
         }
 
+        if (isset($data['type'])) {
+            $match = new Match();
+            $match->setFieldQuery('type', $data['type']);
+            $match->setFieldMinimumShouldMatch('type', '100%');
+            $boolQuery->addMust($match);
+        }
+
         $q->setQuery($boolQuery);
         $q->setSize($limit);
 
