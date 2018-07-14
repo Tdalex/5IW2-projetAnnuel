@@ -342,6 +342,22 @@ function apiPlaces(bounds, type, icon) {
         url:  window.location.origin + "/api/waypoint/by_distance?" + params + "&type=" + type,
     }).done(function( response ) {
         console.log(response);
+        var markers = [];
+        for (var i = 0; i < response.count; i++) {
+            markers[i] = new google.maps.Marker({
+                position: {lat: response.data[i].coordinates.lat, lng: response.data[i].coordinates.lon},
+                animation: google.maps.Animation.DROP,
+                icon: {
+                    url: icon,
+                    scaledSize: new google.maps.Size(25, 20)
+                }
+            });
+            setTimeout(
+                dropMarker(i, markers)
+                 , i * 100);
+        }
+        //Get all markers place in array
+        markersPlace = markersPlace.concat(markers);
     });
 
 }
@@ -550,18 +566,17 @@ var nearbyPlaces = document.getElementsByClassName('nearbyPlaces')
 if (nearbyPlaces) {
     Array.prototype.forEach.call(nearbyPlaces, function(nearbyPlace, i) {
         nearbyPlace.addEventListener('click', function(e) {
-            var bounds = centerBoxes(itineraryBounds);
+            if (itineraryBounds !== undefined){
+                var bounds = centerBoxes(itineraryBounds);
+                var tbody = nearbyPlace.parentElement.getAttribute('data-tbody');
+                var place = nearbyPlace.parentElement.getAttribute('data-place');
+                var icon = "/bundles/app/images/markers/svg/" + nearbyPlace.parentElement.getAttribute('data-icon') + ".svg";
 
-            var tbody = nearbyPlace.parentElement.getAttribute('data-tbody');
-            var place = nearbyPlace.parentElement.getAttribute('data-place');
-            var icon = "/bundles/app/images/markers/svg/" + nearbyPlace.parentElement.getAttribute('data-icon') + ".svg";
+                clearMarkers();
+                clearResults(tbody);
 
-            clearMarkers();
-            clearResults(tbody);
-
-            if (bounds){
                 apiPlaces(bounds, place, icon);
-            } else {
+            }else {
                 alert("Veuillez choisir un itinéraire !")
             }
         })
