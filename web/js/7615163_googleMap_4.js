@@ -300,7 +300,7 @@ function hotel(franceBounds){
     }
 }
 
-function foodBkp(franceBounds){
+function food(franceBounds){
     franceBounds = franceBounds || null;
     var bounds;
     if (franceBounds){
@@ -327,32 +327,7 @@ function foodBkp(franceBounds){
     }
 }
 
-function food(franceBounds){
-    franceBounds = franceBounds || null;
-    var bounds;
-    if (franceBounds){
-        bounds = franceBounds;
-    }else{
-        bounds = itineraryBounds;
-    }
-    bounds = centerBoxes(bounds);
-
-    var place =  'restaurant';
-    var icon = "/bundles/app/images/markers/svg/Food_6.svg";
-    var tbody = 'resultsFoods';
-    clearMarkers();
-    clearResults(tbody);
-    if (bounds){
-        apiPlaces(bounds);
-    } else {
-        alert("Veuillez choisir un itinéraire !")
-    }
-}
-
-function apiPlaces(bounds) {
-    var icon  = "/bundles/app/images/markers/svg/Food_6.svg";
-    var tbody = 'resultsFoods';
-
+function apiPlaces(bounds, type, icon) {
     var data = {};
         data.coordinates = {};
 
@@ -364,7 +339,7 @@ function apiPlaces(bounds) {
     var params = $.param(data);
 
     $.ajax({
-        url: "api/waypoint/by_distance?" + params,
+        url:  window.location.origin + "/api/waypoint/by_distance?" + params + "&type=" + type,
     }).done(function( response ) {
         console.log(response);
     });
@@ -568,6 +543,29 @@ function makeGrid() {
     }
     //hotel(franceBounds);
     //food(franceBounds);
+}
+
+
+var nearbyPlaces = document.getElementsByClassName('nearbyPlaces')
+if (nearbyPlaces) {
+    Array.prototype.forEach.call(nearbyPlaces, function(nearbyPlace, i) {
+        nearbyPlace.addEventListener('click', function(e) {
+            var bounds = centerBoxes(itineraryBounds);
+
+            var tbody = nearbyPlace.parentElement.getAttribute('data-tbody');
+            var place = nearbyPlace.parentElement.getAttribute('data-place');
+            var icon = "/bundles/app/images/markers/svg/" + nearbyPlace.parentElement.getAttribute('data-icon') + ".svg";
+
+            clearMarkers();
+            clearResults(tbody);
+
+            if (bounds){
+                apiPlaces(bounds, place, icon);
+            } else {
+                alert("Veuillez choisir un itinéraire !")
+            }
+        })
+    })
 }
 
 var styles = [
