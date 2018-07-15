@@ -270,6 +270,7 @@ class DefaultController extends Controller
 
             return $this->redirectToRoute('homepage');
         }
+        return $this->redirectToRoute('homepage');
     }
 
     /**

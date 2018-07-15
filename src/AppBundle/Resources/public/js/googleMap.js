@@ -373,13 +373,20 @@ function apiPlaces(bounds, type, icon, tbody) {
     }).done(function( response ) {
         console.log(response);
         var markers = [];
+        var iconStd = icon;
         for (var i = 0; i < response.count; i++) {
+            icon = iconStd;
+            var size = new google.maps.Size(25, 20);
+            if (response.data[i].is_sponsor == true){
+                icon = "/bundles/app/images/markers/svg/Rocket_7.svg";
+                size = new google.maps.Size(40, 35);
+            }
             markers[i] = new google.maps.Marker({
                 position: {lat: response.data[i].coordinates.lat, lng: response.data[i].coordinates.lon},
                 animation: google.maps.Animation.DROP,
                 icon: {
                     url: icon,
-                    scaledSize: new google.maps.Size(25, 20)
+                    scaledSize: size
                 }
             });
             // If the user clicks a hotel marker, show the details of that hotel
