@@ -379,7 +379,7 @@ function apiPlaces(bounds, type, icon, tbody) {
             var size = new google.maps.Size(25, 20);
             if (response.data[i].is_sponsor == true){
                 icon = "/bundles/app/images/markers/svg/Rocket_7.svg";
-                size = new google.maps.Size(40, 35);
+                size = new google.maps.Size(50, 45);
             }
             markers[i] = new google.maps.Marker({
                 position: {lat: response.data[i].coordinates.lat, lng: response.data[i].coordinates.lon},
