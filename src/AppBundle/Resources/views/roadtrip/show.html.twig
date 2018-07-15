@@ -83,9 +83,9 @@
                 </div>
             </div>
             <div class="commentaires" id="reviews">
-                <div class="row">
-                    <div class="col s8">
-                        <h2>Commentaires</h2>
+                <div class="row ">
+                    <h2>Commentaires</h2>
+                    <div class="col m12">
                         {% if commentaires is empty %}
                             <div class="nocomm"><p>Aucun avis n'a encore été laissé sur ce roadtrip.</p></div>
                         {% else %}
@@ -98,10 +98,22 @@
                         {% endif %}
                     </div>
                 </div>
+                {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
+                    {% if roadtrip.owner.id != app.session.get('currentUser').id %}
+                        <div id="button_review" class="right-align">
+                            <a class="btn-large disabled " id="review">Donnez votre avis</a>
+                        </div>
+                        <div id="form_review" hidden>
+                            {{ render(controller("AppBundle:Review:new", { 'roadtripId': roadtrip.id })) }}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <em><a href="{{ path('user_connectForm') }}">Connectez-vous</a> ou <a href="{{ path('user_register') }}">inscrivez-vous</a> si vous voulez donner votre avis sur ce roadtrip !</em>
+                {% endif %}
             </div>
         </div>
     </div>
-    <div id="roadtrip_review">
+  {#  <div id="roadtrip_review">
         <div class="container">
             {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
                 {% if roadtrip.owner.id != app.session.get('currentUser').id %}
@@ -116,7 +128,7 @@
                 <em><a href="{{ path('user_connectForm') }}">Connectez-vous</a> ou <a href="{{ path('user_register') }}">inscrivez-vous</a> si vous voulez donner votre avis sur ce roadtrip !</em>
             {% endif %}
         </div>
-    </div>
+    </div>#}
 
 {% endblock %}
 
