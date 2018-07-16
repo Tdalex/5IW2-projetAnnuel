@@ -14,12 +14,10 @@
 {% block body %}
     <div id="roadtrip-header">
         <div class="container">
-            <div class="header">
+            <div class="header center-align">
                 <h1 class="left-align">{{ roadtrip.title }}</h1>
-                <h4 class="left-align">Durée : {{ roadtrip.duration }}{% if roadtrip.duration == 1 %} jour{% else %} jours{% endif %}</h4>
-                <h4 class="left-align">Moyenne : <span id="average">{{ moyenne }}</span></h4>
-                <div class="left-align">
-                </div>
+                {#<h4 class="left-align">Durée : {{ roadtrip.duration }}{% if roadtrip.duration == 1 %} jour{% else %} jours{% endif %}</h4>
+                <h4 class="left-align">Moyenne : <span id="average">{{ moyenne }}</span></h4>#}
                 {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) and (app.session.get('currentUser').id == roadtrip.owner.id)%}
                     <div class="actions">
                         <div class="row">
@@ -33,14 +31,14 @@
                         </div>
                     </div>
                 {% endif %}
-                <h4 class="left-align">Créateur : {{ roadtrip.owner.firstName }} {{ roadtrip.owner.lastName }}</h4>
+                {#<h4 class="left-align">Créateur : {{ roadtrip.owner.firstName }} {{ roadtrip.owner.lastName }}</h4>#}
                 {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) and (app.session.get('currentUser').id != roadtrip.owner.id)%}
                     <div class="favorites" id="buttons_favorites">
                         <div class="row">
                             {% if like == 0 %}
-                                <a class="waves-effect waves-light btn-large blue lighten-1" id="like_add"><i class="material-icons left">stars</i>Ajouter aux favoris</a>
+                                <a class="waves-effect waves-light btn-large blue lighten-1" id="like_add"><i class="material-icons left">stars</i>Ajouter à mes favoris</a>
                             {% else %}
-                                <a class="waves-effect waves-light btn-large red darken-2" id="like_remove"><i class="material-icons left">remove_circle</i>Retirer des favoris</a>
+                                <a class="waves-effect waves-light btn-large red darken-2" id="like_remove"><i class="material-icons left">remove_circle</i>Retirer de mes favoris</a>
                             {% endif %}
                         </div>
                     </div>
@@ -51,6 +49,13 @@
 
     <div id="roadtrip-content">
         <div class="container">
+            <div class="infos center-align">
+                <div class="row">
+                    <i class="material-icons small grey-text">timer</i><span>{{ roadtrip.duration }}{% if roadtrip.duration == 1 %} jour{% else %} jours{% endif %}</span>
+                    <i class="material-icons small grey-text">star</i><span>{{ moyenne }}</span>
+                    <i class="material-icons small grey-text">person</i><span>{{ roadtrip.owner.firstName }} {{ roadtrip.owner.lastName }}</span>
+                </div>
+            </div>
             <div class="description">
                 <div class="row">
                     <div class="col s8">
