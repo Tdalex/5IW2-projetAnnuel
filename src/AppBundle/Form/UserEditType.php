@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class UserType extends AbstractType
+class UserEditType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -50,27 +50,13 @@ class UserType extends AbstractType
             'expanded' => true,
             'required' => true
         ]));
-
-        $builder->add('plainPassword', RepeatedType::class, [
-            'type'            => PasswordType::class,
-            'first_options'   => [
-                'label' => 'Mot de passe'
-            ],
-            'second_options'  => [
-                'label' => 'Vérification de mot de passe'
-            ],
-            'options'         => [
-                'required' => true
-            ],
-            'invalid_message' => 'mot de passe invalide'
-        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class'         => 'AppBundle\Entity\User',
-            'validation_groups'  => 'User',
+            'validation_groups'  => 'UserEdit',
             'attr'               => [
                 'id' => 'form-' . $this->getBlockPrefix()
             ]

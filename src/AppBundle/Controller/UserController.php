@@ -53,11 +53,29 @@ class UserController extends Controller
             $user = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findOneById($currentUser['id']);
             if(isset($user[0]) && $user[0]){
                 $user = $user[0];
-                $editForm = $this->createForm('AppBundle\Form\UserType', $user);
+                $editForm = $this->createForm('AppBundle\Form\UserEditType', $user);
                 $editForm->handleRequest($request);
 
                 if ($editForm->isSubmitted() && $editForm->isValid()) {
-                    $this->getDoctrine()->getManager()->flush();
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($user);
+                    $em->flush();
+
+                    $birthdate = null;
+                    if($user->getBirthDate() !== null)
+                        $birthdate = $user->getBirthDate()->format('d-m-Y');
+
+                    $currentUser = array(
+                        'id'        => $user->getId(),
+                        'firstname' => $user->getFirstName(),
+                        'lastname'  => $user->getLastName(),
+                        'email'     => $user->getEmail(),
+                        'gender'    => $user->getGender(),
+                        'birthdate' => $birthdate,
+                        'role'      => $user->getRoles()[0]
+                    );
+
+                    $session->set('currentUser', $currentUser);
 
                     return $this->redirectToRoute('user_index');
                 }
@@ -415,13 +433,20 @@ class UserController extends Controller
                     $em->persist($user);
                     $em->flush();
 
+                    $birthdate = null;
+                    if($user->getBirthDate() !== null)
+                        $birthdate = $user->getBirthDate()->format('d-m-Y');
+
                     $currentUser = array(
                         'id'        => $user->getId(),
                         'firstname' => $user->getFirstName(),
                         'lastname'  => $user->getLastName(),
-                        'gender'    => $user->getGender(),
                         'email'     => $user->getEmail(),
+                        'gender'    => $user->getGender(),
+                        'birthdate' => $birthdate,
+                        'role'      => $user->getRoles()[0]
                     );
+
 
                     //send email
                     $view = $this->container->get('templating')->render('AppBundle:mails:mail_password_changed.html.twig', [

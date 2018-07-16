@@ -79,52 +79,56 @@ class RoadtripController extends Controller
         $form = $this->createForm('AppBundle\Form\RoadtripType', $roadtrip, array('action' => $this->generateUrl('roadtrip_new')));
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if(!$form->isValid()) {
-                $errors = [];
-                if ($form->count() > 0) {
-                    foreach ($form->all() as $child) {
-                        /**
-                         * @var \Symfony\Component\Form\Form $child
-                         */
-                        if (!$child->isValid()) {
-                            $errors[$child->getName()] = $this->getErrorMessages($child);
+        if ($user) {
+            if ($form->isSubmitted()) {
+                if(!$form->isValid()) {
+                    $errors = [];
+                    if ($form->count() > 0) {
+                        foreach ($form->all() as $child) {
+                            /**
+                             * @var \Symfony\Component\Form\Form $child
+                             */
+                            if (!$child->isValid()) {
+                                $errors[$child->getName()] = $this->getErrorMessages($child);
+                            }
                         }
                     }
-                }
-                /**
-                 * @var \Symfony\Component\Form\FormError $error
-                 */
-                foreach ($form->getErrors() as $key => $error) {
-                    $errors[] = $error->getMessage();
-                }
-                dump($errors);
-            }
-            else {
-                $roadtrip->setIsRemoved(false);
-                $roadtrip->setOwner($owner);
-                $roadtrip->setNbStops(0);
-                $em->persist($roadtrip);
-                $em->flush();
-
-                //mise à jour de la colonne "roadtripStop" de chaque stop avec l'identifiant du roadtrip en cours de création
-                $idRoadtrip = $roadtrip->getId();
-                $rt = $em->getRepository('AppBundle:Roadtrip')->findOneBy(array('id' => $idRoadtrip));
-                $roadtrip->getStopStart()->setRoadTripStop($rt);
-                $roadtrip->getStopEnd()->setRoadTripStop($rt);
-                $stops = $roadtrip->getStops();
-                $roadtrip->setNbStops(0);
-                if (!empty($stops)){
-                    $roadtrip->setNbStops(count($stops));
-                    foreach ($stops as $stop) {
-                        $stop->setRoadTripStop($rt);
+                    /**
+                     * @var \Symfony\Component\Form\FormError $error
+                     */
+                    foreach ($form->getErrors() as $key => $error) {
+                        $errors[] = $error->getMessage();
                     }
+                    dump($errors);
                 }
-                $owner->addOwned($roadtrip);
-                $em->flush();
+                else {
+                    $roadtrip->setIsRemoved(false);
+                    $roadtrip->setOwner($owner);
+                    $roadtrip->setNbStops(0);
+                    $em->persist($roadtrip);
+                    $em->flush();
 
-                return $this->redirectToRoute('roadtrip_show', array('slug' => $roadtrip->getSlug()));
+                    //mise à jour de la colonne "roadtripStop" de chaque stop avec l'identifiant du roadtrip en cours de création
+                    $idRoadtrip = $roadtrip->getId();
+                    $rt = $em->getRepository('AppBundle:Roadtrip')->findOneBy(array('id' => $idRoadtrip));
+                    $roadtrip->getStopStart()->setRoadTripStop($rt);
+                    $roadtrip->getStopEnd()->setRoadTripStop($rt);
+                    $stops = $roadtrip->getStops();
+                    $roadtrip->setNbStops(0);
+                    if (!empty($stops)){
+                        $roadtrip->setNbStops(count($stops));
+                        foreach ($stops as $stop) {
+                            $stop->setRoadTripStop($rt);
+                        }
+                    }
+                    $owner->addOwned($roadtrip);
+                    $em->flush();
+
+                    return $this->redirectToRoute('roadtrip_show', array('slug' => $roadtrip->getSlug()));
+                }
             }
+        } else {
+            return $this->redirectToRoute('roadtrip_index');
         }
 
         return $this->render('AppBundle:roadtrip:new.html.twig', array(
