@@ -24,9 +24,9 @@
                     {% endif %}
                 </ul>
                 <ul id="nav-mobile" class="side-nav">
-                    <li><a href="#">Roadtrips</a></li>
-                    <li><a href="#">Inscription</a></li>
-                    <li><a href="#">Connexion</a></li>
+                    <li><a href="{{ path('roadtrip_index') }}">Roadtrips</a></li>
+                    <li><a href="{{ path('user_register') }}">Inscription</a></li>
+                    <li><a href="{{ path('user_connectForm') }}">Connexion</a></li>
                 </ul>
                 <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
             </div>
