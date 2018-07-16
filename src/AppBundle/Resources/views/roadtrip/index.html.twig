@@ -17,7 +17,7 @@
 
 {% block body %}
     <!-- Liste des roadtrips -->
-    <div id="intro" class="section scrollspy">
+    <div >
         <div class="container">
             <div class="row">
                 <div  class="col s12">
@@ -27,12 +27,20 @@
         </div>
     </div>
 
-    <div class="button-new-roadtrip full-width center-align">
-        {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
-            <a class="waves-effect waves-light btn-large blue darken-3" href="{{ path('roadtrip_new') }}"><i class="material-icons right">airport_shuttle</i>Créez Votre propre Roadtrip</a>
-        {% else %}
-            <a class="waves-effect waves-light btn-large blue darken-3" href="{{ path('user_connectForm') }}"><i class="material-icons right">airport_shuttle</i>Créez Votre propre Roadtrip</a>
-        {% endif %}
+    <div id="new_roadtrip" class="section scrollspy">
+        <div class="container">
+            <div class="row">
+            <div  class="col s12 new_roadtrip">
+                <i class="col s2 material-icons left large">airport_shuttle</i>
+                <span class="col s6">N'attendez pas pour démarer votre aventure ! Utiliser RoadMonTrip pour votre voyage</span>
+                {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
+                    <a  class="col s3 btn  indigo darken-2 right" href="{{ path('roadtrip_new') }}">Je crée mon roadtrip</a>
+                {% else %}
+                    <a  class="col s3 btn waves-effect waves-light indigo darken-2 right" href="{{ path('user_connectForm') }}">Je crée mon roadtrip</a>
+                {% endif %}
+            </div>
+            </div>
+        </div>
     </div>
 
     <!--content-->

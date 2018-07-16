@@ -28,17 +28,20 @@ html, body {
 }
 
 #roadtrip-header {
+
     position: relative;
     width: 100%;
-    min-height: 400px;
+    min-height: 250px;
     -webkit-background-size: cover;
     -moz-background-size: cover;
-    background-size: cover;
+    background-size: contain;
     -o-background-size: cover;
-    background-position: center;
-    background-image: url("/bundles/app/images/showRoadtrip.jpeg");
+    /* background-position: center; */
+    background-repeat: no-repeat;
+    background-image: url(/bundles/app/images/showRoadtrip.jpeg);
     text-align: center;
     color: white;
+    background-attachment: fixed;
 }
 
 h1, h2, h3{
@@ -83,6 +86,34 @@ h1, h2, h3{
 .card .card-content {
     min-height: 160px !important;
     max-height: 160px !important;
+}
+
+.card .card-content p{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.new_roadtrip{
+    background-color: #51bcff;
+    color: white;
+    border-radius: 4px;
+}
+
+.new_roadtrip span{
+    margin-top: 1em;
+    font-weight: 200;
+    font-size: 18px;
+}
+
+.new_roadtrip a{
+    margin: 2em;
+    font-weight: 200;
+    text-decoration: none;
+}
+
+.new_roadtrip a:hover{
+    color: white;
 }
 
 #register{
@@ -150,6 +181,7 @@ p {
 
 #search a{
     text-decoration:none;
+    margin: 2em;
 }
 #search a:hover{
     background-color: #2296f3 !important;
