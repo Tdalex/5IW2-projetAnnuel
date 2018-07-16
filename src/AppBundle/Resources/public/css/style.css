@@ -422,25 +422,25 @@ p {
 
 #loading { display: none; }
 
-.new_roadtrip{
+#new_roadtrip .new_roadtrip{
     background-color: #51bcff;
     color: white;
     border-radius: 4px;
 }
 
-.new_roadtrip span{
+#new_roadtrip .new_roadtrip span{
     margin-top: 1em;
     font-weight: 200;
     font-size: 18px;
 }
 
-.new_roadtrip a{
+#new_roadtrip .new_roadtrip a{
     margin: 2em;
     font-weight: 200;
     text-decoration: none;
 }
 
-.new_roadtrip a:hover{
+#new_roadtrip .new_roadtrip a:hover{
     color: white;
 }
 
