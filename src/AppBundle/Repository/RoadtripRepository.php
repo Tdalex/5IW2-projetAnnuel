@@ -39,7 +39,7 @@ class RoadtripRepository extends EntityRepository{
 					->setParameter('maxNbStops', $filters['nbStops']['max']);
 		}
 
-		if(isset($filters['address'])){
+		if(isset($filters['address']) && !empty($filters['address'])){
 			$query->leftJoin('r.stops', 's')
 				->andWhere('s.address like :address')
 				->setParameter('address', '%'.$filters['address']. '%');

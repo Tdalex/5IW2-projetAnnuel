@@ -71,6 +71,8 @@ class ReviewController extends Controller
                 $commentaires [$compteur]['date'] = $a->getCreatedAt();
                 $commentaires [$compteur]['user'] = $a->getUserId()->getFirstName().' '.$a->getUserId()->getLastName();
                 $commentaires [$compteur]['commentaire'] = $a->getCommentaire();
+                $commentaires [$compteur]['idUser'] = $a->getUserId()->getId();
+                $commentaires [$compteur]['reviewId'] = $a->getId();
                 $compteur ++;
 
             }
@@ -85,7 +87,8 @@ class ReviewController extends Controller
                 array(
                     'view' => $this->renderView(
                         'AppBundle:partials:commentaires.html.twig', array(
-                            'commentaires' => $commentaires
+                            'commentaires' => $commentaires,
+                            'roadtripId' => $roadtripId
                         )
                     ),
                     'average' => $moyenne
@@ -175,5 +178,49 @@ class ReviewController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * Remove review entities.
+     *
+     * @Route("/remove/review/{reviewId}/{roadtripId}", name="review_remove")
+     * @Method({"GET", "POST"})
+     */
+    public function removeAction(Request $request, $reviewId, $roadtripId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        dump($reviewId);
+        $review = $em->getRepository('AppBundle:Review')->findOneBy(array('id' => $reviewId));
+        $em->remove($review);
+        $em->flush();
+
+        $commentaires = $em->getRepository('AppBundle:Review')->findAll();
+
+        $note = 0;
+        $compteur = 0;
+        $coms = [];
+        foreach ($commentaires as $a) {
+            $note += $a->getNote();
+            $coms [$compteur]['date'] = $a->getCreatedAt();
+            $coms [$compteur]['user'] = $a->getUserId()->getFirstName().' '.$a->getUserId()->getLastName();
+            $coms [$compteur]['commentaire'] = $a->getCommentaire();
+            $coms [$compteur]['idUser'] = $a->getUserId()->getId();
+            $coms [$compteur]['reviewId'] = $a->getId();
+            $compteur++;
+        }
+        if($compteur !== 0) {
+            $moyenne = round($note / $compteur, 1);
+        } else {
+            $moyenne = "Aucune note";
+        }
+        return new JsonResponse(
+            array(
+                'view' => $this->renderView(
+                    'AppBundle:partials:commentaires.html.twig', array(
+                        'commentaires' => $coms,
+                        'roadtripId' => $roadtripId)
+                ),
+                'average' => $moyenne)
+        );
     }
 }
