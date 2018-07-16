@@ -164,6 +164,8 @@ class RoadtripController extends Controller
             $commentaires [$compteur]['date'] = $a->getCreatedAt();
             $commentaires [$compteur]['user'] = $a->getUserId()->getFirstName().' '.$a->getUserId()->getLastName();
             $commentaires [$compteur]['commentaire'] = $a->getCommentaire();
+            $commentaires [$compteur]['idUser'] = $a->getUserId()->getId();
+            $commentaires [$compteur]['reviewId'] = $a->getId();
             $compteur ++;
 
         }

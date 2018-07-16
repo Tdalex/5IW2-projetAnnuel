@@ -51,7 +51,7 @@
             <div class="infos center-align">
                 <div class="row">
                     <i class="material-icons small grey-text">timer</i><span>{{ roadtrip.duration }}{% if roadtrip.duration == 1 %} jour{% else %} jours{% endif %}</span>
-                    <i class="material-icons small grey-text">star</i><span>{{ moyenne }}</span>
+                    <i class="material-icons small grey-text">star</i><span id="average">{{ moyenne }}</span>
                     <i class="material-icons small grey-text">person</i><span>{{ roadtrip.owner.firstName }} {{ roadtrip.owner.lastName }}</span>
                 </div>
             </div>
@@ -105,6 +105,10 @@
                                 <div class="card-panel grey lighten-3">
                                     {{ comm.commentaire }}
                                     <em><a href="">{{ comm.user }}</a>, {{ comm.date|date('d/m/Y H:i:s') }}</em>
+                                    {% set userId = app.session.get('currentUser').id %}
+                                    {% if comm.idUser == userId %}
+                                        <a id="remove_review" data-url="{{ path('review_remove', { 'reviewId': comm.reviewId, 'roadtripId': roadtrip.id}) }}"><i class="material-icons small grey-text">close</i></a>
+                                    {% endif %}
                                 </div>
                             {% endfor %}
                         {% endif %}
@@ -125,22 +129,6 @@
             </div>
         </div>
     </div>
-  {#  <div id="roadtrip_review">
-        <div class="container">
-            {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
-                {% if roadtrip.owner.id != app.session.get('currentUser').id %}
-                    <div id="button_review">
-                        <a class="waves-effect waves-light btn-large blue darken-3" id="review">Donnez votre avis</a>
-                    </div>
-                    <div id="form_review" hidden>
-                        {{ render(controller("AppBundle:Review:new", { 'roadtripId': roadtrip.id })) }}
-                    </div>
-                {% endif %}
-            {% else %}
-                <em><a href="{{ path('user_connectForm') }}">Connectez-vous</a> ou <a href="{{ path('user_register') }}">inscrivez-vous</a> si vous voulez donner votre avis sur ce roadtrip !</em>
-            {% endif %}
-        </div>
-    </div>#}
 
 {% endblock %}
 
@@ -154,11 +142,14 @@
     {% endjavascripts %}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places&callback=initAutocomplete"></script>
     <script>
+
+        //affichage du formulaire pour ajouter une note et un commentaire
         $('#review').click(function (e) {
             e.preventDefault();
             $('#form_review').show();
         });
 
+        //création d'un avis
         $('#review_submit').click(function (e){
             e.preventDefault();
             $.ajax({
@@ -175,6 +166,25 @@
             });
         });
 
+        //suppression d'un avis par l'utilisateur qui l'a posté
+        function reviews() {
+            $('#remove_review').click(function (e) {
+                e.preventDefault();
+                var url = $('#remove_review').attr('data-url');
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    success: function(response) {
+                        $('#average').html(response.average);
+                        $('#reviews').html(response.view);
+                        reviews();
+                    }
+                });
+            });
+        }
+
+
+        //fonction pour afficher ou enlever les boutons des favoris
         function likeButton() {
             {% set userId = 0 %}
             {% if app.session.get('currentUser').id is defined %}
@@ -209,6 +219,7 @@
 
         $(document).ready(function () {
             likeButton();
+            reviews();
         });
     </script>
 {% endblock %}

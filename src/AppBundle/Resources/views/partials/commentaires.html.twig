@@ -1,13 +1,23 @@
 <div class="commentaires" id="reviews">
     <div class="row">
-        <div class="col s8">
+        <div class="col m12">
             <h2>Commentaires</h2>
             {% for comm in commentaires %}
                 <div class="card-panel grey lighten-3">
                     {{ comm.commentaire }}
                     <em><a href="">{{ comm.user }}</a>, {{ comm.date|date('d/m/Y H:i:s') }}</em>
+                    {% set userId = app.session.get('currentUser').id %}
+                    {% if comm.idUser == userId %}
+                        <a href="{{ path('review_remove', { 'reviewId': comm.reviewId, 'roadtripId': roadtripId}) }}"><i class="material-icons small grey-text">close</i></a>
+                    {% endif %}
                 </div>
             {% endfor %}
+        </div>
+        <div id="button_review" class="right-align">
+            <a class="btn-large disabled " id="review">Donnez votre avis</a>
+        </div>
+        <div id="form_review" hidden>
+            {{ render(controller("AppBundle:Review:new", { 'roadtripId': roadtripId })) }}
         </div>
     </div>
 </div>
