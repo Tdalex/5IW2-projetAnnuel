@@ -28,11 +28,16 @@
                         {{ form_errors(edit_form.birthdate) }}
                         {{ form_row(edit_form.birthdate) }}
                     </div>
-                    {# <div class="center-align">
-                        <label>Modifier mot de passe</label>
-                        {{ form_errors(edit_form.plainPassword) }}
-                        {{ form_row(edit_form.plainPassword) }}
-                    </div> #}
+                    <div class="center-align col 12">
+                        {% if error %}
+                        </br>
+                            {{ error }}
+                        </br>
+                        {% endif %}
+                        <label>mot de passe actuel:</label> <input name="password[0]" type="password">
+                        <label>nouveau mot de passe:</label> <input name="password[1]" type="password">
+                        <label>vérification de mot de passe:</label> <input name="password[2]" type="password">
+                    </div>
 
                     <div class="center-align">
                         <button class="btn waves-effect waves-light full-width" type="submit" name="action">Valider

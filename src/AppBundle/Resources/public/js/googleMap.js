@@ -115,7 +115,6 @@ function createMarker(event, map){
         map: map,
         draggable: true
     });
-    console.log(marqueur);
     return marqueur;
 }
 

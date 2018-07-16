@@ -49,6 +49,7 @@ class UserController extends Controller
     {
         $session = $this->get('session');
         $currentUser = $session->get('currentUser');
+        $error = null;
         if(!empty($currentUser)){
             $user = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findOneById($currentUser['id']);
             if(isset($user[0]) && $user[0]){
@@ -57,10 +58,6 @@ class UserController extends Controller
                 $editForm->handleRequest($request);
 
                 if ($editForm->isSubmitted() && $editForm->isValid()) {
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($user);
-                    $em->flush();
-
                     $birthdate = null;
                     if($user->getBirthDate() !== null)
                         $birthdate = $user->getBirthDate()->format('d-m-Y');
@@ -77,12 +74,52 @@ class UserController extends Controller
 
                     $session->set('currentUser', $currentUser);
 
+                    $password = $request->request->all()['password'];
+
+                    $encoder_service = $this->get('security.encoder_factory');
+                    $encoder = $encoder_service->getEncoder($user);
+
+                    if ($encoder->isPasswordValid($user->getPassword(), $password[0], $user->getSalt())) {
+                        if ($password[1] == $password[2]) {
+                            $encoded = $encoder->encodePassword($password[1], $user->getSalt());
+                            $user->setPassword($encoded);
+
+                            $view = $this->container->get('templating')->render('AppBundle:mails:mail_password_changed.html.twig', [
+                                'user' => $currentUser
+                            ]);
+
+                            $message = \Swift_Message::newInstance()
+                                ->setSubject('RoadMonTrip: Mot de passe modifié')
+                                ->setFrom('noreply@roadtrip.loc')
+                                ->setBody($view, 'text/html');
+                        }else{
+                            $error = "les mots de passes sont différents";
+                        }
+                    } else {
+                        $error = "mot de passe incorrect";
+                    }
+
+                    if($error){
+                        return $this->render('AppBundle:user:modify_my_account.html.twig', array(
+                            'user' => $user,
+                            'edit_form' => $editForm->createView(),
+                            'error' => $error,
+                        ));
+                    }
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($user);
+                    $em->flush();
+
+
+
                     return $this->redirectToRoute('user_index');
                 }
 
                 return $this->render('AppBundle:user:modify_my_account.html.twig', array(
                     'user' => $user,
                     'edit_form' => $editForm->createView(),
+                    'error' => $error,
                 ));
             }
         }
