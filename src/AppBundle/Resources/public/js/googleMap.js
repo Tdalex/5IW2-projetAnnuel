@@ -452,6 +452,7 @@ function addResult(result, i, markers, icon, tbody) {
 
     var tr = document.createElement('tr');
     tr.style.backgroundColor = (i % 2 === 0 ? '#F0F0F0' : '#FFFFFF');
+    tr.style.cursor = 'pointer';
     tr.onclick = function() {
         google.maps.event.trigger(markers[i], 'click');
     };
