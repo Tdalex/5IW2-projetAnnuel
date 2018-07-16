@@ -1,4 +1,6 @@
 services:
-#    api.example:
-#        class: rf\rf\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    acme_api.event.jwt_created_listener:
+        class: ApiBundle\EventListener\JWTCreatedListener
+        arguments: [ '@request_stack' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
