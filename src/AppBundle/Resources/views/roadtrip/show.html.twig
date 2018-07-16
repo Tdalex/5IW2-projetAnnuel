@@ -14,31 +14,30 @@
 {% block body %}
     <div id="roadtrip-header">
         <div class="container">
-            <div class="header center-align">
-                <h1 class="left-align">{{ roadtrip.title }}</h1>
-                {#<h4 class="left-align">Durée : {{ roadtrip.duration }}{% if roadtrip.duration == 1 %} jour{% else %} jours{% endif %}</h4>
-                <h4 class="left-align">Moyenne : <span id="average">{{ moyenne }}</span></h4>#}
+            <div class="header">
+                <h1>{{ roadtrip.title }}</h1>
                 {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) and (app.session.get('currentUser').id == roadtrip.owner.id)%}
-                    <div class="actions">
+                    <div class="actions ">
                         <div class="row">
-                            <div class="col s12 left-align">
-                                <a class="waves-effect waves-light btn-large orange lighten-1" href="{{ path('roadtrip_edit', { 'slug': roadtrip.slug }) }}"><i class="material-icons left">edit</i>Modifier</a>
-                                {{ form_start(delete_form, {'attr': {'class': 'float-button'}}) }}
-                                <button type="submit" class="waves-effect waves-light btn-large red darken-2"><i class="material-icons left">delete</i> Supprimer</button>
+                            <div class="col s12 ">
+                                <a  class="btn waves-effect waves-light indigo darken-2 left" href="{{ path('roadtrip_edit', { 'slug': roadtrip.slug }) }}"><i class="material-icons left">edit</i>Modifier</a>
+                                {{ form_start(delete_form, {'attr': {}}) }}
+                                <button type="submit" class="btn waves-effect waves-light red lighten-2 left"><i class="material-icons left">delete</i> Supprimer</button>
                                 {{ form_end(delete_form) }}
-                                <div class="fb-share-button" data-href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" data-layout="button_count" data-size="large" data-mobile-iframe="true"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Partager</a></div>
+                                <div class="fb-share-button left" data-href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" data-layout="button_count" data-size="large" data-mobile-iframe="true">
+                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore"></a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 {% endif %}
-                {#<h4 class="left-align">Créateur : {{ roadtrip.owner.firstName }} {{ roadtrip.owner.lastName }}</h4>#}
                 {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) and (app.session.get('currentUser').id != roadtrip.owner.id)%}
                     <div class="favorites" id="buttons_favorites">
                         <div class="row">
                             {% if like == 0 %}
-                                <a class="waves-effect waves-light btn-large blue lighten-1" id="like_add"><i class="material-icons left">stars</i>Ajouter à mes favoris</a>
+                                <a class="btn waves-effect waves-light indigo darken-2" id="like_add"><i class="material-icons left">stars</i>Ajouter à mes favoris</a>
                             {% else %}
-                                <a class="waves-effect waves-light btn-large red darken-2" id="like_remove"><i class="material-icons left">remove_circle</i>Retirer de mes favoris</a>
+                                <a class="btn waves-effect waves-light red lighten-2" id="like_remove"><i class="material-icons left">remove_circle</i>Retirer de mes favoris</a>
                             {% endif %}
                         </div>
                     </div>
@@ -61,6 +60,14 @@
                     <div class="col s8">
                         <h2>Description</h2>
                        <p>{{ roadtrip.description }}</p>
+                    </div>
+                    <div class="col s4 edit_map">
+                        <a href="{{ path('roadtrip_edit', { 'slug': roadtrip.slug }) }}" >
+                            <img src="{{ asset('bundles/app/images/edit_map.png') }}" alt="edit map">
+                            <div class="overlay">
+                                <div class="text">Editer sur la map</div>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
