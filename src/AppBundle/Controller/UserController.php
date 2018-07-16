@@ -328,7 +328,7 @@ class UserController extends Controller
             ]);
 
             $message = \Swift_Message::newInstance()
-                ->setSubject('Roadtrip: activation de compte')
+                ->setSubject('RoadMonTrip: activation de compte')
                 ->setFrom('noreply@roadtrip.loc')
                 ->setBody($view, 'text/html');
 
@@ -377,7 +377,7 @@ class UserController extends Controller
             ]);
 
             $message = \Swift_Message::newInstance()
-                ->setSubject('Roadtrip: Compte activé')
+                ->setSubject('RoadMonTrip: Compte activé')
                 ->setFrom('noreply@roadtrip.loc')
                 ->setBody($view, 'text/html');
 
@@ -397,11 +397,12 @@ class UserController extends Controller
      * @Route("/reinitialisation/{id}/{token}", name="user_reset_password")
      * @Method({"GET","POST"})
      */
-    public function resetPasswordAction(Request $request,user $user, $token)
+    public function resetPasswordAction(Request $request, user $user, $token)
     {
         $errors = array();
+        $valid = true;
         if($user->getForgotToken() == $token){
-            if($this->getRequest()->isMethod('POST')){
+            if($request->isMethod('POST')){
                 $passwords = $request->request->all()['password'];
                 if($passwords[0] == $passwords[1]){
                     $encoder_service = $this->get('security.encoder_factory');
@@ -415,6 +416,7 @@ class UserController extends Controller
                     $em->flush();
 
                     $currentUser = array(
+                        'id'        => $user->getId(),
                         'firstname' => $user->getFirstName(),
                         'lastname'  => $user->getLastName(),
                         'gender'    => $user->getGender(),
@@ -427,7 +429,7 @@ class UserController extends Controller
                     ]);
 
                     $message = \Swift_Message::newInstance()
-                        ->setSubject('Roadtrip: Mot de passe modifié')
+                        ->setSubject('RoadMonTrip: Mot de passe modifié')
                         ->setFrom('noreply@roadtrip.loc')
                         ->setBody($view, 'text/html');
 
@@ -444,11 +446,63 @@ class UserController extends Controller
             }
         }else{
             $errors[] = 'token invalide';
+            $valid = false;
         }
 
         return $this->render('AppBundle:user:reset_password.html.twig', array(
             'user' => $user,
-            'errors' => $errors
+            'errors' => $errors,
+            'valid' => $valid
+        ));
+    }
+
+     /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @Route("/mot-de-passe", name="user_ask_password")
+     * @Method({"GET", "POST"})
+     */
+    public function askPasswordAction(Request $request)
+    {
+        $error = null;
+        $success = false;
+
+        if($request->isMethod('POST')){
+            $email = $request->request->all()['email'];
+
+            $em = $this->getDoctrine()->getManager();
+            $user = $em->getRepository('AppBundle:User')->findOneByEmail($email);
+
+            if ($user) {
+                $user->setForgotToken(bin2hex(random_bytes(20)));
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
+
+                //send email
+                $view = $this->container->get('templating')->render('AppBundle:mails:mail_reset_password.html.twig', [
+                    'user' => $user
+                ]);
+
+                $message = \Swift_Message::newInstance()
+                    ->setSubject('RoadMonTrip: Mot de passe oublié')
+                    ->setFrom('noreply@roadtrip.loc')
+                    ->setBody($view, 'text/html');
+
+                // Adds mail send
+                $message->setTo($user->getEmail());
+                $response = $this->container->get('mailer')->send($message);
+                $success = true;
+            } else {
+                $error = "Aucun utilisateur avec cet email n'a été trouvé";
+            }
+
+        }
+
+        return $this->render('AppBundle:user:ask_password.html.twig', array(
+            'error'  => $error,
+            'success' => $success
         ));
     }
 

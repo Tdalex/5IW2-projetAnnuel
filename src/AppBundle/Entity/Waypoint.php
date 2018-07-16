@@ -42,7 +42,7 @@ class Waypoint
 	* @Gedmo\Slug(fields={"title"})
 	* @ORM\Column(type="string")
 	*/
-	private $slug;
+    private $slug;
 
 	/**
 	* @var string
@@ -50,6 +50,27 @@ class Waypoint
 	* @ORM\Column(type="string", nullable=true))
 	*/
     private $theme;
+
+	/**
+	* @var string
+	*
+	* @ORM\Column(type="string", nullable=true))
+	*/
+    private $rating;
+
+	/**
+	* @var string
+	*
+	* @ORM\Column(type="string", nullable=true))
+	*/
+    private $website;
+
+	/**
+	* @var string
+	*
+	* @ORM\Column(type="string", nullable=true))
+	*/
+    private $icon;
 
 	/**
 	* @var string
@@ -422,6 +443,54 @@ class Waypoint
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRating()
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param string $rating
+     */
+    public function setRating($rating)
+    {
+        $this->rating = $rating;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * @param string $website
+     */
+    public function setWebsite($website)
+    {
+        $this->website = $website;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon()
+    {
+        return $this->icon;
+    }
+
+    /**
+     * @param string $icon
+     */
+    public function setIcon($icon)
+    {
+        $this->icon = $icon;
     }
 
     /**

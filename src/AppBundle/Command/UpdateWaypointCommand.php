@@ -125,6 +125,8 @@ class UpdateWaypointCommand extends ContainerAwareCommand
                     $waypoint->setTitle($name);
                     $waypoint->setType($s['types']);
                     $waypoint->setGoogleId($s['id']);
+                    $waypoint->setRating($s['rating']);
+                    $waypoint->setIcon($s['icon']);
                     $waypoint->setStatus(Waypoint::STATUS_ENABLED);
                     $waypoint->setAddress($s['vicinity']);
                     $waypoint->setLat($s['geometry']['location']['lat']);

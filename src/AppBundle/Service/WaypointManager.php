@@ -124,6 +124,10 @@ class WaypointManager
             $boolQuery->addMust($match);
         }
 
+        $q->addSort(["is_sponsor" => [
+            "order" => "DESC",
+        ]]);
+
         $q->setQuery($boolQuery);
         $q->setSize($limit);
 

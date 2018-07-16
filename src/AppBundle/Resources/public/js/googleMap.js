@@ -371,7 +371,6 @@ function apiPlaces(bounds, type, icon, tbody) {
     $.ajax({
         url:  window.location.origin + "/api/waypoint/by_distance?" + params + "&type=" + type,
     }).done(function( response ) {
-        console.log(response);
         var markers = [];
         var iconStd = icon;
         for (var i = 0; i < response.count; i++) {
