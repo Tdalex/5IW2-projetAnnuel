@@ -94,28 +94,6 @@ h1, h2, h3{
     white-space: nowrap;
 }
 
-.new_roadtrip{
-    background-color: #51bcff;
-    color: white;
-    border-radius: 4px;
-}
-
-.new_roadtrip span{
-    margin-top: 1em;
-    font-weight: 200;
-    font-size: 18px;
-}
-
-.new_roadtrip a{
-    margin: 2em;
-    font-weight: 200;
-    text-decoration: none;
-}
-
-.new_roadtrip a:hover{
-    color: white;
-}
-
 #register{
     background-image: url("/bundles/app/images/map2.png");
     -webkit-background-size: cover;
@@ -318,10 +296,11 @@ p {
 }.partener-content{
      padding: 80px 150px;
  }
+
 #partener h3{
     color: #353a5e;
-    font-weight: 400;
     margin-bottom: 4%;
+    font-weight: 300;
 }
 
 #partener p{
@@ -442,6 +421,28 @@ p {
 }
 
 #loading { display: none; }
+
+.new_roadtrip{
+    background-color: #51bcff;
+    color: white;
+    border-radius: 4px;
+}
+
+.new_roadtrip span{
+    margin-top: 1em;
+    font-weight: 200;
+    font-size: 18px;
+}
+
+.new_roadtrip a{
+    margin: 2em;
+    font-weight: 200;
+    text-decoration: none;
+}
+
+.new_roadtrip a:hover{
+    color: white;
+}
 
 
 /* fin my account
