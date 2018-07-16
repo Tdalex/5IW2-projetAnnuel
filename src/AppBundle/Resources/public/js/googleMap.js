@@ -400,6 +400,12 @@ function apiPlaces(bounds, type, icon, tbody) {
         markersPlace = markersPlace.concat(markers);
     });
 
+    $(document).ajaxStart(function() {
+        $("#loading"+ type).show();
+    }).ajaxStop(function() {
+        $("#loading"+ type).hide();
+    });
+
 }
 
 function searchPlaces(bound, place, icon, tbody) {
