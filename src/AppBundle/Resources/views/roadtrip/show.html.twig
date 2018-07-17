@@ -104,8 +104,8 @@
                             {% for comm in commentaires %}
                                 <div class="card-panel grey lighten-3">
                                     {{ comm.commentaire }}
-                                    <em><a href="">{{ comm.user }}</a>, {{ comm.date|date('d/m/Y H:i:s') }}</em>
-                                    {% set userId = app.session.get('currentUser').id %}
+                                    <br><em><a>{{ comm.user }}</a>, {{ comm.date|date('d/m/Y H:i:s') }}</em>
+                                    {% set userId = app.session.get('currentUser').id|default(null) %}
                                     {% if comm.idUser == userId %}
                                         <a class="remove_review"  data-url="{{ path('review_remove', { 'reviewId': comm.reviewId, 'roadtripId': roadtrip.id}) }}"><i class="material-icons small grey-text">close</i></a>
                                     {% endif %}
