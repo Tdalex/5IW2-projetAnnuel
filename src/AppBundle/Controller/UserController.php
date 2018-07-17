@@ -90,8 +90,11 @@ class UserController extends Controller
 
                             $message = \Swift_Message::newInstance()
                                 ->setSubject('RoadMonTrip: Mot de passe modifié')
-                                ->setFrom('noreply@roadtrip.loc')
+                                ->setFrom('noreply@roadmontrip.fr')
                                 ->setBody($view, 'text/html');
+
+                            $message->setTo($user->getEmail());
+                            $this->container->get('mailer')->send($message);
                         }else{
                             $error = "les mots de passes sont différents";
                         }
@@ -384,7 +387,7 @@ class UserController extends Controller
 
             $message = \Swift_Message::newInstance()
                 ->setSubject('RoadMonTrip: activation de compte')
-                ->setFrom('noreply@roadtrip.loc')
+                ->setFrom('noreply@roadmontrip.fr')
                 ->setBody($view, 'text/html');
 
             // Adds mail send
@@ -433,7 +436,7 @@ class UserController extends Controller
 
             $message = \Swift_Message::newInstance()
                 ->setSubject('RoadMonTrip: Compte activé')
-                ->setFrom('noreply@roadtrip.loc')
+                ->setFrom('noreply@roadmontrip.fr')
                 ->setBody($view, 'text/html');
 
             // Adds mail send
@@ -492,7 +495,7 @@ class UserController extends Controller
 
                     $message = \Swift_Message::newInstance()
                         ->setSubject('RoadMonTrip: Mot de passe modifié')
-                        ->setFrom('noreply@roadtrip.loc')
+                        ->setFrom('noreply@roadmontrip.fr')
                         ->setBody($view, 'text/html');
 
                     // Adds mail send
@@ -549,7 +552,7 @@ class UserController extends Controller
 
                 $message = \Swift_Message::newInstance()
                     ->setSubject('RoadMonTrip: Mot de passe oublié')
-                    ->setFrom('noreply@roadtrip.loc')
+                    ->setFrom('noreply@roadmontrip.fr')
                     ->setBody($view, 'text/html');
 
                 // Adds mail send

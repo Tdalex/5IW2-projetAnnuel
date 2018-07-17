@@ -99,7 +99,7 @@ class DefaultController extends Controller
 
         $msend = (new \Swift_Message('De '.$nom.' '.$prenom.' : '.$sujet))
             ->setFrom($email)
-            ->setTo('noreply@roadtrip.loc')
+            ->setTo('noreply@roadmontrip.fr')
             ->setBody($message, 'text/html');
 
         $response = $this->container->get('mailer')->send($msend);
@@ -148,7 +148,7 @@ class DefaultController extends Controller
             }
             if($existWaypoint->getSponsor() == false && $existWaypoint->getStatus() == "enabled"){
                 $this->sendEmailToAdmin($existWaypoint, $existWaypoint->getId());
-                $this->addFlash("success", "Votre demande a bien été envoyée :)");
+                $this->addFlash("success", "Votre demande a bien été envoyée");
                 return $this->redirectToRoute('partner');
             }elseif($existWaypoint->getSponsor() == true  && $existWaypoint->getStatus() == "enabled"){
                 $this->addFlash("warning", "Cet établissement existe déjà");
