@@ -70,7 +70,7 @@
                                 <div id="container-stop">
                                     {% set prototype_stop = edit_form.stops.vars.prototype %}
                                     <div id="prototype-stop" class="prototype-stop hide" data-nbstop="{{ stops|length }}" hidden>
-                                        <section class="form-group">
+                                        <section class="contain-form form-group">
                                             <div>
                                                 {{ form_widget(prototype_stop.lat) }}
                                                 {{ form_widget(prototype_stop.lon) }}
@@ -115,7 +115,7 @@
                                         {% set i = i+1 %}
                                     {% endfor %}
                                 </div>
-                                <div class="center-align"><a id="filldetails" class="btn-floating btn-large waves-effect waves-light red accent-2 center-align"><i class="material-icons">add</i></a></div>
+                                <div class="center-align"><a id="filldetails" class="btn-floating btn-large green lighten-3 center-align"><i class="material-icons">add</i></a></div>
                             </div>
                         </div>
                     </li>
@@ -137,12 +137,14 @@
         <div id="test-swipe-2" class="col s12">
             <div class="row white-text text-center"><h5>Hotels</h5></div>
             <table id="resultsTable">
+                <div class="center-align"><img id="loadinglodging" src="{{ asset('bundles/app/images/loading.gif') }}" alt="Loading" /></div>
                 <tbody id="resultsHotels"></tbody>
             </table>
         </div>
         <div id="test-swipe-3" class="col s12">
             <div class="row white-text text-center"><h5>Restaurants</h5></div>
             <table id="resultsTable">
+                <div class="center-align"><img id="loadingrestaurant" src="{{ asset('bundles/app/images/loading.gif') }}" alt="Loading" /></div>
                 <tbody id="resultsFoods"></tbody>
             </table></div>
         <div id="test-swipe-4" class="col s12">

@@ -29,7 +29,7 @@
             <h4 class="center-align">Mon roadtrip</h4>
             <div class="col s12">
                 <div>
-                    {{ form_label(form.title) }}
+                    {#{{ form_label(form.title) }}#}
                     {{ form_widget(form.title, {'attr' : {'placeholder': 'Titre du roadtrip'}}) }}
                 </div>
                 <!--Accordeon-->
@@ -76,32 +76,32 @@
                                                 {{ form_widget(prototype_stop.lon) }}
                                             </div>
                                             <div>
-                                                {{ form_label(prototype_stop.address) }}
+                                                {#{{ form_label(prototype_stop.address) }}#}
                                                 {{ form_widget(prototype_stop.address) }}
                                             </div>
                                             <div>
-                                                {{ form_label(prototype_stop.title) }}
+                                                {#{{ form_label(prototype_stop.title) }}#}
                                                 {{ form_widget(prototype_stop.title, {'attr' : {'placeholder': 'Titre de l\'étape'}}) }}
                                             </div>
                                             <div>
-                                                {{ form_label(prototype_stop.description) }}
+                                                {#{{ form_label(prototype_stop.description) }}#}
                                                 {{ form_widget(prototype_stop.description, {'attr' : {'placeholder': 'Desription de l\'étape'}}) }}
                                             </div>
                                         </section>
                                     </div>
                                 </div>
-                                <div class="center-align"><a id="filldetails" class="btn-floating btn-large waves-effect waves-light red accent-2 center-align"><i class="material-icons">add</i></a></div>
+                                <div class="center-align"><a id="filldetails" class="btn-floating btn-large green lighten-3 center-align"><i class="material-icons">add</i></a></div>
                             </div>
                         </div>
                     </li>
                 </ul>
                 <!-- Ajout des marqueurs sur la carte et remplissage des latitude et longitude des différents points -->
                 <div>
-                    {{ form_label(form.duration) }}
-                    {{ form_widget(form.duration, {'attr': {'placeholder': 'Durée'}}) }}
+                    {#{{ form_label(form.duration) }}#}
+                    {{ form_widget(form.duration, {'attr': {'placeholder': 'Durée du roadtrip (en jours)'}}) }}
                 </div>
                 <div>
-                    {{ form_label(form.description) }}
+                    {#{{ form_label(form.description) }}#}
                     {{ form_widget(form.description, {'attr': {'placeholder': 'Description du roadtrip'}}) }}
                 </div>
                 <a class="waves-effect waves-light btn green lighten-3 full-width" onclick="codeAddress()">Chercher sur la carte</a><br><br>

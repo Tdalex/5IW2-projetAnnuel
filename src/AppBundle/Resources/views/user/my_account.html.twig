@@ -34,6 +34,7 @@
         </div>
         <div class="roadtrip-profile content-profile">
             <div class="row">
+                <div class="col s12">
                     <h4>Mes roadtrips</h4>
                     {% if roadtrips is empty %}
                         <p><i>Vous n'avez pas encore créé de roadtrip. Retournez à la liste des roadtrips pour pouvoir partager votre propre aventure !</i></p>
@@ -59,12 +60,15 @@
                             </div>
                         {% endfor %}
                     {% endif %}
+                </div>
             </div>
         </div>
-        <div class="roadtrip-favorites content-profile">
+        <div class=" roadtrip-favorites content-profile">
             <div class="row">
-                <h4>Mes roadtrips favoris</h4>
-                {{ render(controller("AppBundle:IsLiked:index")) }}
+                <div class="col s12">
+                    <h4>Mes roadtrips favoris</h4>
+                    {{ render(controller("AppBundle:IsLiked:index")) }}
+                </div>
             </div>
         </div>
     </div>

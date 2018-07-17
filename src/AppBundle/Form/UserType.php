@@ -48,7 +48,8 @@ class UserType extends AbstractType
             ],
             'multiple' => false,
             'expanded' => true,
-            'required' => true
+            'required' => true,
+            'data' => 'MALE'
         ]));
 
         $builder->add('plainPassword', RepeatedType::class, [
