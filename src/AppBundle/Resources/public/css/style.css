@@ -178,7 +178,6 @@ p {
     z-index: 1;
     top: 75px;
     left: 20px;
-    overflow: scroll;
 }
 
 .search-map{
