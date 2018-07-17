@@ -829,7 +829,6 @@ function nearbyPlaces(){
                     });
 
                     $(document).ajaxStart(function() {
-
                         $("#loading"+ type).show();
                     }).ajaxStop(function() {
                         $("#loading"+ type).hide();

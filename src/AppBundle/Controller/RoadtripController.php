@@ -151,7 +151,7 @@ class RoadtripController extends Controller
         if($session->get('currentUser')) {
             $currentUser = $session->get('currentUser');
             $likes = $em->getRepository('AppBundle:IsLiked')->isLike($roadtrip->getId(), $currentUser['id']);
-            $already = $em->getRepository('AppBundle:Review')->alreadyCommented($roadtrip->getId(), $currentUser['id'] ."0");
+            $already = $em->getRepository('AppBundle:Review')->alreadyCommented($roadtrip->getId(), $currentUser['id']);
             if ($already)
                 $commented = true;
         }
