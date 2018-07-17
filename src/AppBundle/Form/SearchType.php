@@ -30,7 +30,7 @@ class SearchType extends AbstractType
                 )
             ));
     }
-    
+
     /**
      * {@inheritdoc}
      */

@@ -107,7 +107,7 @@
                                     <em><a href="">{{ comm.user }}</a>, {{ comm.date|date('d/m/Y H:i:s') }}</em>
                                     {% set userId = app.session.get('currentUser').id %}
                                     {% if comm.idUser == userId %}
-                                        <a id="remove_review" data-url="{{ path('review_remove', { 'reviewId': comm.reviewId, 'roadtripId': roadtrip.id}) }}"><i class="material-icons small grey-text">close</i></a>
+                                        <a class="remove_review"  data-url="{{ path('review_remove', { 'reviewId': comm.reviewId, 'roadtripId': roadtrip.id}) }}"><i class="material-icons small grey-text">close</i></a>
                                     {% endif %}
                                 </div>
                             {% endfor %}
@@ -143,43 +143,50 @@
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places&callback=initAutocomplete"></script>
     <script>
 
-        //affichage du formulaire pour ajouter une note et un commentaire
-        $('#review').click(function (e) {
-            e.preventDefault();
-            $('#form_review').show();
-        });
 
-        //création d'un avis
-        $('#review_submit').click(function (e){
-            e.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: "{{ path('review_new', { 'roadtripId': roadtrip.id }) }}",
-                data: $('form[name="review"]').serialize(),
-                success: function(response) {
-                    $('#average').html(response.average);
-                    $('#reviews').html(response.view);
-                    $('input:radio').prop("checked", false);
-                    $('#review_commentaire').val("");
-                    $('#form_review').hide();
-                }
-            });
-        });
-
-        //suppression d'un avis par l'utilisateur qui l'a posté
         function reviews() {
-            $('#remove_review').click(function (e) {
+            //création d'un avis
+            $('#review_submit').click(function (e){
                 e.preventDefault();
-                var url = $('#remove_review').attr('data-url');
                 $.ajax({
-                    type: "GET",
-                    url: url,
+                    type: "POST",
+                    url: "{{ path('review_new', { 'roadtripId': roadtrip.id }) }}",
+                    data: $('form[name="review"]').serialize(),
                     success: function(response) {
                         $('#average').html(response.average);
                         $('#reviews').html(response.view);
+                        $('input:radio').prop("checked", false);
+                        $('#review_commentaire').val("");
+                        $('#form_review').hide();
                         reviews();
                     }
                 });
+            });
+
+            //suppression d'un avis par l'utilisateur qui l'a posté
+            var removeReviews = document.getElementsByClassName('remove_review');
+            if (removeReviews) {
+                Array.prototype.forEach.call(removeReviews, function(removeReview, i) {
+                    removeReview.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        var url = removeReview.getAttribute('data-url');
+                        $.ajax({
+                            type: "GET",
+                            url: url,
+                            success: function(response) {
+                                $('#average').html(response.average);
+                                $('#reviews').html(response.view);
+                                reviews();
+                            }
+                        });
+                    });
+                });
+            }
+
+            //affichage du formulaire pour ajouter une note et un commentaire
+            $('#review').click(function (e) {
+                e.preventDefault();
+                $('#form_review').show();
             });
         }
 
