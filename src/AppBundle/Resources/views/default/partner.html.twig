@@ -93,13 +93,14 @@
     {{ parent() }}
     {% javascripts
     '@AppBundle/Resources/public/js/waypoint.js'
+    '@AppBundle/Resources/public/js/jquery-3.2.1.min.js'
     '@AppBundle/Resources/public/js/materialize.min.js'
     %}
     <script src="{{ asset_url }}"></script>  {#Ajouter pour prendre en compte le child#}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&v=3.exp&sensor=false&libraries=places"></script>
     <script>
-        $(document).ready(function() {
-            $('select').material_select();
+        jQuery(document).ready(function() {
+            jQuery('select').material_select();
         });
     </script>
 
