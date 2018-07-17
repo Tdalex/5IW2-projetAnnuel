@@ -2,9 +2,9 @@
     {% if favorites is empty %}
         <div class="row center-align"><p><i>Vous n'avez aucun favori.</i></p></div>
     {% else %}
+        <div class="row">
         {% for favorite in favorites %}
-            <div class="row">
-                <div class="col s12 m4 l4">
+            <div class="col s12 m4 l4">
                     <div class="card">
                         <div class="card-image waves-effect waves-block waves-light">
                             <img class="activator" src="{{ asset('bundles/app/images/roadtrip.jpg') }}" alt="roadtrip">
@@ -22,8 +22,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
         {% endfor %}
+        </div>
         <div class="row center-align">
             <a class="waves-effect waves-light btn-large blue darken-3" id="all_favorites" href="{{ path('isliked_all') }}">Voir tous mes favoris</a>
         </div>
