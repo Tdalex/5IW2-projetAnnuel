@@ -61,17 +61,53 @@ html, body {
 }
 
 #roadtrip-header {
+
     position: relative;
     width: 100%;
-    min-height: 400px;
+    min-height: 250px;
     -webkit-background-size: cover;
     -moz-background-size: cover;
-    background-size: cover;
+    background-size: contain;
     -o-background-size: cover;
-    background-position: center;
-    background-image: url("/bundles/app/images/showRoadtrip.jpeg");
+    /* background-position: center; */
+    background-repeat: no-repeat;
+    background-image: url(/bundles/app/images/showRoadtrip.jpeg);
     text-align: center;
     color: white;
+    background-attachment: fixed;
+}
+
+h1, h2, h3{
+    font-weight: 300;
+}
+
+#roadtrip-content {
+    background-color: #ededed;
+    font-weight: 300;
+}
+.description, .steps, .commentaires{
+    background-color: white;
+    margin: 1em;
+    padding: 2em;
+}
+
+#roadtrip-content i.small {
+    font-size: 1.3rem;
+}
+
+#roadtrip-header ss.header{
+    margin: 4em;
+}
+
+.infos {
+    margin: 1em;
+}
+
+.infos span{
+    font-size: 19px;
+    margin-left: 7px;
+    margin-right: 20px;
+    color: #818280;
 }
 
 #contactez-nous{
@@ -85,6 +121,12 @@ html, body {
     max-height: 160px !important;
 }
 
+.card .card-content p{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 #register{
     background-image: url("/bundles/app/images/map2.png");
     -webkit-background-size: cover;
@@ -92,7 +134,7 @@ html, body {
     background-size: cover;
     -o-background-size: cover;
     background-position: center;
-    height: 100%
+    min-height: 100%;
 }
 .content-login{
     background-color: white;
@@ -150,6 +192,7 @@ p {
 
 #search a{
     text-decoration:none;
+    margin: 2em;
 }
 #search a:hover{
     background-color: #2296f3 !important;
@@ -168,7 +211,6 @@ p {
     z-index: 1;
     top: 75px;
     left: 20px;
-    overflow: scroll;
 }
 
 .search-map{
@@ -273,7 +315,7 @@ p {
     background-color: #fafafa;
 }
 
-.roadtrip-profile{
+.roadtrip-profile, .roadtrip-favorites{
     margin: 40px 0 40px;
 }
 
@@ -286,10 +328,11 @@ p {
 }.partener-content{
      padding: 80px 150px;
  }
+
 #partener h3{
     color: #353a5e;
-    font-weight: 400;
     margin-bottom: 4%;
+    font-weight: 300;
 }
 
 #partener p{
@@ -359,6 +402,126 @@ p {
     background-color: #ececec !important;
 }
 
+.edit_map{
+    position: relative;
+}
+.edit_map img{
+    width: 100%;
+    height: 100%;
+}
+
+.btn {
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    font-weight: 200;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #008CBA;
+}
+
+.edit_map:hover .overlay {
+    opacity: 0.5;
+}
+
+.text {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.actions{
+    bottom: 0;
+}
+
+.actions .btn{
+    margin-right: 20px;
+}
+
+#loading { display: none; }
+
+#new_roadtrip .new_roadtrip{
+    background-color: #51bcff;
+    color: white;
+    border-radius: 4px;
+}
+
+#new_roadtrip .new_roadtrip span{
+    margin-top: 1em;
+    font-weight: 200;
+    font-size: 18px;
+}
+
+#new_roadtrip .new_roadtrip a{
+    margin: 2em;
+    font-weight: 200;
+    text-decoration: none;
+}
+
+#new_roadtrip .new_roadtrip a:hover{
+    color: white;
+}
+
+#roadtrip_description{
+    color: white;
+}
+
+#roadtrip_title::placeholder, #roadtrip_duration::placeholder, #roadtrip_description::placeholder {
+    color: #333;
+    opacity: 1; /* Firefox */
+}
+
+#addressDep::placeholder, #roadtrip_stopStart_title::placeholder, #roadtrip_stopStart_description::placeholder {
+    color: #333;
+    opacity: 1; /* Firefox */
+}
+
+#addressDes::placeholder, #roadtrip_stopEnd_title::placeholder, #roadtrip_stopEnd_description::placeholder {
+    color: #333;
+    opacity: 1; /* Firefox */
+}
+
+#container-stop input::placeholder, #container-stop textarea::placeholder{
+    color: #333;
+    opacity: 1; /* Firefox */
+}
+
+.remove_review i{
+    cursor: pointer;
+}
+
+/*responsive*/
+
+@media only screen and (max-width: 600px) {
+    .search-map {
+        width: 100%;
+        height: 79%;
+        background: #2196f399;
+        overflow: scroll;
+        left: 0;
+        position: initial;
+    }
+    .search-tab {
+        width: 100%;
+        left: 0;
+        position: initial;
+    }
+
+}
 
 
 /* fin my account
