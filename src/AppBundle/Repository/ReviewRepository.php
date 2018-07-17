@@ -10,4 +10,28 @@ namespace AppBundle\Repository;
  */
 class ReviewRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function alreadyCommented($roadtrip, $userId){
+        $query = $this->createQueryBuilder('i')
+            ->join('i.roadtripId', 'r')
+            ->join('i.userId', 'u')
+            ->where('r.id = :roadtrip')
+            ->setParameter('roadtrip', $roadtrip)
+            ->andWhere('u.id = :user')
+            ->setParameter('user', $userId)
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
+    public function findAllByDate($roadtrip){
+        $query = $this->createQueryBuilder('i')
+            ->join('i.roadtripId', 'r')
+            ->where('r.id = :roadtrip')
+            ->setParameter('roadtrip', $roadtrip)
+            ->orderBy('i.createdAt', 'DESC')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
 }
