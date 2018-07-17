@@ -8,7 +8,7 @@
                     <em><a href="">{{ comm.user }}</a>, {{ comm.date|date('d/m/Y H:i:s') }}</em>
                     {% set userId = app.session.get('currentUser').id %}
                     {% if comm.idUser == userId %}
-                        <a href="{{ path('review_remove', { 'reviewId': comm.reviewId, 'roadtripId': roadtripId}) }}"><i class="material-icons small grey-text">close</i></a>
+                        <a class="remove_review" data-url="{{ path('review_remove', { 'reviewId': comm.reviewId, 'roadtripId': roadtripId}) }}"><i class=" material-icons small grey-text">close</i></a>
                     {% endif %}
                 </div>
             {% endfor %}
