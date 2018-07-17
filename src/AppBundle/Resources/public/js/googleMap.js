@@ -13,9 +13,162 @@ var markersPlace = [];
 //Get global variable from service
 //https://openclassrooms.com/courses/2763916-passez-des-variables-a-javascript-depuis-symfony2
 var JsVars = jQuery('#js-var-env').data('vars');
-var myGlobalEnvironnementVariable =JsVars.myGlobalEnvironnementVariable;
+var myGlobalEnvironnementVariable = JsVars.myGlobalEnvironnementVariable;
 
 function initialize() {
+    var styles = [
+        {
+            "featureType": "administrative",
+            "elementType": "labels.text.fill",
+            "stylers": [
+                {
+                    "color": "#6195a0"
+                }
+            ]
+        },
+        {
+            "featureType": "landscape",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "color": "#f2f2f2"
+                }
+            ]
+        },
+        {
+            "featureType": "landscape",
+            "elementType": "geometry.fill",
+            "stylers": [
+                {
+                    "color": "#ffffff"
+                }
+            ]
+        },
+        {
+            "featureType": "poi",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "poi.park",
+            "elementType": "geometry.fill",
+            "stylers": [
+                {
+                    "color": "#e6f3d6"
+                },
+                {
+                    "visibility": "on"
+                }
+            ]
+        },
+        {
+            "featureType": "road",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "saturation": -100
+                },
+                {
+                    "lightness": 45
+                },
+                {
+                    "visibility": "simplified"
+                }
+            ]
+        },
+        {
+            "featureType": "road.highway",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "visibility": "simplified"
+                }
+            ]
+        },
+        {
+            "featureType": "road.highway",
+            "elementType": "geometry.fill",
+            "stylers": [
+                {
+                    "color": "#f4d2c5"
+                },
+                {
+                    "visibility": "simplified"
+                }
+            ]
+        },
+        {
+            "featureType": "road.highway",
+            "elementType": "labels.text",
+            "stylers": [
+                {
+                    "color": "#4e4e4e"
+                }
+            ]
+        },
+        {
+            "featureType": "road.arterial",
+            "elementType": "geometry.fill",
+            "stylers": [
+                {
+                    "color": "#f4f4f4"
+                }
+            ]
+        },
+        {
+            "featureType": "road.arterial",
+            "elementType": "labels.text.fill",
+            "stylers": [
+                {
+                    "color": "#787878"
+                }
+            ]
+        },
+        {
+            "featureType": "road.arterial",
+            "elementType": "labels.icon",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "transit",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "water",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "color": "#eaf6f8"
+                },
+                {
+                    "visibility": "on"
+                }
+            ]
+        },
+        {
+            "featureType": "water",
+            "elementType": "geometry.fill",
+            "stylers": [
+                {
+                    "color": "#eaf6f8"
+                }
+            ]
+        }
+    ];
+
     geocoder = new google.maps.Geocoder();
 
     var latlng = new google.maps.LatLng(46.719208,1.474055);
@@ -107,6 +260,7 @@ function initialize() {
     infoWindow = new google.maps.InfoWindow({
         content: htmlcontent
     });
+
 }
 
 function createMarker(event, map){
@@ -356,58 +510,6 @@ function food(franceBounds){
     }
 }
 
-function apiPlaces(bounds, type, icon, tbody) {
-    var data = {};
-        data.coordinates = {};
-
-    for (var i = 0; i < bounds.length; i++) {
-        data.coordinates[i] = {'lat': bounds[i].lat(), 'lon': bounds[i].lng()};
-    }
-
-    data.radius = 20;
-    var params = $.param(data);
-
-    $.ajax({
-        url:  window.location.origin + "/api/waypoint/by_distance?" + params + "&type=" + type,
-    }).done(function( response ) {
-        var markers = [];
-        var iconStd = icon;
-        for (var i = 0; i < response.count; i++) {
-            icon = iconStd;
-            var size = new google.maps.Size(25, 20);
-            if (response.data[i].is_sponsor == true){
-                icon = "/bundles/app/images/markers/svg/Rocket_7.svg";
-                size = new google.maps.Size(50, 45);
-            }
-            markers[i] = new google.maps.Marker({
-                position: {lat: response.data[i].coordinates.lat, lng: response.data[i].coordinates.lon},
-                animation: google.maps.Animation.DROP,
-                icon: {
-                    url: icon,
-                    scaledSize: size
-                }
-            });
-            // If the user clicks a hotel marker, show the details of that hotel
-            // in an info window.
-            markers[i].placeResult = response.data[i];
-            google.maps.event.addListener(markers[i], 'click', showInfoWindowApi);
-            setTimeout(
-                dropMarker(i, markers)
-                 , i * 100);
-            addResult(markers[i].placeResult, i, markers, icon, tbody);
-        }
-        //Get all markers place in array
-        markersPlace = markersPlace.concat(markers);
-    });
-
-    $(document).ajaxStart(function() {
-        $("#loading"+ type).show();
-    }).ajaxStop(function() {
-        $("#loading"+ type).hide();
-    });
-
-}
-
 function searchPlaces(bound, place, icon, tbody) {
     var search = {
         bounds: bound,
@@ -602,7 +704,6 @@ function buildIWContent(place) {
     }
 }
 
-
 function dropMarker(i, markers) {
     return function() {
         markers[i].setMap(map);
@@ -610,9 +711,11 @@ function dropMarker(i, markers) {
 }
 
 function clearMarkers() {
-    for (var i = 0; i < markersPlace.length; i++) {
-        if (markersPlace[i]) {
-            markersPlace[i].setMap(null);
+    if (markersPlace !== undefined) {
+        for (var i = 0; i < markersPlace.length; i++) {
+            if (markersPlace[i]) {
+                markersPlace[i].setMap(null);
+            }
         }
     }
 }
@@ -667,177 +770,74 @@ function makeGrid() {
     //food(franceBounds);
 }
 
+function nearbyPlaces(){
+    var nearbyPlaces = document.getElementsByClassName('nearbyPlaces');
+    if (nearbyPlaces) {
+        Array.prototype.forEach.call(nearbyPlaces, function(nearbyPlace, i) {
+            nearbyPlace.addEventListener('click', function(e) {
+                if (itineraryBounds !== undefined){
+                    var bounds = centerBoxes(itineraryBounds);
+                    var tbody = nearbyPlace.parentElement.getAttribute('data-tbody');
+                    var type = nearbyPlace.parentElement.getAttribute('data-place');
+                    var icon = "/bundles/app/images/markers/svg/" + nearbyPlace.parentElement.getAttribute('data-icon') + ".svg";
 
-var nearbyPlaces = document.getElementsByClassName('nearbyPlaces')
-if (nearbyPlaces) {
-    Array.prototype.forEach.call(nearbyPlaces, function(nearbyPlace, i) {
-        nearbyPlace.addEventListener('click', function(e) {
-            if (itineraryBounds !== undefined){
-                var bounds = centerBoxes(itineraryBounds);
-                var tbody = nearbyPlace.parentElement.getAttribute('data-tbody');
-                var place = nearbyPlace.parentElement.getAttribute('data-place');
-                var icon = "/bundles/app/images/markers/svg/" + nearbyPlace.parentElement.getAttribute('data-icon') + ".svg";
+                    clearMarkers();
+                    clearResults(tbody);
 
-                clearMarkers();
-                clearResults(tbody);
+                    var data = {};
+                    data.coordinates = {};
 
-                apiPlaces(bounds, place, icon, tbody);
-            }else {
-                alert("Veuillez choisir un itinéraire !")
-            }
+                    for (var i = 0; i < bounds.length; i++) {
+                        data.coordinates[i] = {'lat': bounds[i].lat(), 'lon': bounds[i].lng()};
+                    }
+
+                    data.radius = 20;
+                    var params = $.param(data);
+
+                    $.ajax({
+                        url:  window.location.origin + "/api/waypoint/by_distance?" + params + "&type=" + type,
+                    }).done(function( response ) {
+
+                        var markers = [];
+                        var iconStd = icon;
+                        for (var i = 0; i < response.count; i++) {
+                            icon = iconStd;
+                            var size = new google.maps.Size(25, 20);
+                            if (response.data[i].is_sponsor == true){
+                                icon = "/bundles/app/images/markers/svg/Rocket_7.svg";
+                                size = new google.maps.Size(50, 45);
+                            }
+                            markers[i] = new google.maps.Marker({
+                                position: {lat: response.data[i].coordinates.lat, lng: response.data[i].coordinates.lon},
+                                animation: google.maps.Animation.DROP,
+                                icon: {
+                                    url: icon,
+                                    scaledSize: size
+                                }
+                            });
+                            // If the user clicks a hotel marker, show the details of that hotel
+                            // in an info window.
+                            markers[i].placeResult = response.data[i];
+                            google.maps.event.addListener(markers[i], 'click', showInfoWindowApi);
+                            setTimeout(
+                                dropMarker(i, markers)
+                                , i * 100);
+                            addResult(markers[i].placeResult, i, markers, icon, tbody);
+                        }
+                        //Get all markers place in array
+                        markersPlace = markersPlace.concat(markers);
+                    });
+
+                    $(document).ajaxStart(function() {
+
+                        $("#loading"+ type).show();
+                    }).ajaxStop(function() {
+                        $("#loading"+ type).hide();
+                    });
+                }else {
+                    alert("Veuillez choisir un itinéraire !")
+                }
+            })
         })
-    })
-}
-
-var styles = [
-    {
-        "featureType": "administrative",
-        "elementType": "labels.text.fill",
-        "stylers": [
-            {
-                "color": "#6195a0"
-            }
-        ]
-    },
-    {
-        "featureType": "landscape",
-        "elementType": "all",
-        "stylers": [
-            {
-                "color": "#f2f2f2"
-            }
-        ]
-    },
-    {
-        "featureType": "landscape",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#ffffff"
-            }
-        ]
-    },
-    {
-        "featureType": "poi",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "poi.park",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#e6f3d6"
-            },
-            {
-                "visibility": "on"
-            }
-        ]
-    },
-    {
-        "featureType": "road",
-        "elementType": "all",
-        "stylers": [
-            {
-                "saturation": -100
-            },
-            {
-                "lightness": 45
-            },
-            {
-                "visibility": "simplified"
-            }
-        ]
-    },
-    {
-        "featureType": "road.highway",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "simplified"
-            }
-        ]
-    },
-    {
-        "featureType": "road.highway",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#f4d2c5"
-            },
-            {
-                "visibility": "simplified"
-            }
-        ]
-    },
-    {
-        "featureType": "road.highway",
-        "elementType": "labels.text",
-        "stylers": [
-            {
-                "color": "#4e4e4e"
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#f4f4f4"
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "labels.text.fill",
-        "stylers": [
-            {
-                "color": "#787878"
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "labels.icon",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "transit",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "all",
-        "stylers": [
-            {
-                "color": "#eaf6f8"
-            },
-            {
-                "visibility": "on"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#eaf6f8"
-            }
-        ]
     }
-];
+}

@@ -189,7 +189,6 @@ class ReviewController extends Controller
     public function removeAction(Request $request, $reviewId, $roadtripId)
     {
         $em = $this->getDoctrine()->getManager();
-        dump($reviewId);
         $review = $em->getRepository('AppBundle:Review')->findOneBy(array('id' => $reviewId));
         $em->remove($review);
         $em->flush();

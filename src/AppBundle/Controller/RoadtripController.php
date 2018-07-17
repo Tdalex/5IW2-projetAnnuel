@@ -99,7 +99,6 @@ class RoadtripController extends Controller
                     foreach ($form->getErrors() as $key => $error) {
                         $errors[] = $error->getMessage();
                     }
-                    dump($errors);
                 }
                 else {
                     $roadtrip->setIsRemoved(false);
@@ -232,7 +231,6 @@ class RoadtripController extends Controller
                 foreach ($editForm->getErrors() as $key => $error) {
                     $errors[] = $error->getMessage();
                 }
-                dump($errors);
             }
             else {
                 $rtForm = $request->request->get('roadtrip');

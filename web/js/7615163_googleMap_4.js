@@ -13,9 +13,162 @@ var markersPlace = [];
 //Get global variable from service
 //https://openclassrooms.com/courses/2763916-passez-des-variables-a-javascript-depuis-symfony2
 var JsVars = jQuery('#js-var-env').data('vars');
-var myGlobalEnvironnementVariable =JsVars.myGlobalEnvironnementVariable;
+var myGlobalEnvironnementVariable = JsVars.myGlobalEnvironnementVariable;
 
 function initialize() {
+    var styles = [
+        {
+            "featureType": "administrative",
+            "elementType": "labels.text.fill",
+            "stylers": [
+                {
+                    "color": "#6195a0"
+                }
+            ]
+        },
+        {
+            "featureType": "landscape",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "color": "#f2f2f2"
+                }
+            ]
+        },
+        {
+            "featureType": "landscape",
+            "elementType": "geometry.fill",
+            "stylers": [
+                {
+                    "color": "#ffffff"
+                }
+            ]
+        },
+        {
+            "featureType": "poi",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "poi.park",
+            "elementType": "geometry.fill",
+            "stylers": [
+                {
+                    "color": "#e6f3d6"
+                },
+                {
+                    "visibility": "on"
+                }
+            ]
+        },
+        {
+            "featureType": "road",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "saturation": -100
+                },
+                {
+                    "lightness": 45
+                },
+                {
+                    "visibility": "simplified"
+                }
+            ]
+        },
+        {
+            "featureType": "road.highway",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "visibility": "simplified"
+                }
+            ]
+        },
+        {
+            "featureType": "road.highway",
+            "elementType": "geometry.fill",
+            "stylers": [
+                {
+                    "color": "#f4d2c5"
+                },
+                {
+                    "visibility": "simplified"
+                }
+            ]
+        },
+        {
+            "featureType": "road.highway",
+            "elementType": "labels.text",
+            "stylers": [
+                {
+                    "color": "#4e4e4e"
+                }
+            ]
+        },
+        {
+            "featureType": "road.arterial",
+            "elementType": "geometry.fill",
+            "stylers": [
+                {
+                    "color": "#f4f4f4"
+                }
+            ]
+        },
+        {
+            "featureType": "road.arterial",
+            "elementType": "labels.text.fill",
+            "stylers": [
+                {
+                    "color": "#787878"
+                }
+            ]
+        },
+        {
+            "featureType": "road.arterial",
+            "elementType": "labels.icon",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "transit",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "water",
+            "elementType": "all",
+            "stylers": [
+                {
+                    "color": "#eaf6f8"
+                },
+                {
+                    "visibility": "on"
+                }
+            ]
+        },
+        {
+            "featureType": "water",
+            "elementType": "geometry.fill",
+            "stylers": [
+                {
+                    "color": "#eaf6f8"
+                }
+            ]
+        }
+    ];
+
     geocoder = new google.maps.Geocoder();
 
     var latlng = new google.maps.LatLng(46.719208,1.474055);
@@ -72,11 +225,42 @@ function initialize() {
     });*/
 
     //Get html content
-    infoWindow = new google.maps.InfoWindow({
+    /*infoWindow = new google.maps.InfoWindow({
         content: document.getElementById('info-content')
-    });
+    });*/
 
     if (myGlobalEnvironnementVariable == "dev") makeGrid();
+
+    var htmlcontent = '<div id="info-content">'+
+        '<table>'+
+        '<tr id="iw-url-row" class="iw_table_row">'+
+        '<td id="iw-icon" class="iw_table_icon"></td>'+
+        '<td id="iw-url"></td>'+
+        '</tr>'+
+        '<tr id="iw-address-row" class="iw_table_row">'+
+        '<td class="iw_attribute_name">Address:</td>'+
+        '<td id="iw-address"></td>'+
+        '</tr>'+
+        '<tr id="iw-phone-row" class="iw_table_row">'+
+        '<td class="iw_attribute_name">Telephone:</td>'+
+        '<td id="iw-phone"></td>'+
+        '</tr>'+
+        '<tr id="iw-rating-row" class="iw_table_row">'+
+        '<td class="iw_attribute_name">Rating:</td>'+
+        '<td id="iw-rating"></td>'+
+        '</tr>'+
+        '<tr id="iw-website-row" class="iw_table_row">'+
+        '<td class="iw_attribute_name">Website:</td>'+
+        '<td id="iw-website"></td>'+
+        '</tr>'+
+        '</table>'+
+        '</div>';
+
+    //windows info place
+    infoWindow = new google.maps.InfoWindow({
+        content: htmlcontent
+    });
+
 }
 
 function createMarker(event, map){
@@ -85,7 +269,6 @@ function createMarker(event, map){
         map: map,
         draggable: true
     });
-    console.log(marqueur);
     return marqueur;
 }
 
@@ -327,25 +510,6 @@ function food(franceBounds){
     }
 }
 
-function apiPlaces(bounds, type, icon) {
-    var data = {};
-        data.coordinates = {};
-
-    for (var i = 0; i < bounds.length; i++) {
-        data.coordinates[i] = {'lat': bounds[i].lat(), 'lon': bounds[i].lng()};
-    }
-
-    data.radius = 20;
-    var params = $.param(data);
-
-    $.ajax({
-        url:  window.location.origin + "/api/waypoint/by_distance?" + params + "&type=" + type,
-    }).done(function( response ) {
-        console.log(response);
-    });
-
-}
-
 function searchPlaces(bound, place, icon, tbody) {
     var search = {
         bounds: bound,
@@ -390,6 +554,7 @@ function addResult(result, i, markers, icon, tbody) {
 
     var tr = document.createElement('tr');
     tr.style.backgroundColor = (i % 2 === 0 ? '#F0F0F0' : '#FFFFFF');
+    tr.style.cursor = 'pointer';
     tr.onclick = function() {
         google.maps.event.trigger(markers[i], 'click');
     };
@@ -415,6 +580,13 @@ function clearResults(tbody) {
     }
 }
 
+//Show info for palces from api
+function showInfoWindowApi() {
+    var marker = this;
+    infoWindow.open(map, marker);
+    buildIWContentApi(marker.placeResult);
+}
+
 // Get the place details for a hotel. Show the information in an info window,
 // anchored on the marker for the hotel that the user selected.
 function showInfoWindow() {
@@ -427,6 +599,58 @@ function showInfoWindow() {
             infoWindow.open(map, marker);
             buildIWContent(place);
         });
+}
+
+// load inforamtion in window with data Api.
+function buildIWContentApi(place) {
+    if (place.icon) {
+        document.getElementById('iw-icon').innerHTML = '<img class="hotelIcon" ' +
+            'src="' + place.icon + '"/>';
+    }
+    document.getElementById('iw-url').innerHTML = '<b>' + place.name + '</b>';
+    document.getElementById('iw-address').textContent = place.address;
+
+    if (place.phone) {
+        document.getElementById('iw-phone-row').style.display = '';
+        document.getElementById('iw-phone').textContent =
+            place.phone;
+    } else {
+        document.getElementById('iw-phone-row').style.display = 'none';
+    }
+
+    // Assign a five-star rating to the hotel, using a black star ('&#10029;')
+    // to indicate the rating the hotel has earned, and a white star ('&#10025;')
+    // for the rating points not achieved.
+    if (place.rating) {
+        var ratingHtml = '';
+        for (var i = 0; i < 5; i++) {
+            if (place.rating < (i + 0.5)) {
+                ratingHtml += '&#10025;';
+            } else {
+                ratingHtml += '&#10029;';
+            }
+            document.getElementById('iw-rating-row').style.display = '';
+            document.getElementById('iw-rating').innerHTML = ratingHtml;
+        }
+    } else {
+        document.getElementById('iw-rating-row').style.display = 'none';
+    }
+
+    // The regexp isolates the first part of the URL (domain plus subdomain)
+    // to give a short URL for displaying in the info window.
+    if (place.website) {
+        var hostnameRegexp = new RegExp('^https?://.+?/');
+        var fullUrl = place.website;
+        var website = hostnameRegexp.exec(place.website);
+        if (website === null) {
+            website = 'http://' + place.website + '/';
+            fullUrl = website;
+        }
+        document.getElementById('iw-website-row').style.display = '';
+        document.getElementById('iw-website').textContent = website;
+    } else {
+        document.getElementById('iw-website-row').style.display = 'none';
+    }
 }
 
 // Load the place information into the HTML elements used by the info window.
@@ -480,7 +704,6 @@ function buildIWContent(place) {
     }
 }
 
-
 function dropMarker(i, markers) {
     return function() {
         markers[i].setMap(map);
@@ -488,9 +711,11 @@ function dropMarker(i, markers) {
 }
 
 function clearMarkers() {
-    for (var i = 0; i < markersPlace.length; i++) {
-        if (markersPlace[i]) {
-            markersPlace[i].setMap(null);
+    if (markersPlace !== undefined) {
+        for (var i = 0; i < markersPlace.length; i++) {
+            if (markersPlace[i]) {
+                markersPlace[i].setMap(null);
+            }
         }
     }
 }
@@ -545,178 +770,74 @@ function makeGrid() {
     //food(franceBounds);
 }
 
+function nearbyPlaces(){
+    var nearbyPlaces = document.getElementsByClassName('nearbyPlaces');
+    if (nearbyPlaces) {
+        Array.prototype.forEach.call(nearbyPlaces, function(nearbyPlace, i) {
+            nearbyPlace.addEventListener('click', function(e) {
+                if (itineraryBounds !== undefined){
+                    var bounds = centerBoxes(itineraryBounds);
+                    var tbody = nearbyPlace.parentElement.getAttribute('data-tbody');
+                    var type = nearbyPlace.parentElement.getAttribute('data-place');
+                    var icon = "/bundles/app/images/markers/svg/" + nearbyPlace.parentElement.getAttribute('data-icon') + ".svg";
 
-var nearbyPlaces = document.getElementsByClassName('nearbyPlaces')
-if (nearbyPlaces) {
-    Array.prototype.forEach.call(nearbyPlaces, function(nearbyPlace, i) {
-        nearbyPlace.addEventListener('click', function(e) {
-            var bounds = centerBoxes(itineraryBounds);
+                    clearMarkers();
+                    clearResults(tbody);
 
-            var tbody = nearbyPlace.parentElement.getAttribute('data-tbody');
-            var place = nearbyPlace.parentElement.getAttribute('data-place');
-            var icon = "/bundles/app/images/markers/svg/" + nearbyPlace.parentElement.getAttribute('data-icon') + ".svg";
+                    var data = {};
+                    data.coordinates = {};
 
-            clearMarkers();
-            clearResults(tbody);
+                    for (var i = 0; i < bounds.length; i++) {
+                        data.coordinates[i] = {'lat': bounds[i].lat(), 'lon': bounds[i].lng()};
+                    }
 
-            if (bounds){
-                apiPlaces(bounds, place, icon);
-            } else {
-                alert("Veuillez choisir un itinéraire !")
-            }
+                    data.radius = 20;
+                    var params = $.param(data);
+
+                    $.ajax({
+                        url:  window.location.origin + "/api/waypoint/by_distance?" + params + "&type=" + type,
+                    }).done(function( response ) {
+
+                        var markers = [];
+                        var iconStd = icon;
+                        for (var i = 0; i < response.count; i++) {
+                            icon = iconStd;
+                            var size = new google.maps.Size(25, 20);
+                            if (response.data[i].is_sponsor == true){
+                                icon = "/bundles/app/images/markers/svg/Rocket_7.svg";
+                                size = new google.maps.Size(50, 45);
+                            }
+                            markers[i] = new google.maps.Marker({
+                                position: {lat: response.data[i].coordinates.lat, lng: response.data[i].coordinates.lon},
+                                animation: google.maps.Animation.DROP,
+                                icon: {
+                                    url: icon,
+                                    scaledSize: size
+                                }
+                            });
+                            // If the user clicks a hotel marker, show the details of that hotel
+                            // in an info window.
+                            markers[i].placeResult = response.data[i];
+                            google.maps.event.addListener(markers[i], 'click', showInfoWindowApi);
+                            setTimeout(
+                                dropMarker(i, markers)
+                                , i * 100);
+                            addResult(markers[i].placeResult, i, markers, icon, tbody);
+                        }
+                        //Get all markers place in array
+                        markersPlace = markersPlace.concat(markers);
+                    });
+
+                    $(document).ajaxStart(function() {
+
+                        $("#loading"+ type).show();
+                    }).ajaxStop(function() {
+                        $("#loading"+ type).hide();
+                    });
+                }else {
+                    alert("Veuillez choisir un itinéraire !")
+                }
+            })
         })
-    })
-}
-
-var styles = [
-    {
-        "featureType": "administrative",
-        "elementType": "labels.text.fill",
-        "stylers": [
-            {
-                "color": "#6195a0"
-            }
-        ]
-    },
-    {
-        "featureType": "landscape",
-        "elementType": "all",
-        "stylers": [
-            {
-                "color": "#f2f2f2"
-            }
-        ]
-    },
-    {
-        "featureType": "landscape",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#ffffff"
-            }
-        ]
-    },
-    {
-        "featureType": "poi",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "poi.park",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#e6f3d6"
-            },
-            {
-                "visibility": "on"
-            }
-        ]
-    },
-    {
-        "featureType": "road",
-        "elementType": "all",
-        "stylers": [
-            {
-                "saturation": -100
-            },
-            {
-                "lightness": 45
-            },
-            {
-                "visibility": "simplified"
-            }
-        ]
-    },
-    {
-        "featureType": "road.highway",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "simplified"
-            }
-        ]
-    },
-    {
-        "featureType": "road.highway",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#f4d2c5"
-            },
-            {
-                "visibility": "simplified"
-            }
-        ]
-    },
-    {
-        "featureType": "road.highway",
-        "elementType": "labels.text",
-        "stylers": [
-            {
-                "color": "#4e4e4e"
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#f4f4f4"
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "labels.text.fill",
-        "stylers": [
-            {
-                "color": "#787878"
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "labels.icon",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "transit",
-        "elementType": "all",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "all",
-        "stylers": [
-            {
-                "color": "#eaf6f8"
-            },
-            {
-                "visibility": "on"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#eaf6f8"
-            }
-        ]
     }
-];
+}
