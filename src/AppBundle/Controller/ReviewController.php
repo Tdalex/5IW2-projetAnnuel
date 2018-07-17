@@ -65,7 +65,8 @@ class ReviewController extends Controller
             $em->persist($avi);
             $em->flush();
 
-            $reviews = $roadtrip->getReview();
+            $reviews = $em->getRepository('AppBundle:Review')->findAllByDate($roadtrip->getId());
+
             foreach ($reviews as $a) {
                 $note += $a->getNote();
                 $commentaires [$compteur]['date'] = $a->getCreatedAt();
@@ -193,7 +194,7 @@ class ReviewController extends Controller
         $em->remove($review);
         $em->flush();
 
-        $commentaires = $em->getRepository('AppBundle:Review')->findAll();
+        $commentaires = $em->getRepository('AppBundle:Review')->findAllByDate($roadtripId);
 
         $note = 0;
         $compteur = 0;

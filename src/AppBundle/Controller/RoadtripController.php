@@ -147,14 +147,17 @@ class RoadtripController extends Controller
         $em = $this->getDoctrine()->getManager();
         $session = $this->get('session');
         $likes = [];
+        $commented = false;
         if($session->get('currentUser')) {
             $currentUser = $session->get('currentUser');
             $likes = $em->getRepository('AppBundle:IsLiked')->isLike($roadtrip->getId(), $currentUser['id']);
+            $already = $em->getRepository('AppBundle:Review')->alreadyCommented($roadtrip->getId(), $currentUser['id']);
+            if ($already)
+                $commented = true;
         }
 
-
         $deleteForm = $this->createDeleteForm($roadtrip);
-        $review = $roadtrip->getReview();
+        $review = $em->getRepository('AppBundle:Review')->findAllByDate($roadtrip->getId());
         $note = 0;
         $compteur = 0;
         $commentaires = [];
@@ -181,6 +184,7 @@ class RoadtripController extends Controller
             'delete_form' => $deleteForm->createView(),
             'moyenne' => $moyenne,
             'commentaires' => $commentaires,
+            "commented" => $commented,
             'like' => $like
         ));
     }

@@ -115,7 +115,7 @@
                     </div>
                 </div>
                 {% if (app.session.get('currentUser') is not null) and (app.session.get('currentUser') is not empty) %}
-                    {% if roadtrip.owner.id != app.session.get('currentUser').id %}
+                    {% if roadtrip.owner.id != app.session.get('currentUser').id and not commented %}
                         <div id="button_review" class="right-align">
                             <a class="btn-large disabled " id="review">Donnez votre avis</a>
                         </div>
@@ -157,7 +157,8 @@
                         $('#reviews').html(response.view);
                         $('input:radio').prop("checked", false);
                         $('#review_commentaire').val("");
-                        $('#form_review').hide();
+                        $("#form_review").remove();
+                        $("#review").remove();
                         reviews();
                     }
                 });

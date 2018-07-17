@@ -171,4 +171,14 @@
     {% endjavascripts %}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places,visualization&callback=initAutocomplete"></script>
     <script src="https://cdn.rawgit.com/googlemaps/v3-utility-library/master/routeboxer/src/RouteBoxer.js"></script>
+
+    <script>
+        var geocoder;
+        var map;
+        var autocomplete;
+        var infoWindow;
+        var lat, lng;
+        var itineraryBounds;
+        var markersPlace = [];
+    </script>
 {% endblock %}
