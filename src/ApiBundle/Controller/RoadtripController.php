@@ -90,7 +90,7 @@ class RoadtripController extends Controller
     }
 
     /**
-     * @Rest\View(statusCode=Response::HTTP_CREATED)
+     * R
      * @Rest\Post("/user/register")
      */
     public function postUserAction(Request $request)

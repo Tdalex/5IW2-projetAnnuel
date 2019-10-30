@@ -127,7 +127,7 @@ fos_elastica:
                         elastica_to_model_transformer:
                             service: transformer.elastica.waypoint
                         finder: ~
-                    mappings:
+                    properties:
                         coordinates:
                             type: "geo_point"
 

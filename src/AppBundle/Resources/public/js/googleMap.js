@@ -341,7 +341,7 @@ function createBoxes(response){
     var path = response.routes[0].overview_path;
     itineraryBounds = routeboxer.box(path, distance);
 
-    if (myGlobalEnvironnementVariable == "dev") drawBoxes(itineraryBounds);
+    /*if (myGlobalEnvironnementVariable == "dev")*/ drawBoxes(itineraryBounds);
     centerBoxes(itineraryBounds);
 }
 

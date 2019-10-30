@@ -341,7 +341,7 @@ function createBoxes(response){
     var path = response.routes[0].overview_path;
     itineraryBounds = routeboxer.box(path, distance);
 
-    if (myGlobalEnvironnementVariable == "dev") drawBoxes(itineraryBounds);
+    /*if (myGlobalEnvironnementVariable == "dev")*/ drawBoxes(itineraryBounds);
     centerBoxes(itineraryBounds);
 }
 
@@ -829,7 +829,6 @@ function nearbyPlaces(){
                     });
 
                     $(document).ajaxStart(function() {
-
                         $("#loading"+ type).show();
                     }).ajaxStop(function() {
                         $("#loading"+ type).hide();

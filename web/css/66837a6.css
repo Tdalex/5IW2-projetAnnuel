@@ -504,6 +504,11 @@ p {
     cursor: pointer;
 }
 
+#waypoint_phone::placeholder{
+    color: #333;
+    opacity: 1; /* Firefox */
+}
+
 /*responsive*/
 
 @media only screen and (max-width: 600px) {

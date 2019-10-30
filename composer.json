@@ -15,7 +15,7 @@
         "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
     },
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.1.8",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
         "friendsofsymfony/elastica-bundle": "^4.1",
@@ -65,7 +65,7 @@
     },
     "config": {
         "platform": {
-            "php": "5.5.9"
+            "php": "7.1.8"
         },
         "sort-packages": true
     },

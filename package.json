@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Tdalex/symfonyTest#readme",
   "dependencies": {
-    "@symfony/webpack-encore": "^0.17.1"
+    "@symfony/webpack-encore": "^0.17.1",
+    "geojson.lib.routeboxer": "0.0.6"
   }
 }

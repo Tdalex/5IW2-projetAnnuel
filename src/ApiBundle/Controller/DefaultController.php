@@ -9,4 +9,5 @@ class DefaultController extends Controller
     {
         return $this->render('ApiBundle:Default:index.html.twig');
     }
+
 }
