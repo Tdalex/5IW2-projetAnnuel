@@ -6,14 +6,14 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         {% block stylesheets %}
             {% stylesheets
+            '@AppBundle/Resources/public/min/css/bootstrap.min.css'
+            '@AppBundle/Resources/public/min/css/bootstrap-theme.min.css'
+            '@AppBundle/Resources/public/min/css/materialize.min.css'
+            '@AppBundle/Resources/public/min/css/plugin-min.css'
+            '@AppBundle/Resources/public/min/css/custom-min.css'
+            '@AppBundle/Resources/public/vendor/css/materialize-social.css'
+            '@AppBundle/Resources/public/vendor/css/font-awesome.css'
             '@AppBundle/Resources/public/css/style.css'
-            '@AppBundle/Resources/public/css/bootstrap.min.css'
-            '@AppBundle/Resources/public/css/materialize.min.css'
-            '@AppBundle/Resources/public/css/bootstrap-theme.min.css'
-            '@AppBundle/Resources/public/min/plugin-min.css'
-            '@AppBundle/Resources/public/min/custom-min.css'
-            '@AppBundle/Resources/public/css/materialize-social.css'
-            '@AppBundle/Resources/public/css/font-awesome.css'
             %}
             <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -23,27 +23,23 @@
     </head>
     <body>
         <div id="fb-root"></div>
-        <script>
-            (function(d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) return;
-                js = d.createElement(s); js.id = id;
-                js.src = 'https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.12&appId=153461931962515';
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, 'script', 'facebook-jssdk'));
-        </script>
+
         {% include '@AppBundle/Resources/views/includes/menu.html.twig' %}
+
         {% block body %}{% endblock %}
+
         {% block footer %}
             {% include '@AppBundle/Resources/views/includes/footer.html.twig' %}
         {% endblock %}
+
         {% block javascripts %}
             {% javascripts
-            '@AppBundle/Resources/public/js/materialize.min.js'
-            '@AppBundle/Resources/public/js/jquery-3.2.1.min.js'
-            '@AppBundle/Resources/public/js/bootstrap.min.js'
+            '@AppBundle/Resources/public/min/js/jquery-3.2.1.min.js'
+            '@AppBundle/Resources/public/min/js/jquery-ui.min.js'
+            '@AppBundle/Resources/public/min/js/plugin-min.js'
+            '@AppBundle/Resources/public/min/js/custom-min.js'
+            '@AppBundle/Resources/public/min/js/materialize.min.js'
             '@AppBundle/Resources/public/js/googleMap.js'
-            '@AppBundle/Resources/public/js/form.js'
             '@AppBundle/Resources/public/js/app.js'
             %}
             <script src="{{ asset_url }}"></script>
@@ -51,6 +47,15 @@
                 if (window.location.hash && window.location.hash == '#_=_') {
                     window.location.href = window.location.href.split('#_=_')[0];
                 }
+            </script>
+            <script>
+                (function(d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (d.getElementById(id)) return;
+                    js = d.createElement(s); js.id = id;
+                    js.src = 'https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.12&appId=153461931962515';
+                    fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
             </script>
             {% endjavascripts %}
         {% endblock %}

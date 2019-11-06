@@ -1,0 +1,501 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+#googleMap {
+    width: 100%;
+    height: 91%;
+}
+
+#nav_f a{
+    text-decoration: none;
+}
+
+#search {
+    text-align: center;
+}
+
+#index-banner{
+    background-image: url("/bundles/app/images/map_home.jpg") !important;
+}
+
+#index-banner .opacity{
+    background-color: rgba(34, 150, 243, 0.55);
+    min-height: 670px;
+}
+
+#roadtrip-header {
+
+    position: relative;
+    width: 100%;
+    min-height: 250px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: contain;
+    -o-background-size: cover;
+    /* background-position: center; */
+    background-repeat: no-repeat;
+    background-image: url(/bundles/app/images/showRoadtrip.jpeg);
+    text-align: center;
+    color: white;
+    background-attachment: fixed;
+}
+
+h1, h2, h3{
+    font-weight: 300;
+}
+
+#roadtrip-content {
+    background-color: #ededed;
+    font-weight: 300;
+}
+.description, .steps, .commentaires{
+    background-color: white;
+    margin: 1em;
+    padding: 2em;
+}
+
+#roadtrip-content i.small {
+    font-size: 1.3rem;
+}
+
+#roadtrip-header ss.header{
+    margin: 4em;
+}
+
+.infos {
+    margin: 1em;
+}
+
+.infos span{
+    font-size: 19px;
+    margin-left: 7px;
+    margin-right: 20px;
+    color: #818280;
+}
+
+#contactez-nous{
+    padding: 50px;
+    border: solid 1px rgba(51,51,51,0.12);
+    background-color: #fafafa;
+}
+
+.card .card-content {
+    min-height: 160px !important;
+    max-height: 160px !important;
+}
+
+.card .card-content p{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#register{
+    background-image: url("/bundles/app/images/map2.png");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    background-position: center;
+    min-height: 100%;
+}
+.content-login{
+    background-color: white;
+    margin-top: 4em;
+    border: solid 1px rgba(51,51,51,0.12);
+    padding: 30px !important;
+}
+
+.content-register{
+    background-color: white;
+    margin-top: 3em;
+    border: solid 1px rgba(51,51,51,0.12);
+    padding: 20px !important;
+}
+
+#roadtrip .header{
+    margin: 50px 0 50px 0;
+}
+
+#roadtrip
+h1{
+    margin: 0 !important;
+    color: #f9fcfe;
+}
+p {
+    font-size: 15px;
+}
+
+.button-new-roadtrip{
+    background-color: #dcdcdc;
+    padding: 14px;
+    width: 6em;
+    position: fixed;
+    top:10%;
+    z-index: 9999;
+}
+
+.float-button{
+    float: left;
+    margin-right: 10px;
+}
+
+#search nav {
+    background-color: #2296f3 !important;
+    margin-bottom: 2em;
+}
+#search nav form {
+    height: 100%;
+}
+
+#search nav .input-field {
+    margin: 0;
+    height: 100%;
+}
+
+#search a{
+    text-decoration:none;
+    margin: 2em;
+}
+#search a:hover{
+    background-color: #2296f3 !important;
+    color: white;
+ }
+
+.full-width{
+    min-width: 100%;
+}
+
+.search-tab{
+    height: 3.4em;
+    width: 25em;
+    background: #2196f399;
+    position: absolute;
+    z-index: 1;
+    top: 75px;
+    left: 20px;
+}
+
+.search-map{
+    height: 79%;
+    width: 25em;
+    background: #2196f399;
+    position: absolute;
+    z-index: 1;
+    top: 135px;
+    left: 20px;
+    overflow: scroll;
+}.collapsible{
+     border-top: none !important;
+     border-right: none !important;
+     border-left: none !important;
+     border-bottom: none !important;
+ }.collapsible-body {
+    background-color: #ffffffbf;
+   }
+
+  .search-map h4{
+      color: white;
+  }
+
+.search-map input, textarea{
+    color: white;
+}
+
+.search-map label{
+    color: white;
+}
+
+.collapsible input, textarea{
+    color : black;
+}
+
+.collapsible label{
+    color : black;
+}
+
+.container-etapes{
+    padding: 25px 12px 7px 12px;
+}
+
+.contain-form{
+    padding: 25px 12px 7px 12px;
+    border: solid 1px rgba(51,51,51,0.12);
+}
+
+.toast{
+    height: 100px !important;
+}
+
+#test-swipe-2, #test-swipe-3 {
+    margin: 0.5em;
+}
+
+#resultsHotels td, #resultsFoods td{
+    padding: 0;
+    border-radius: 0;
+}
+
+#directionPanel {
+    margin: 0.5em;
+    background-color: rgb(255, 255, 255);
+    overflow: auto;
+}
+
+/* My account */
+
+.header-profile{
+    margin-top: 30px;
+    background-image: url("/bundles/app/images/travel.jpg");
+    background-attachment: fixed;
+    height: 270px;
+    -webkit-background-size: cover;
+    color : white;
+}
+.header-profile.name{
+     margin: 15px;
+ }
+.header-profile img{
+       width: 100px;
+       height: 100px;
+       position: relative;
+       overflow: hidden;
+       -webkit-border-radius: 50%;
+       -moz-border-radius: 50%;
+       -ms-border-radius: 50%;
+       -o-border-radius: 50%;
+       border-radius: 50%;
+       margin: 15px 0 0;
+   }
+
+#profile .edit-button{
+    margin: 5px 0 5px;
+}
+
+.content-profile{
+    padding: 25px 12px 7px 12px;
+    border: solid 1px rgba(51,51,51,0.12);
+    background-color: #fafafa;
+}
+
+.roadtrip-profile, .roadtrip-favorites{
+    margin: 40px 0 40px;
+}
+
+.button-retour{
+    margin: 20px;
+}
+
+#partener{
+    background-color: #d2edff;
+}.partener-content{
+     padding: 80px 150px;
+ }
+
+#partener h3{
+    color: #353a5e;
+    margin-bottom: 4%;
+    font-weight: 300;
+}
+
+#partener p{
+    color: #353a5e;
+   }
+
+.play{
+    height: 450px;
+    overflow: hidden;
+}
+
+#myVideo {
+    right: 0;
+    bottom: 0;
+    max-height: 160%;
+}
+
+#steps{
+    background-color: #353a5e;
+}.steps-content{
+     padding: 80px 100px;
+ }.steps-blocs{
+       color: white;
+   }
+#steps h3{
+    color: white;
+    font-weight: 400;
+    margin-bottom: 4%;
+}
+
+#partner_page{
+    margin-bottom: 0 !important;
+    width: 100%;
+    height: 100%;
+    font-weight: 200;
+}
+
+#partner_page .content_partner_page{
+    background-color: #51bcff;
+    color: white;
+    height: 100%;
+    padding: 170px 60px;
+}
+
+#partner_page h3{
+    font-weight: 200;
+    margin-bottom: 4%;
+ }
+
+.form_partner_page{
+    background-image: url("/bundles/app/images/partener.jpg");
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.bloc{
+    width: 100% !important;
+}
+
+.flash{
+    width: 100% !important;
+    margin-top: 20px;
+}
+
+.card-panel{
+    background-color: #ececec !important;
+}
+
+.edit_map{
+    position: relative;
+}
+.edit_map img{
+    width: 100%;
+    height: 100%;
+}
+
+.btn {
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    font-weight: 200;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #008CBA;
+}
+
+.edit_map:hover .overlay {
+    opacity: 0.5;
+}
+
+.text {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.actions{
+    bottom: 0;
+}
+
+.actions .btn{
+    margin-right: 20px;
+}
+
+#loading { display: none; }
+
+#new_roadtrip .new_roadtrip{
+    background-color: #51bcff;
+    color: white;
+    border-radius: 4px;
+}
+
+#new_roadtrip .new_roadtrip span{
+    margin-top: 1em;
+    font-weight: 200;
+    font-size: 18px;
+}
+
+#new_roadtrip .new_roadtrip a{
+    margin: 2em;
+    font-weight: 200;
+    text-decoration: none;
+}
+
+#new_roadtrip .new_roadtrip a:hover{
+    color: white;
+}
+
+#roadtrip_description{
+    color: white;
+}
+
+#roadtrip_title::placeholder, #roadtrip_duration::placeholder, #roadtrip_description::placeholder {
+    color: #333;
+    opacity: 1; /* Firefox */
+}
+
+#addressDep::placeholder, #roadtrip_stopStart_title::placeholder, #roadtrip_stopStart_description::placeholder {
+    color: #333;
+    opacity: 1; /* Firefox */
+}
+
+#addressDes::placeholder, #roadtrip_stopEnd_title::placeholder, #roadtrip_stopEnd_description::placeholder {
+    color: #333;
+    opacity: 1; /* Firefox */
+}
+
+#container-stop input::placeholder, #container-stop textarea::placeholder{
+    color: #333;
+    opacity: 1; /* Firefox */
+}
+
+.remove_review i{
+    cursor: pointer;
+}
+
+#waypoint_phone::placeholder{
+    color: #333;
+    opacity: 1; /* Firefox */
+}
+
+/*responsive*/
+
+@media only screen and (max-width: 600px) {
+    .search-map {
+        width: 100%;
+        height: 79%;
+        background: #2196f399;
+        overflow: scroll;
+        left: 0;
+        position: initial;
+    }
+    .search-tab {
+        width: 100%;
+        left: 0;
+        position: initial;
+    }
+
+}
+
+
+/* fin my account
+
+

@@ -78,10 +78,8 @@
 {% block javascripts %}
     {{ parent() }}
     {% javascripts
-    '@AppBundle/Resources/public/min/plugin-min.js'
-    '@AppBundle/Resources/public/min/custom-min.js'
-    '@AppBundle/Resources/public/js/jquery.dataTables.min.js'
-    '@AppBundle/Resources/public/js/dataTables.bootstrap4.min.js'
+    '@AppBundle/Resources/public/min/js/jquery.dataTables.min.js'
+    '@AppBundle/Resources/public/min/js/dataTables.bootstrap4.min.js'
     '@AppBundle/Resources/public/js/configDatatable.js'
     %}
     <script src="{{ asset_url }}"></script>

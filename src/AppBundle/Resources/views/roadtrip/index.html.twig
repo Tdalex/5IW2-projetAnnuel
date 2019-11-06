@@ -3,13 +3,11 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets
-    '@AppBundle/Resources/public/min/plugin-min.css'
-    '@AppBundle/Resources/public/min/custom-min.css'
-    '@AppBundle/Resources/public/css/jquery.dataTables.min.css'
-    '@AppBundle/Resources/public/css/dataTables.bootstrap4.min.css'
-    '@AppBundle/Resources/public/slider/css/ion.rangeSlider.css'
-    '@AppBundle/Resources/public/slider/css/ion.rangeSlider.skinFlat.css'
-    '@AppBundle/Resources/public/slider/css/normalize.css'
+    '@AppBundle/Resources/public/min/css/jquery.dataTables.min.css'
+    '@AppBundle/Resources/public/min/css/dataTables.bootstrap4.min.css'
+    '@AppBundle/Resources/public/vendor/slider/css/ion.rangeSlider.css'
+    '@AppBundle/Resources/public/vendor/slider/css/ion.rangeSlider.skinFlat.css'
+    '@AppBundle/Resources/public/vendor/slider/css/normalize.css'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
     {% endstylesheets %}
@@ -84,13 +82,11 @@
 {% block javascripts %}
     {{ parent() }}
     {% javascripts
-    '@AppBundle/Resources/public/min/plugin-min.js'
-    '@AppBundle/Resources/public/min/custom-min.js'
-    '@AppBundle/Resources/public/js/jquery.dataTables.min.js'
-    '@AppBundle/Resources/public/js/dataTables.bootstrap4.min.js'
+    '@AppBundle/Resources/public/min/js/jquery.dataTables.min.js'
+    '@AppBundle/Resources/public/min/js/dataTables.bootstrap4.min.js'
     '@AppBundle/Resources/public/js/configDatatable.js'
-    '@AppBundle/Resources/public/slider/js/ion-rangeSlider/ion.rangeSlider.js'
-    '@AppBundle/Resources/public/slider/js/ion-rangeSlider/ion.rangeSlider.min.js'
+    '@AppBundle/Resources/public/vendor/slider/js/ion-rangeSlider/ion.rangeSlider.js'
+    '@AppBundle/Resources/public/vendor/slider/js/ion-rangeSlider/ion.rangeSlider.min.js'
     '@AppBundle/Resources/public/js/filtres.js'
     %}
     <script src="{{ asset_url }}"></script>

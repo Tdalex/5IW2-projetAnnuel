@@ -1,16 +1,5 @@
 {% extends 'AppBundle::base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    {% stylesheets
-    '@AppBundle/Resources/public/min/plugin-min.css'
-    '@AppBundle/Resources/public/min/custom-min.css'
-    '@AppBundle/Resources/public/css/style.css'
-    %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
-    {% endstylesheets %}
-{% endblock %}
-
 {% block body %}
     <div id="roadtrip-header">
         <div class="container">
@@ -134,12 +123,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts
-    '@AppBundle/Resources/public/min/plugin-min.js'
-    '@AppBundle/Resources/public/min/custom-min.js'
-    %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
     <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places&callback=initAutocomplete"></script>
     <script>
 

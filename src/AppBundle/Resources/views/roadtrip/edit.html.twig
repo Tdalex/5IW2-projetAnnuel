@@ -1,15 +1,5 @@
 {% extends 'AppBundle::base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    {% stylesheets
-    '@AppBundle/Resources/public/min/plugin-min.css'
-    '@AppBundle/Resources/public/min/custom-min.css'
-    %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
-    {% endstylesheets %}
-{% endblock %}
-
 {% block body %}
     <body onload="initialize(); nearbyPlaces()">
     <div id="googleMap"></div>
@@ -158,33 +148,18 @@
     </body>
 {% endblock %}
 
-{% block footer %}
-{% endblock %}
-
 {% block javascripts %}
     {{ parent() }}
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places,visualization&callback=initAutocomplete"></script>
     {% javascripts
-    '@AppBundle/Resources/public/min/plugin-min.js'
-    '@AppBundle/Resources/public/min/custom-min.js'
     '@AppBundle/Resources/public/js/form.js'
+    '@AppBundle/Resources/public/vendor/js/routeBoxer.js'
     %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=myMap&libraries=places,visualization&callback=initAutocomplete"></script>
-    <script src="https://cdn.rawgit.com/googlemaps/v3-utility-library/master/routeboxer/src/RouteBoxer.js"></script>
-
     <script>
         $(document).ready(function(){
             $('.collapsible').collapsible();
         });
-    </script>
-    <script>
-        var geocoder;
-        var map;
-        var autocomplete;
-        var infoWindow;
-        var lat, lng;
-        var itineraryBounds;
-        var markersPlace = [];
     </script>
 {% endblock %}
